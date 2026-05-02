@@ -14,27 +14,39 @@ export function useContent() {
     setLoading(true);
     
     // Settings
-    const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), (doc) => {
-      if (doc.exists()) setSettings(doc.data());
-    });
+    const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), 
+      (doc) => {
+        if (doc.exists()) setSettings(doc.data());
+      },
+      (err) => console.error('Settings Snapshot Error:', err.message)
+    );
 
     // Categories
-    const unsubCategories = onSnapshot(collection(db, 'categories'), (snapshot) => {
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      if (data.length > 0) setCategories(data);
-    });
+    const unsubCategories = onSnapshot(collection(db, 'categories'), 
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (data.length > 0) setCategories(data);
+      },
+      (err) => console.error('Categories Snapshot Error:', err.message)
+    );
 
     // Books
-    const unsubBooks = onSnapshot(collection(db, 'books'), (snapshot) => {
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      if (data.length > 0) setBooks(data);
-    });
+    const unsubBooks = onSnapshot(collection(db, 'books'), 
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (data.length > 0) setBooks(data);
+      },
+      (err) => console.error('Books Snapshot Error:', err.message)
+    );
 
     // Events
-    const unsubEvents = onSnapshot(collection(db, 'events'), (snapshot) => {
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      if (data.length > 0) setEvents(data);
-    });
+    const unsubEvents = onSnapshot(collection(db, 'events'), 
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (data.length > 0) setEvents(data);
+      },
+      (err) => console.error('Events Snapshot Error:', err.message)
+    );
 
     setLoading(false);
 

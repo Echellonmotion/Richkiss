@@ -1,6 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../lib/firebase';
 import { UploadCloud, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 interface ImageUploadProps {
@@ -9,7 +7,7 @@ interface ImageUploadProps {
   label?: string;
 }
 
-export default function ImageUpload({ onUploadComplete, folder = 'general', label = 'Upload Image' }: ImageUploadProps) {
+export default function ImageUpload({ onUploadComplete, label = 'Upload Image' }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -26,8 +24,16 @@ export default function ImageUpload({ onUploadComplete, folder = 'general', labe
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) { // Increased to 5MB
+    if (file.size > 5 * 1024 * 1024) {
       setError('Image size should be less than 5MB.');
+      return;
+    }
+
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+    if (!cloudName || !uploadPreset) {
+      setError('Cloudinary configuration missing. Please set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET in settings.');
       return;
     }
 
@@ -36,34 +42,54 @@ export default function ImageUpload({ onUploadComplete, folder = 'general', labe
     setSuccess(false);
     setProgress(0);
 
-    if (!storage) {
-      setError('Firebase Storage is not initialized. Please check configuration.');
-      return;
-    }
-    
     try {
-      console.log('Starting simple upload to:', `${folder}/${file.name}`);
-      const storageRef = ref(storage, `${folder}/${Date.now()}-${file.name}`);
-      
-      setUploading(true);
-      setError(null);
-      setSuccess(false);
-      setProgress(0);
+      if (!navigator.onLine) {
+        throw new Error('You are currently offline. Please check your internet connection.');
+      }
 
-      const snapshot = await uploadBytes(storageRef, file);
-      console.log('Upload successful, getting URL...');
-      setProgress(100);
-      
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      onUploadComplete(downloadURL);
-      setSuccess(true);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', uploadPreset);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, true);
+
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const pct = (event.loaded / event.total) * 100;
+          setProgress(Math.round(pct));
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          console.log('Upload successful:', response.secure_url);
+          onUploadComplete(response.secure_url);
+          setSuccess(true);
+          setUploading(false);
+        } else {
+          try {
+            const err = JSON.parse(xhr.responseText);
+            console.error('Cloudinary Error:', err?.error?.message || err);
+            setError(`Upload failed: ${err.error?.message || 'Unknown error'}`);
+          } catch (parseErr) {
+            console.error('Cloudinary Parse Error:', xhr.responseText);
+            setError('Upload failed: Invalid response from server.');
+          }
+          setUploading(false);
+        }
+      };
+
+      xhr.onerror = () => {
+        setError('Network error during upload.');
+        setUploading(false);
+      };
+
+      xhr.send(formData);
     } catch (err: any) {
-      console.error('Upload Error Code:', err.code);
-      console.error('Upload Error Message:', err.message);
-      let msg = err.message;
-      if (err.code === 'storage/unauthorized') msg = 'Unauthorized. Ensure Storage is enabled and rules allow writes.';
-      setError(`Upload failed: ${msg}`);
-    } finally {
+      console.error('Initiation Error:', err?.message || err);
+      setError(`Failed to start upload: ${err?.message || 'Unknown error'}`);
       setUploading(false);
     }
   };

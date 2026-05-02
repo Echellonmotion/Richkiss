@@ -139,7 +139,8 @@ export default function Admin() {
       }
 
       setStatus({ type: 'success', msg: 'Database seeded successfully!' });
-    } catch (err) {
+    } catch (err: any) {
+      console.error('Seed Error:', err?.message || err);
       setStatus({ type: 'error', msg: 'Failed to seed database.' });
     }
   };
@@ -150,7 +151,8 @@ export default function Admin() {
       await setDoc(doc(db, 'settings', 'global'), { ...formData, updatedAt: serverTimestamp() }, { merge: true });
       setStatus({ type: 'success', msg: 'Settings updated!' });
       setIsEditing(null);
-    } catch (err) {
+    } catch (err: any) {
+      console.error('Update Settings Error:', err?.message || err);
       setStatus({ type: 'error', msg: 'Update failed.' });
     }
   };
@@ -160,7 +162,8 @@ export default function Admin() {
     try {
       await deleteDoc(doc(db, coll, id));
       setStatus({ type: 'success', msg: 'Deleted successfully' });
-    } catch (err) {
+    } catch (err: any) {
+      console.error('Delete Error:', err?.message || err);
       setStatus({ type: 'error', msg: 'Delete failed' });
     }
   };
@@ -175,7 +178,8 @@ export default function Admin() {
       setStatus({ type: 'success', msg: 'Saved successfully' });
       setIsEditing(null);
       setFormData({});
-    } catch (err) {
+    } catch (err: any) {
+      console.error('Save Item Error:', err?.message || err);
       setStatus({ type: 'error', msg: 'Save failed' });
     }
   };
