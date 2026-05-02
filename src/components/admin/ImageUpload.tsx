@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../lib/firebase';
 import { UploadCloud, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
@@ -36,30 +36,34 @@ export default function ImageUpload({ onUploadComplete, folder = 'general', labe
     setSuccess(false);
     setProgress(0);
 
+    if (!storage) {
+      setError('Firebase Storage is not initialized. Please check configuration.');
+      return;
+    }
+    
     try {
+      console.log('Starting simple upload to:', `${folder}/${file.name}`);
       const storageRef = ref(storage, `${folder}/${Date.now()}-${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      
+      setUploading(true);
+      setError(null);
+      setSuccess(false);
+      setProgress(0);
 
-      uploadTask.on('state_changed', 
-        (snapshot) => {
-          const pct = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setProgress(Math.round(pct));
-        }, 
-        (err) => {
-          console.error('Upload error:', err);
-          setError(`Upload failed: ${err.message}. Ensure Storage is enabled in Firebase Console.`);
-          setUploading(false);
-        }, 
-        async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          onUploadComplete(downloadURL);
-          setSuccess(true);
-          setUploading(false);
-        }
-      );
+      const snapshot = await uploadBytes(storageRef, file);
+      console.log('Upload successful, getting URL...');
+      setProgress(100);
+      
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      onUploadComplete(downloadURL);
+      setSuccess(true);
     } catch (err: any) {
-      console.error('Initial upload error:', err);
-      setError('Failed to initiate upload.');
+      console.error('Upload Error Code:', err.code);
+      console.error('Upload Error Message:', err.message);
+      let msg = err.message;
+      if (err.code === 'storage/unauthorized') msg = 'Unauthorized. Ensure Storage is enabled and rules allow writes.';
+      setError(`Upload failed: ${msg}`);
+    } finally {
       setUploading(false);
     }
   };
