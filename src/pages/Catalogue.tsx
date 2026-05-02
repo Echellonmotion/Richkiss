@@ -1,12 +1,14 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useContent } from '../hooks/useContent';
-import { ShoppingCart, Eye, Search, Filter, X } from 'lucide-react';
+import { ShoppingCart, Eye, Search, Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Catalogue() {
   const { categories, books, loading } = useContent();
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   const filteredBooks = useMemo(() => {
     return books.filter((book: any) => {
@@ -16,6 +18,18 @@ export default function Catalogue() {
       return matchesCategory && matchesSearch;
     });
   }, [books, activeCategory, searchQuery]);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, searchQuery]);
+
+  const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
+  
+  const paginatedBooks = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredBooks.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredBooks, currentPage, itemsPerPage]);
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading Catalogue...</div>;
 
@@ -81,17 +95,24 @@ export default function Catalogue() {
       </section>
 
       {/* Results Count */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        <p className="text-xs font-bold font-sans text-brand-muted uppercase tracking-[0.2em]">
-          Showing {filteredBooks.length} {filteredBooks.length === 1 ? 'book' : 'books'}
-        </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex justify-between items-end">
+        <div className="space-y-1">
+          <p className="text-xs font-bold font-sans text-brand-muted uppercase tracking-[0.2em]">
+            Showing {filteredBooks.length} {filteredBooks.length === 1 ? 'book' : 'books'}
+          </p>
+          {totalPages > 1 && (
+            <p className="text-[10px] font-medium text-brand-primary/60 uppercase tracking-widest">
+              Page {currentPage} of {totalPages}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Books Grid */}
-      <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
+      <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
           <AnimatePresence mode="popLayout">
-            {filteredBooks.map((book: any) => (
+            {paginatedBooks.map((book: any) => (
               <motion.div 
                 key={book.id}
                 layout
@@ -138,6 +159,56 @@ export default function Catalogue() {
             ))}
           </AnimatePresence>
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="mt-20 flex justify-center items-center space-x-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="p-3 rounded-full bg-brand-beige text-brand-secondary disabled:opacity-30 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-white transition-all shadow-sm"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            
+            <div className="flex items-center space-x-2 px-4">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
+                // Only show a subset of pages if there are many
+                if (
+                  totalPages > 7 && 
+                  page !== 1 && 
+                  page !== totalPages && 
+                  Math.abs(page - currentPage) > 1
+                ) {
+                  if (page === 2 || page === totalPages - 1) return <span key={page} className="text-brand-muted">...</span>;
+                  return null;
+                }
+
+                return (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-10 h-10 rounded-full text-xs font-bold transition-all ${
+                      currentPage === page 
+                        ? 'bg-brand-secondary text-white shadow-md' 
+                        : 'bg-brand-beige text-brand-secondary hover:bg-brand-primary/10'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="p-3 rounded-full bg-brand-beige text-brand-secondary disabled:opacity-30 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-white transition-all shadow-sm"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        )}
 
         {filteredBooks.length === 0 && (
           <div className="text-center py-24 space-y-6">
