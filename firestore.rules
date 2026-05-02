@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Global Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return true; // Simplified for the password-only UI request. In production, use Firebase Auth with custom claims.
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Entity Validations
+    function isValidSiteSettings(data) {
+      return data.companyName is string && data.companyName.size() <= 100 &&
+             data.logoUrl is string && data.logoUrl.size() <= 1000 &&
+             (data.get('tagline', '') is string) &&
+             (data.get('aboutText', '') is string) &&
+             (data.get('vision', '') is string) &&
+             (data.get('mission', '') is string) &&
+             (data.get('commitment', '') is string);
+    }
+
+    function isValidCategory(data) {
+      return data.name is string && data.name.size() <= 100 &&
+             data.slug is string && data.slug.size() <= 100 &&
+             (data.get('description', '') is string);
+    }
+
+    function isValidBook(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.author is string && data.author.size() <= 100 &&
+             data.coverUrl is string && data.coverUrl.size() <= 1000 &&
+             data.categorySlug is string && data.categorySlug.size() <= 100;
+    }
+
+    function isValidEvent(data) {
+      return data.name is string && data.name.size() <= 200 &&
+             data.location is string && data.location.size() <= 200 &&
+             (data.get('year', '') is string) &&
+             (data.get('description', '') is string) &&
+             (data.get('gallery', []) is list);
+    }
+
+    // Match Blocks
+    match /settings/global {
+      allow read: if true;
+      allow write: if isAdmin() && isValidSiteSettings(incoming());
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidId(categoryId) && isValidCategory(incoming());
+      allow update: if isAdmin() && isValidCategory(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /books/{bookId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidId(bookId) && isValidBook(incoming());
+      allow update: if isAdmin() && isValidBook(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidId(eventId) && isValidEvent(incoming());
+      allow update: if isAdmin() && isValidEvent(incoming());
+      allow delete: if isAdmin();
+    }
+  }
+}

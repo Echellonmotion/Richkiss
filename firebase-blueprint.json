@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "SiteSettings": {
+      "title": "Site Settings",
+      "description": "Global configuration for the website",
+      "type": "object",
+      "properties": {
+        "logoUrl": { "type": "string", "description": "URL of the website logo" },
+        "companyName": { "type": "string", "description": "Name of the company" },
+        "tagline": { "type": "string", "description": "Website tagline" },
+        "contactEmail": { "type": "string", "description": "General contact email" },
+        "phoneNumbers": { "type": "array", "items": { "type": "string" }, "description": "Contact phone numbers" },
+        "aboutText": { "type": "string", "description": "Main about us text" },
+        "vision": { "type": "string" },
+        "mission": { "type": "string" },
+        "commitment": { "type": "string" }
+      },
+      "required": ["companyName", "logoUrl"]
+    },
+    "Category": {
+      "title": "Book Category",
+      "description": "Categories for grouping books",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["name", "slug"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "A book in the catalogue",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "price": { "type": "string" },
+        "coverUrl": { "type": "string" },
+        "categorySlug": { "type": "string" },
+        "featured": { "type": "boolean" }
+      },
+      "required": ["title", "author", "coverUrl", "categorySlug"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Company event or book fair",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "year": { "type": "string" },
+        "description": { "type": "string" },
+        "gallery": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["name", "location"]
+    }
+  },
+  "firestore": {
+    "settings/global": {
+      "schema": "SiteSettings",
+      "description": "Global site settings"
+    },
+    "categories": {
+      "schema": "Category",
+      "description": "Collection of book categories"
+    },
+    "books": {
+      "schema": "Book",
+      "description": "Collection of books"
+    },
+    "events": {
+      "schema": "Event",
+      "description": "Collection of events"
+    }
+  }
+}
