@@ -33,7 +33,7 @@ export default function ImageUpload({ onUploadComplete, label = 'Upload Image' }
     const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
     if (!cloudName || !uploadPreset) {
-      setError('Cloudinary configuration missing. Please set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET in settings.');
+      setError('CONFIG_MISSING');
       return;
     }
 
@@ -130,9 +130,20 @@ export default function ImageUpload({ onUploadComplete, label = 'Upload Image' }
             <p className="text-xs font-bold uppercase tracking-widest">Upload Complete</p>
           </div>
         ) : error ? (
-          <div className="flex flex-col items-center space-y-2">
+          <div className="flex flex-col items-center space-y-3 text-center px-4">
             <AlertCircle className="text-red-500" size={32} />
-            <p className="text-xs font-bold uppercase tracking-widest text-red-500">{error}</p>
+            {error === 'CONFIG_MISSING' ? (
+              <div className="space-y-2">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-500">Config Required</p>
+                <div className="bg-red-50 p-3 rounded-xl border border-red-100">
+                  <p className="text-[10px] text-red-700 leading-relaxed font-sans">
+                    Please set <code className="font-mono bg-red-100 px-1 rounded">VITE_CLOUDINARY_CLOUD_NAME</code> and <code className="font-mono bg-red-100 px-1 rounded">VITE_CLOUDINARY_UPLOAD_PRESET</code> in your Project Secrets.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs font-bold uppercase tracking-widest text-red-500">{error}</p>
+            )}
           </div>
         ) : (
           <div className="flex flex-col items-center space-y-2">
