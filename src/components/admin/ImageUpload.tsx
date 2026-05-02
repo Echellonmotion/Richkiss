@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../lib/firebase';
 import { UploadCloud, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
@@ -11,6 +11,7 @@ interface ImageUploadProps {
 
 export default function ImageUpload({ onUploadComplete, folder = 'general', label = 'Upload Image' }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -25,26 +26,40 @@ export default function ImageUpload({ onUploadComplete, folder = 'general', labe
       return;
     }
 
-    if (file.size > 2 * 1024 * 1024) { // 2MB limit
-      setError('Image size should be less than 2MB.');
+    if (file.size > 5 * 1024 * 1024) { // Increased to 5MB
+      setError('Image size should be less than 5MB.');
       return;
     }
 
     setUploading(true);
     setError(null);
     setSuccess(false);
+    setProgress(0);
 
     try {
       const storageRef = ref(storage, `${folder}/${Date.now()}-${file.name}`);
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      
-      onUploadComplete(downloadURL);
-      setSuccess(true);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on('state_changed', 
+        (snapshot) => {
+          const pct = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setProgress(Math.round(pct));
+        }, 
+        (err) => {
+          console.error('Upload error:', err);
+          setError(`Upload failed: ${err.message}. Ensure Storage is enabled in Firebase Console.`);
+          setUploading(false);
+        }, 
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          onUploadComplete(downloadURL);
+          setSuccess(true);
+          setUploading(false);
+        }
+      );
     } catch (err: any) {
-      console.error('Upload error:', err);
-      setError('Failed to upload image. Please check your storage rules.');
-    } finally {
+      console.error('Initial upload error:', err);
+      setError('Failed to initiate upload.');
       setUploading(false);
     }
   };
@@ -73,7 +88,10 @@ export default function ImageUpload({ onUploadComplete, folder = 'general', labe
 
         {uploading ? (
           <div className="flex flex-col items-center space-y-2">
-            <Loader2 className="animate-spin text-brand-primary" size={32} />
+            <div className="relative w-16 h-16 flex items-center justify-center">
+              <Loader2 className="animate-spin text-brand-primary absolute inset-0" size={64} />
+              <span className="text-[10px] font-bold text-brand-primary">{progress}%</span>
+            </div>
             <p className="text-xs font-bold uppercase tracking-widest">Uploading...</p>
           </div>
         ) : success ? (
