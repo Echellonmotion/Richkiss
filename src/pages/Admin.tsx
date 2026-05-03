@@ -37,7 +37,6 @@ export default function Admin() {
   const { isAuthenticated, loading: authLoading, login, logout } = useAuth();
   const { settings, categories, books, events, loading: contentLoading } = useContent();
   const [activeTab, setActiveTab] = useState<'settings' | 'categories' | 'books' | 'events'>('settings');
-  const cloudinaryMissing = !import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || !import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [status, setStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
@@ -239,26 +238,6 @@ export default function Admin() {
 
         {/* Main Content Area */}
         <main className="lg:col-span-9 space-y-8">
-          {cloudinaryMissing && (
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="p-6 bg-amber-50 border-2 border-amber-200 rounded-[30px] flex items-start space-x-4 shadow-sm"
-            >
-              <div className="p-2 bg-amber-100 rounded-xl text-amber-600">
-                <Settings size={24} />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-sm font-bold text-amber-800 uppercase tracking-widest font-sans">Image Upload Config Required</h3>
-                <p className="text-xs text-amber-700 leading-relaxed">
-                  Cloudinary is not configured. Images will fail to upload. Go to <b>Settings &gt; Secrets</b> and add 
-                  <code className="mx-1 px-1.5 py-0.5 bg-amber-100 rounded font-mono">VITE_CLOUDINARY_CLOUD_NAME</code> and 
-                  <code className="mx-1 px-1.5 py-0.5 bg-amber-100 rounded font-mono">VITE_CLOUDINARY_UPLOAD_PRESET</code>.
-                </p>
-              </div>
-            </motion.div>
-          )}
-
           {status && (
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
