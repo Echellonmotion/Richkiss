@@ -26,13 +26,17 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200 overflow-hidden">
-              {settings.logoUrl ? (
-                <img src={settings.logoUrl} alt="Logo" className="w-full h-full object-contain p-1" />
-              ) : (
+            {settings.logoUrl ? (
+              <img 
+                src={settings.logoUrl} 
+                alt={settings.companyName || "Logo"} 
+                className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-200" 
+              />
+            ) : (
+              <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200 overflow-hidden">
                 <BookOpen size={24} />
-              )}
-            </div>
+              </div>
+            )}
             <div className="flex flex-col">
               <span className="font-serif text-xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
                 {settings.companyName?.split(' ')[0] || 'RICHKISS'}

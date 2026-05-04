@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { BookOpen, MapPin, Phone, Mail, Facebook, Twitter, Instagram, Settings } from 'lucide-react';
 import { COMPANY_INFO, BOOK_CATEGORIES } from '../../constants/content';
+import { useContent } from '../../hooks/useContent';
 
 export default function Footer() {
+  const { settings } = useContent();
+
   return (
     <footer className="bg-brand-secondary text-white pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -10,12 +13,24 @@ export default function Footer() {
           {/* Brand and About */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white">
-                <BookOpen size={24} />
-              </div>
+              {settings.logoUrl ? (
+                <img 
+                  src={settings.logoUrl} 
+                  alt={settings.companyName || "Logo"} 
+                  className="h-10 w-auto object-contain" 
+                />
+              ) : (
+                <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white">
+                  <BookOpen size={24} />
+                </div>
+              )}
               <div className="flex flex-col">
-                <span className="font-serif text-xl font-bold tracking-tight leading-none text-white">RICHKISS</span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-sans font-semibold">Publishers</span>
+                <span className="font-serif text-xl font-bold tracking-tight leading-none text-white uppercase">
+                  {settings.companyName?.split(' ')[0] || 'RICHKISS'}
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-sans font-semibold">
+                  {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
+                </span>
               </div>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
