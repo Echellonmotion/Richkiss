@@ -4,7 +4,10 @@ import { db } from '../lib/firebase';
 import { COMPANY_INFO, BOOK_CATEGORIES } from '../constants/content';
 
 export function useContent() {
-  const [settings, setSettings] = useState<any>(null);
+  const [settings, setSettings] = useState<any>(() => {
+    const cached = localStorage.getItem('site_settings');
+    return cached ? JSON.parse(cached) : null;
+  });
   const [categories, setCategories] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -26,7 +29,11 @@ export function useContent() {
     // Settings
     const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), 
       (doc) => {
-        if (doc.exists()) setSettings(doc.data());
+        if (doc.exists()) {
+          const data = doc.data();
+          setSettings(data);
+          localStorage.setItem('site_settings', JSON.stringify(data));
+        }
         settingsLoaded = true;
         checkLoading();
       },
@@ -93,7 +100,7 @@ export function useContent() {
   // Merge with static defaults if dynamic data is missing
   const mergedSettings = settings || {
     companyName: COMPANY_INFO.name,
-    logoUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=200", // placeholder
+    logoUrl: "", // No placeholder image
     tagline: "Inspiring Excellence in Publishing",
     phoneNumbers: COMPANY_INFO.phone,
     contactEmail: COMPANY_INFO.email,

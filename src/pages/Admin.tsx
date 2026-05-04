@@ -101,8 +101,8 @@ export default function Admin() {
       // Seed Settings
       await setDoc(doc(db, 'settings', 'global'), {
         companyName: COMPANY_INFO.name,
-        logoUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=200",
-        footerLogoUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=200",
+        logoUrl: "",
+        footerLogoUrl: "",
         tagline: "Inspiring Excellence in Publishing",
         phoneNumbers: COMPANY_INFO.phone,
         contactEmail: COMPANY_INFO.email,

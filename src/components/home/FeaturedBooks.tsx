@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Eye, ShoppingCart } from 'lucide-react';
+import { ArrowRight, Eye } from 'lucide-react';
 import { useContent } from '../../hooks/useContent';
 
 export default function FeaturedBooks() {
@@ -53,16 +53,12 @@ export default function FeaturedBooks() {
                    <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-secondary hover:bg-brand-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300">
                      <Eye size={20} />
                    </button>
-                   <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-secondary hover:bg-brand-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75">
-                     <ShoppingCart size={20} />
-                   </button>
                 </div>
               </div>
 
               <div className="space-y-2 text-center md:text-left">
                 <p className="text-xs font-bold font-sans text-brand-primary uppercase tracking-[0.2em]">{book.author}</p>
                 <h3 className="text-xl font-serif font-bold text-brand-secondary group-hover:text-brand-primary transition-colors line-clamp-1">{book.title}</h3>
-                <p className="text-sm font-sans font-medium text-gray-500">{book.price}</p>
               </div>
             </motion.div>
           ))}

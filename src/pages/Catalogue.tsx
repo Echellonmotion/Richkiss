@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useContent } from '../hooks/useContent';
-import { ShoppingCart, Eye, Search, Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Eye, Search, Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Catalogue() {
   const { categories, books, loading } = useContent();
@@ -141,19 +141,12 @@ export default function Catalogue() {
                     <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-secondary hover:bg-brand-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300">
                       <Eye size={20} />
                     </button>
-                    <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-secondary hover:bg-brand-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75">
-                      <ShoppingCart size={20} />
-                    </button>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <p className="text-xs font-bold font-sans text-brand-primary uppercase tracking-[0.2em]">{book.author}</p>
                   <h3 className="text-xl font-serif font-bold text-brand-secondary group-hover:text-brand-primary transition-colors line-clamp-2 min-h-[3.5rem]">{book.title}</h3>
-                  <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                    <p className="text-sm font-sans font-bold text-brand-secondary">{book.price}</p>
-                    <button className="text-xs font-bold uppercase tracking-widest text-brand-primary hover:text-brand-secondary transition-colors underline underline-offset-4">Add to cart</button>
-                  </div>
                 </div>
               </motion.div>
             ))}
