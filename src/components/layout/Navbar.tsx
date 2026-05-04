@@ -33,18 +33,20 @@ export default function Navbar() {
                 className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-200" 
               />
             ) : (
-              <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200 overflow-hidden">
-                <BookOpen size={24} />
-              </div>
+              <>
+                <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200 overflow-hidden">
+                  <BookOpen size={24} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-serif text-xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
+                    {settings.companyName?.split(' ')[0] || 'RICHKISS'}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-brand-muted font-sans font-semibold">
+                    {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
+                  </span>
+                </div>
+              </>
             )}
-            <div className="flex flex-col">
-              <span className="font-serif text-xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
-                {settings.companyName?.split(' ')[0] || 'RICHKISS'}
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-brand-muted font-sans font-semibold">
-                {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
-              </span>
-            </div>
           </Link>
 
           {/* Desktop Nav */}

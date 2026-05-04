@@ -102,6 +102,7 @@ export default function Admin() {
       await setDoc(doc(db, 'settings', 'global'), {
         companyName: COMPANY_INFO.name,
         logoUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=200",
+        footerLogoUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=200",
         tagline: "Inspiring Excellence in Publishing",
         phoneNumbers: COMPANY_INFO.phone,
         contactEmail: COMPANY_INFO.email,
@@ -285,24 +286,41 @@ export default function Admin() {
 
                 {isEditing === 'settings' ? (
                   <form onSubmit={handleUpdateSettings} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-4 md:col-span-2">
-                       <ImageUpload 
-                         onUploadComplete={(url) => setFormData(prev => ({ ...prev, logoUrl: url }))}
-                         folder="logos"
-                         label="Company Logo"
-                       />
-                       {formData.logoUrl && (
-                         <div className="flex items-center space-x-4 p-4 bg-brand-beige/30 rounded-2xl border border-brand-primary/10">
-                           <div className="w-16 h-16 bg-white rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100 shadow-sm transition-all animate-in fade-in zoom-in duration-500">
-                              <img src={formData.logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
-                           </div>
-                           <div className="flex-grow">
-                             <p className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">LOGO UPDATED & READY TO SAVE</p>
-                             <p className="text-[10px] text-gray-500 truncate max-w-xs opacity-60">{formData.logoUrl}</p>
-                           </div>
-                         </div>
-                       )}
-                    </div>
+                     <div className="space-y-4 md:col-span-2">
+                        <ImageUpload 
+                          onUploadComplete={(url) => setFormData(prev => ({ ...prev, logoUrl: url }))}
+                          folder="logos"
+                          label="Main Logo (Header)"
+                        />
+                        {formData.logoUrl && (
+                          <div className="flex items-center space-x-4 p-4 bg-brand-beige/30 rounded-2xl border border-brand-primary/10">
+                            <div className="w-16 h-16 bg-white rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100 shadow-sm transition-all">
+                               <img src={formData.logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
+                            </div>
+                            <div className="flex-grow">
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">LOGO UPDATED</p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <div className="pt-4 mt-4 border-t border-gray-100">
+                          <ImageUpload 
+                            onUploadComplete={(url) => setFormData(prev => ({ ...prev, footerLogoUrl: url }))}
+                            folder="logos"
+                            label="Footer Logo (Optional)"
+                          />
+                          {formData.footerLogoUrl && (
+                            <div className="flex items-center space-x-4 p-4 bg-brand-secondary/10 rounded-2xl border border-brand-secondary/20">
+                              <div className="w-16 h-16 bg-brand-secondary rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100 shadow-sm transition-all">
+                                 <img src={formData.footerLogoUrl} alt="Footer Logo Preview" className="max-w-full max-h-full object-contain" />
+                              </div>
+                              <div className="flex-grow text-brand-secondary">
+                                <p className="text-[10px] font-bold uppercase tracking-widest">FOOTER LOGO UPDATED</p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                     </div>
                     <div className="space-y-4">
                        <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Company Name</label>
                        <input 
@@ -344,14 +362,27 @@ export default function Admin() {
                   </form>
                 ) : (
                   <div className="space-y-12">
-                    <div className="flex items-center space-x-8">
-                       <div className="w-32 h-32 bg-brand-beige rounded-3xl overflow-hidden flex items-center justify-center p-4">
-                          <img src={settings.logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       <div className="space-y-4">
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Main Logo</h4>
+                          <div className="w-full aspect-video bg-brand-beige rounded-3xl overflow-hidden flex items-center justify-center p-8 border border-gray-100">
+                             <img src={settings.logoUrl} alt="Main Logo" className="max-w-full max-h-full object-contain" />
+                          </div>
                        </div>
-                       <div>
-                          <h3 className="text-2xl font-serif text-brand-secondary">{settings.companyName}</h3>
-                          <p className="text-brand-primary font-bold text-sm tracking-wide">{settings.tagline}</p>
+                       <div className="space-y-4">
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Footer Logo</h4>
+                          <div className="w-full aspect-video bg-brand-secondary rounded-3xl overflow-hidden flex items-center justify-center p-8 border border-white/10">
+                             {settings.footerLogoUrl ? (
+                               <img src={settings.footerLogoUrl} alt="Footer Logo" className="max-w-full max-h-full object-contain" />
+                             ) : (
+                               <img src={settings.logoUrl} alt="Logo Fallback" className="max-w-full max-h-full object-contain opacity-50 grayscale" />
+                             )}
+                          </div>
                        </div>
+                    </div>
+                    <div className="space-y-4 pt-4 border-t border-gray-100">
+                       <h3 className="text-2xl font-serif text-brand-secondary">{settings.companyName}</h3>
+                       <p className="text-brand-primary font-bold text-sm tracking-wide">{settings.tagline}</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                        <div className="space-y-2">

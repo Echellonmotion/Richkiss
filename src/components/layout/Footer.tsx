@@ -13,25 +13,27 @@ export default function Footer() {
           {/* Brand and About */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center space-x-2">
-              {settings.logoUrl ? (
+              {settings.footerLogoUrl || settings.logoUrl ? (
                 <img 
-                  src={settings.logoUrl} 
+                  src={settings.footerLogoUrl || settings.logoUrl} 
                   alt={settings.companyName || "Logo"} 
                   className="h-10 w-auto object-contain" 
                 />
               ) : (
-                <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white">
-                  <BookOpen size={24} />
-                </div>
+                <>
+                  <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white">
+                    <BookOpen size={24} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-serif text-xl font-bold tracking-tight leading-none text-white uppercase">
+                      {settings.companyName?.split(' ')[0] || 'RICHKISS'}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-sans font-semibold">
+                      {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
+                    </span>
+                  </div>
+                </>
               )}
-              <div className="flex flex-col">
-                <span className="font-serif text-xl font-bold tracking-tight leading-none text-white uppercase">
-                  {settings.companyName?.split(' ')[0] || 'RICHKISS'}
-                </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-sans font-semibold">
-                  {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
-                </span>
-              </div>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
               Promoting literacy, quality education, and knowledge development through innovative publishing solutions since 2010.

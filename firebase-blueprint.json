@@ -6,6 +6,7 @@
       "type": "object",
       "properties": {
         "logoUrl": { "type": "string", "description": "URL of the website logo" },
+        "footerLogoUrl": { "type": "string", "description": "URL of the footer logo" },
         "companyName": { "type": "string", "description": "Name of the company" },
         "tagline": { "type": "string", "description": "Website tagline" },
         "contactEmail": { "type": "string", "description": "General contact email" },
