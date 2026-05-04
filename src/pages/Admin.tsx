@@ -17,7 +17,8 @@ import {
   CheckCircle2,
   AlertCircle,
   Lock,
-  UploadCloud
+  UploadCloud,
+  Loader2
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../lib/firebase';
@@ -42,6 +43,7 @@ export default function Admin() {
   const [status, setStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
   const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   if (authLoading) return <div className="min-h-screen flex items-center justify-center font-serif">Verifying Access...</div>;
 
@@ -147,13 +149,25 @@ export default function Admin() {
 
   const handleUpdateSettings = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSaving(true);
+    setStatus(null);
     try {
-      await setDoc(doc(db, 'settings', 'global'), { ...formData, updatedAt: serverTimestamp() }, { merge: true });
-      setStatus({ type: 'success', msg: 'Settings updated!' });
+      // Ensure all required fields for Firestore rules are present
+      const submissionData = {
+        ...formData,
+        companyName: formData.companyName || settings.companyName,
+        logoUrl: formData.logoUrl || settings.logoUrl,
+        updatedAt: serverTimestamp()
+      };
+
+      await setDoc(doc(db, 'settings', 'global'), submissionData, { merge: true });
+      setStatus({ type: 'success', msg: 'Settings updated successfully!' });
       setIsEditing(null);
     } catch (err: any) {
       console.error('Update Settings Error:', err?.message || err);
-      setStatus({ type: 'error', msg: 'Update failed.' });
+      setStatus({ type: 'error', msg: `Update failed: ${err?.message || 'Check firestore permissions'}` });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -169,18 +183,22 @@ export default function Admin() {
   };
 
   const handleSaveItem = async (coll: string, data: any, id?: string) => {
+    setIsSaving(true);
+    setStatus(null);
     try {
       if (id) {
-        await setDoc(doc(db, coll, id), data);
+        await setDoc(doc(db, coll, id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
       } else {
-        await addDoc(collection(db, coll), data);
+        await addDoc(collection(db, coll), { ...data, createdAt: serverTimestamp() });
       }
       setStatus({ type: 'success', msg: 'Saved successfully' });
       setIsEditing(null);
       setFormData({});
     } catch (err: any) {
       console.error('Save Item Error:', err?.message || err);
-      setStatus({ type: 'error', msg: 'Save failed' });
+      setStatus({ type: 'error', msg: `Save failed: ${err?.message || 'Check connection'}` });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -269,18 +287,18 @@ export default function Admin() {
                   <form onSubmit={handleUpdateSettings} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4 md:col-span-2">
                        <ImageUpload 
-                         onUploadComplete={(url) => setFormData({ ...formData, logoUrl: url })}
+                         onUploadComplete={(url) => setFormData(prev => ({ ...prev, logoUrl: url }))}
                          folder="logos"
                          label="Company Logo"
                        />
                        {formData.logoUrl && (
-                         <div className="flex items-center space-x-4 p-4 bg-brand-beige/30 rounded-2xl">
-                           <div className="w-16 h-16 bg-white rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100">
+                         <div className="flex items-center space-x-4 p-4 bg-brand-beige/30 rounded-2xl border border-brand-primary/10">
+                           <div className="w-16 h-16 bg-white rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100 shadow-sm transition-all animate-in fade-in zoom-in duration-500">
                               <img src={formData.logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
                            </div>
-                           <div>
-                             <p className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Current URL</p>
-                             <p className="text-xs text-brand-primary truncate max-w-xs">{formData.logoUrl}</p>
+                           <div className="flex-grow">
+                             <p className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">LOGO UPDATED & READY TO SAVE</p>
+                             <p className="text-[10px] text-gray-500 truncate max-w-xs opacity-60">{formData.logoUrl}</p>
                            </div>
                          </div>
                        )}
@@ -313,11 +331,15 @@ export default function Admin() {
                        />
                     </div>
                     <div className="flex space-x-4 md:col-span-2 pt-4">
-                       <button type="submit" className="flex-grow flex items-center justify-center space-x-2 py-4 bg-brand-secondary text-white rounded-full font-bold">
-                         <Save size={18} />
-                         <span>Save Changes</span>
+                       <button 
+                         type="submit" 
+                         disabled={isSaving}
+                         className={`flex-grow flex items-center justify-center space-x-2 py-4 rounded-full font-bold transition-all ${isSaving ? 'bg-brand-secondary/50 cursor-not-allowed' : 'bg-brand-secondary text-white hover:bg-brand-primary shadow-xl hover:-translate-y-1'}`}
+                       >
+                         {isSaving ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
+                         <span>{isSaving ? 'Saving Changes...' : 'Save Changes'}</span>
                        </button>
-                       <button type="button" onClick={() => setIsEditing(null)} className="px-8 py-4 border border-gray-200 rounded-full font-bold">Cancel</button>
+                       <button type="button" onClick={() => setIsEditing(null)} disabled={isSaving} className="px-8 py-4 border border-gray-200 rounded-full font-bold hover:bg-gray-50 transition-colors">Cancel</button>
                     </div>
                   </form>
                 ) : (
@@ -488,7 +510,7 @@ export default function Admin() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                            <div className="space-y-4 md:col-span-2">
                               <ImageUpload 
-                                onUploadComplete={(url) => setFormData({ ...formData, coverUrl: url })}
+                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, coverUrl: url }))}
                                 folder="book-covers"
                                 label="Book Cover Image"
                               />
@@ -539,11 +561,13 @@ export default function Admin() {
                         <div className="flex space-x-4 pt-4">
                            <button 
                              onClick={() => handleSaveItem('books', formData, isEditing === 'new-book' ? undefined : isEditing as string)}
-                             className="flex-grow py-4 bg-brand-secondary text-white rounded-full font-bold shadow-lg"
+                             disabled={isSaving}
+                             className={`flex-grow py-4 rounded-full font-bold shadow-lg flex items-center justify-center space-x-2 transition-all ${isSaving ? 'bg-brand-secondary/50 cursor-not-allowed' : 'bg-brand-secondary text-white hover:bg-brand-primary'}`}
                            >
-                             Save Book
+                             {isSaving ? <Loader2 className="animate-spin" size={18} /> : null}
+                             <span>{isSaving ? 'Saving Book...' : 'Save Book'}</span>
                            </button>
-                           <button onClick={() => setIsEditing(null)} className="px-8 py-4 border border-gray-200 rounded-full font-bold">Cancel</button>
+                           <button onClick={() => setIsEditing(null)} disabled={isSaving} className="px-8 py-4 border border-gray-200 rounded-full font-bold">Cancel</button>
                         </div>
                       </motion.div>
                     </motion.div>
@@ -653,7 +677,7 @@ export default function Admin() {
                               </div>
                               
                               <ImageUpload 
-                                onUploadComplete={(url) => setFormData({ ...formData, gallery: [...(formData.gallery || []), url] })}
+                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, gallery: [...(prev.gallery || []), url] }))}
                                 folder="event-gallery"
                                 label=""
                               />
@@ -679,11 +703,13 @@ export default function Admin() {
                         <div className="flex space-x-4 pt-4">
                            <button 
                              onClick={() => handleSaveItem('events', formData, isEditing === 'new-event' ? undefined : isEditing as string)}
-                             className="flex-grow py-4 bg-brand-secondary text-white rounded-full font-bold shadow-lg"
+                             disabled={isSaving}
+                             className={`flex-grow py-4 rounded-full font-bold shadow-lg flex items-center justify-center space-x-2 transition-all ${isSaving ? 'bg-brand-secondary/50 cursor-not-allowed' : 'bg-brand-secondary text-white hover:bg-brand-primary'}`}
                            >
-                             Save Event
+                              {isSaving ? <Loader2 className="animate-spin" size={18} /> : null}
+                             <span>{isSaving ? 'Saving Event...' : 'Save Event'}</span>
                            </button>
-                           <button onClick={() => setIsEditing(null)} className="px-8 py-4 border border-gray-200 rounded-full font-bold">Cancel</button>
+                           <button onClick={() => setIsEditing(null)} disabled={isSaving} className="px-8 py-4 border border-gray-200 rounded-full font-bold">Cancel</button>
                         </div>
                       </motion.div>
                     </motion.div>

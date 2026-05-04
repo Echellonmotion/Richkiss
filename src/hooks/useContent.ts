@@ -12,13 +12,29 @@ export function useContent() {
 
   useEffect(() => {
     setLoading(true);
+    let settingsLoaded = false;
+    let categoriesLoaded = false;
+    let booksLoaded = false;
+    let eventsLoaded = false;
+
+    const checkLoading = () => {
+      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded) {
+        setLoading(false);
+      }
+    };
     
     // Settings
     const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), 
       (doc) => {
         if (doc.exists()) setSettings(doc.data());
+        settingsLoaded = true;
+        checkLoading();
       },
-      (err) => console.error('Settings Snapshot Error:', err.message)
+      (err) => {
+        console.error('Settings Snapshot Error:', err.message);
+        settingsLoaded = true;
+        checkLoading();
+      }
     );
 
     // Categories
@@ -26,8 +42,14 @@ export function useContent() {
       (snapshot) => {
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         if (data.length > 0) setCategories(data);
+        categoriesLoaded = true;
+        checkLoading();
       },
-      (err) => console.error('Categories Snapshot Error:', err.message)
+      (err) => {
+        console.error('Categories Snapshot Error:', err.message);
+        categoriesLoaded = true;
+        checkLoading();
+      }
     );
 
     // Books
@@ -35,8 +57,14 @@ export function useContent() {
       (snapshot) => {
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         if (data.length > 0) setBooks(data);
+        booksLoaded = true;
+        checkLoading();
       },
-      (err) => console.error('Books Snapshot Error:', err.message)
+      (err) => {
+        console.error('Books Snapshot Error:', err.message);
+        booksLoaded = true;
+        checkLoading();
+      }
     );
 
     // Events
@@ -44,11 +72,15 @@ export function useContent() {
       (snapshot) => {
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         if (data.length > 0) setEvents(data);
+        eventsLoaded = true;
+        checkLoading();
       },
-      (err) => console.error('Events Snapshot Error:', err.message)
+      (err) => {
+        console.error('Events Snapshot Error:', err.message);
+        eventsLoaded = true;
+        checkLoading();
+      }
     );
-
-    setLoading(false);
 
     return () => {
       unsubSettings();
