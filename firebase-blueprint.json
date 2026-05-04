@@ -7,6 +7,7 @@
       "properties": {
         "logoUrl": { "type": "string", "description": "URL of the website logo" },
         "footerLogoUrl": { "type": "string", "description": "URL of the footer logo" },
+        "heroImageUrl": { "type": "string", "description": "URL of the homepage hero image" },
         "companyName": { "type": "string", "description": "Name of the company" },
         "tagline": { "type": "string", "description": "Website tagline" },
         "contactEmail": { "type": "string", "description": "General contact email" },

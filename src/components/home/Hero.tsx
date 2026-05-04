@@ -75,7 +75,7 @@ export default function Hero() {
           {/* Main Hero Image - More grounded border/shadow */}
           <div className="relative z-10 w-full max-w-md aspect-[3/4] rounded-sm overflow-hidden shadow-2xl border-[12px] border-white transform hover:rotate-1 transition-transform duration-700 group">
              <img 
-               src="https://images.unsplash.com/photo-1544640808-32ca72ac7f67?auto=format&fit=crop&q=80&w=1000" 
+               src={settings.heroImageUrl} 
                alt="Book reading" 
                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
              />

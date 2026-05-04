@@ -158,6 +158,7 @@ export default function Admin() {
         ...formData,
         companyName: formData.companyName || settings.companyName,
         logoUrl: formData.logoUrl || settings.logoUrl,
+        heroImageUrl: formData.heroImageUrl || settings.heroImageUrl || "",
         updatedAt: serverTimestamp()
       };
 
@@ -320,6 +321,24 @@ export default function Admin() {
                             </div>
                           )}
                         </div>
+
+                        <div className="pt-4 mt-4 border-t border-gray-100">
+                           <ImageUpload 
+                             onUploadComplete={(url) => setFormData(prev => ({ ...prev, heroImageUrl: url }))}
+                             folder="hero"
+                             label="Homepage Hero Image"
+                           />
+                           {formData.heroImageUrl && (
+                             <div className="flex items-center space-x-4 p-4 bg-brand-primary/10 rounded-2xl border border-brand-primary/20">
+                               <div className="w-32 h-20 bg-gray-200 rounded-xl overflow-hidden border border-gray-100 shadow-sm transition-all focus-within:ring-2 focus-within:ring-brand-primary">
+                                  <img src={formData.heroImageUrl} alt="Hero Preview" className="w-full h-full object-cover" />
+                               </div>
+                               <div className="flex-grow text-brand-primary">
+                                 <p className="text-[10px] font-bold uppercase tracking-widest">HERO IMAGE UPDATED</p>
+                               </div>
+                             </div>
+                           )}
+                        </div>
                      </div>
                     <div className="space-y-4">
                        <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Company Name</label>
@@ -376,6 +395,19 @@ export default function Admin() {
                                <img src={settings.footerLogoUrl} alt="Footer Logo" className="max-w-full max-h-full object-contain" />
                              ) : (
                                <img src={settings.logoUrl} alt="Logo Fallback" className="max-w-full max-h-full object-contain opacity-50 grayscale" />
+                             )}
+                          </div>
+                       </div>
+                       <div className="space-y-4 md:col-span-2">
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Active Hero Image</h4>
+                          <div className="w-full aspect-[21/9] bg-brand-beige rounded-[32px] overflow-hidden border border-gray-100">
+                             {settings.heroImageUrl ? (
+                               <img src={settings.heroImageUrl} alt="Hero" className="w-full h-full object-cover" />
+                             ) : (
+                               <div className="w-full h-full flex flex-col items-center justify-center text-brand-muted opacity-50 space-y-2">
+                                  <ImageIcon size={48} />
+                                  <p className="text-xs uppercase tracking-widest font-bold">No custom hero image set</p>
+                               </div>
                              )}
                           </div>
                        </div>

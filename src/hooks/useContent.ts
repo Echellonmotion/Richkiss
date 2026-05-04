@@ -98,16 +98,18 @@ export function useContent() {
   }, []);
 
   // Merge with static defaults if dynamic data is missing
-  const mergedSettings = settings || {
-    companyName: COMPANY_INFO.name,
-    logoUrl: "", // No placeholder image
-    tagline: "Inspiring Excellence in Publishing",
-    phoneNumbers: COMPANY_INFO.phone,
-    contactEmail: COMPANY_INFO.email,
-    aboutText: COMPANY_INFO.aboutUs,
-    vision: COMPANY_INFO.vision,
-    mission: COMPANY_INFO.mission,
-    commitment: COMPANY_INFO.commitment
+  const mergedSettings = {
+    companyName: settings?.companyName || COMPANY_INFO.name,
+    logoUrl: settings?.logoUrl || "", 
+    footerLogoUrl: settings?.footerLogoUrl || "",
+    heroImageUrl: settings?.heroImageUrl || "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000",
+    tagline: settings?.tagline || "Inspiring Excellence in Publishing",
+    phoneNumbers: settings?.phoneNumbers || COMPANY_INFO.phone,
+    contactEmail: settings?.contactEmail || COMPANY_INFO.email,
+    aboutText: settings?.aboutText || COMPANY_INFO.aboutUs,
+    vision: settings?.vision || COMPANY_INFO.vision,
+    mission: settings?.mission || COMPANY_INFO.mission,
+    commitment: settings?.commitment || COMPANY_INFO.commitment
   };
 
   const mergedCategories = categories.length > 0 ? categories : BOOK_CATEGORIES;
