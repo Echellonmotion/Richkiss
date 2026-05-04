@@ -29,8 +29,8 @@ export default function ImageUpload({ onUploadComplete, label = 'Upload Image' }
       return;
     }
 
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dkrcip9tv';
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'Richkiss';
 
     if (!cloudName || !uploadPreset) {
       setError('CONFIG_MISSING');
