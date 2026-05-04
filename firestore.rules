@@ -33,35 +33,41 @@ service cloud.firestore {
 
     // Entity Validations
     function isValidSiteSettings(data) {
-      return data.companyName is string && data.companyName.size() <= 100 &&
-             data.logoUrl is string && data.logoUrl.size() <= 1000 &&
+      return (data.get('companyName', '') is string) && data.get('companyName', '').size() <= 100 &&
+             (data.get('logoUrl', '') is string) && data.get('logoUrl', '').size() <= 1000 &&
              (data.get('footerLogoUrl', '') is string) &&
              (data.get('tagline', '') is string) &&
              (data.get('aboutText', '') is string) &&
              (data.get('vision', '') is string) &&
              (data.get('mission', '') is string) &&
-             (data.get('commitment', '') is string);
+             (data.get('commitment', '') is string) &&
+             (data.get('updatedAt', request.time) is timestamp);
     }
 
     function isValidCategory(data) {
-      return data.name is string && data.name.size() <= 100 &&
-             data.slug is string && data.slug.size() <= 100 &&
-             (data.get('description', '') is string);
+      return (data.get('name', '') is string) && data.get('name', '').size() <= 100 &&
+             (data.get('slug', '') is string) && data.get('slug', '').size() <= 100 &&
+             (data.get('description', '') is string) &&
+             (data.get('createdAt', request.time) is timestamp || data.get('updatedAt', request.time) is timestamp);
     }
 
     function isValidBook(data) {
-      return data.title is string && data.title.size() <= 200 &&
-             data.author is string && data.author.size() <= 100 &&
-             data.coverUrl is string && data.coverUrl.size() <= 1000 &&
-             data.categorySlug is string && data.categorySlug.size() <= 100;
+      return (data.get('title', '') is string) && data.get('title', '').size() <= 200 &&
+             (data.get('author', '') is string) && data.get('author', '').size() <= 100 &&
+             (data.get('coverUrl', '') is string) && data.get('coverUrl', '').size() <= 1000 &&
+             (data.get('categorySlug', '') is string) && data.get('categorySlug', '').size() <= 100 &&
+             (data.get('price', '') is string) &&
+             (data.get('featured', false) is bool) &&
+             (data.get('createdAt', request.time) is timestamp || data.get('updatedAt', request.time) is timestamp);
     }
 
     function isValidEvent(data) {
-      return data.name is string && data.name.size() <= 200 &&
-             data.location is string && data.location.size() <= 200 &&
+      return (data.get('name', '') is string) && data.get('name', '').size() <= 200 &&
+             (data.get('location', '') is string) && data.get('location', '').size() <= 200 &&
              (data.get('year', '') is string) &&
              (data.get('description', '') is string) &&
-             (data.get('gallery', []) is list);
+             (data.get('gallery', []) is list) &&
+             (data.get('createdAt', request.time) is timestamp || data.get('updatedAt', request.time) is timestamp);
     }
 
     // Match Blocks
