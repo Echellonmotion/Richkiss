@@ -91,8 +91,8 @@ export default function Home() {
             Participating in major international book fairs from Ghana to Cairo, Sharjah to Chennai. Connecting readers and publishers worldwide.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-8">
-            {events.slice(0, 3).map((event: any) => (
-              <div key={event.name} className="px-6 py-3 bg-brand-beige rounded-full text-xs font-bold uppercase tracking-wider text-brand-secondary border border-gray-100">
+            {events.slice(0, 3).map((event: any, idx: number) => (
+              <div key={event.id || event.name || idx} className="px-6 py-3 bg-brand-beige rounded-full text-xs font-bold uppercase tracking-wider text-brand-secondary border border-gray-100">
                 {event.name} ({event.year})
               </div>
             ))}

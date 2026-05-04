@@ -1,17 +1,21 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { COMPANY_INFO } from '../constants/content';
-import { Calendar, MapPin, X, ArrowRight, Camera, ArrowLeft } from 'lucide-react';;
+import { Calendar, MapPin, X, ArrowRight, Camera, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useContent } from '../hooks/useContent';
 
 export default function Events() {
+  const { events, loading } = useContent();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const eventsPerPage = 3;
+  const eventsPerPage = 6;
 
-  const totalPages = Math.ceil(COMPANY_INFO.events.length / eventsPerPage);
+  if (loading) return <div className="min-h-screen flex items-center justify-center font-serif">Loading Events...</div>;
+
+  const totalPages = Math.ceil(events.length / eventsPerPage);
   const indexOfLastEvent = currentPage * eventsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-  const currentEvents = COMPANY_INFO.events.slice(indexOfFirstEvent, indexOfLastEvent);
+  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -38,7 +42,7 @@ export default function Events() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {currentEvents.map((event, idx) => (
             <motion.div 
-              key={event.name}
+              key={event.id || event.name || idx}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -49,21 +53,20 @@ export default function Events() {
               {/* Image Grid (Up to 3) */}
               <div className="h-64 relative bg-gray-200 overflow-hidden">
                 <div className={`grid h-full ${event.gallery && event.gallery.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-                  {event.gallery && event.gallery.slice(0, 2).map((img: string, i: number) => (
+                  {event.gallery && event.gallery.length > 0 ? event.gallery.slice(0, 2).map((img: string, i: number) => (
                     <div key={i} className="relative h-full overflow-hidden">
                       <img 
                         src={img} 
                         alt={`${event.name} ${i}`} 
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
-                      {i === 1 && event.gallery && event.gallery.length > 2 && (
+                      {i === 1 && event.gallery.length > 2 && (
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white">
                           <span className="text-xl font-bold">+{event.gallery.length - 2}</span>
                         </div>
                       )}
                     </div>
-                  ))}
-                  {(!event.gallery || event.gallery.length === 0) && (
+                  )) : (
                     <div className="w-full h-full flex items-center justify-center text-brand-muted">
                       <Camera size={48} className="opacity-20" />
                     </div>
