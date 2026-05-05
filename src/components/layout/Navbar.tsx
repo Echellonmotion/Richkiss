@@ -3,13 +3,11 @@ import { Link, NavLink } from 'react-router-dom';
 import { ChevronDown, Menu, X, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useContent } from '../../hooks/useContent';
-import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const { settings } = useContent();
-  const { isAuthenticated } = useAuth();
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -21,31 +19,31 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
+    <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-32">
+        <div className="flex justify-between items-center h-24 lg:h-32">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             {settings.logoUrl ? (
               <img 
                 src={settings.logoUrl} 
                 alt={settings.companyName || "Logo"} 
-                className="h-24 w-auto object-contain group-hover:scale-105 transition-transform duration-200" 
+                className="h-16 lg:h-24 w-auto object-contain transition-transform duration-200" 
               />
             ) : (
-              <>
-                <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200 overflow-hidden">
-                  <BookOpen size={24} />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-serif text-xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
-                    {settings.companyName?.split(' ')[0] || 'RICHKISS'}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-brand-muted font-sans font-semibold">
-                    {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
-                  </span>
-                </div>
-              </>
+              <div className="flex items-center space-x-2">
+                 <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white font-bold">
+                    <BookOpen size={24} />
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="font-serif text-xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
+                      {settings.companyName?.split(' ')[0] || 'RICHKISS'}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-brand-muted font-sans font-semibold">
+                      {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
+                    </span>
+                 </div>
+              </div>
             )}
           </Link>
 
@@ -95,7 +93,7 @@ export default function Navbar() {
               <NavLink 
                 key={link.path} 
                 to={link.path} 
-                className={({ isActive }) => `text-sm font-medium transition-colors hover:text-brand-primary ${isActive ? 'text-brand-primary underline underline-offset-8' : 'text-gray-600'}`}
+                className={({ isActive }) => `text-sm font-medium transition-colors hover:text-brand-primary ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}
               >
                 {link.name}
               </NavLink>
@@ -103,11 +101,8 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center">
-            <button 
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-gray-600 hover:text-brand-primary transition-colors"
-            >
+          <div className="lg:hidden">
+            <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-600">
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
@@ -123,7 +118,7 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
-            <div className="px-4 pt-2 pb-6 space-y-1">
+            <div className="px-4 py-6 space-y-2">
               <NavLink to="/" onClick={() => setIsOpen(false)} className="block px-3 py-4 text-base font-medium text-gray-700 border-b border-gray-50">Home</NavLink>
               
               <div className="py-2 border-b border-gray-50">

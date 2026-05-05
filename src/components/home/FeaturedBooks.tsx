@@ -14,7 +14,7 @@ export default function FeaturedBooks() {
           <div className="space-y-4 max-w-2xl">
             <span className="text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.3em]">Curated Collection</span>
             <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary leading-tight">
-              Discover Our <span className="italic">Latest Releases</span>
+              Discover Our <span>Latest Releases</span>
             </h2>
             <p className="text-brand-muted font-sans leading-relaxed">
               Explore our hand-picked selection of top-selling books across our various labels. From enchanting children's tales to comprehensive educational resources.

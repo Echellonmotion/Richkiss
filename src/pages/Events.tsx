@@ -1,138 +1,225 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { COMPANY_INFO } from '../constants/content';
-import { Calendar, MapPin, X, ArrowRight, Camera, ArrowLeft } from 'lucide-react';
-import { useState } from 'react';
+import { Calendar, MapPin, X } from 'lucide-react';
+import { useState, useMemo } from 'react';
 import { useContent } from '../hooks/useContent';
+import { Link } from 'react-router-dom';
 
 export default function Events() {
   const { events, loading } = useContent();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const eventsPerPage = 6;
+  const [activeFilter, setActiveFilter] = useState('ALL EVENTS');
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center font-serif">Loading Events...</div>;
+  const filters = ['ALL EVENTS', 'SIGNINGS', 'WORKSHOPS', 'CLUBS'];
 
-  const totalPages = Math.ceil(events.length / eventsPerPage);
-  const indexOfLastEvent = currentPage * eventsPerPage;
-  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
+  const filteredEvents = useMemo(() => {
+    if (activeFilter === 'ALL EVENTS') return events;
+    // Map existing event types or just use for layout demonstration
+    return events; 
+  }, [events, activeFilter]);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    window.scrollTo({ top: 400, behavior: 'smooth' });
-  };
+  if (loading) return <div className="min-h-screen flex items-center justify-center font-serif text-2xl">Loading Events...</div>;
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Header */}
-      <section className="bg-brand-secondary py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <span className="text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.3em]">Our Global Footprint</span>
-          <h1 className="text-5xl md:text-7xl font-serif text-white leading-tight">
-            Events & <span className="italic text-brand-primary">Fairs</span>
-          </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto font-sans">
-            Richkiss Publishers actively participates in major international book fairs and conferences across the globe to bring African storytelling to the world.
-          </p>
+    <div className="bg-white min-h-screen pt-32">
+      {/* 1. Featured Event Hero */}
+      <section className="pb-32 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="space-y-10"
+            >
+              <span className="inline-block px-3 py-1 bg-[#fff0ed] text-[#ff5722] text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm">
+                Featured Event
+              </span>
+              <div className="space-y-6">
+                <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-tight">
+                  An Evening with <br /> Elena Vance
+                </h1>
+                <p className="text-lg text-gray-500 font-sans leading-relaxed max-w-lg">
+                  Join us for an exclusive reading and discussion of her latest masterpiece, 
+                  "The Silent Echo," followed by an intimate Q&A session and book signing.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-8">
+                <div className="flex items-center space-x-3 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-widest">
+                  <Calendar size={18} className="text-gray-400" />
+                  <span>October 24, 2024</span>
+                </div>
+                <div className="flex items-center space-x-3 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-widest">
+                  <MapPin size={18} className="text-gray-400" />
+                  <span>Main Atrium</span>
+                </div>
+              </div>
+
+              <button className="px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20">
+                Register Now
+              </button>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="relative"
+            >
+              <div 
+                className="grid grid-cols-2 gap-4 opacity-40 grayscale group cursor-pointer" 
+                onClick={() => setSelectedEvent(events[0])}
+              >
+                 <div className="space-y-4">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=600" className="w-full aspect-[3/4] object-cover rounded-sm" alt="Faded event 1" />
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=600" className="w-full aspect-square object-cover rounded-sm" alt="Faded event 2" />
+                 </div>
+                 <div className="space-y-4 pt-12">
+                    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=600" className="w-full aspect-square object-cover rounded-sm" alt="Faded event 3" />
+                    <img src="https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80&w=600" className="w-full aspect-[3/4] object-cover rounded-sm" alt="Faded event 4" />
+                 </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-l from-white via-transparent to-transparent pointer-events-none" />
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Events Timeline/Grid */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {currentEvents.map((event, idx) => (
-            <motion.div 
-              key={event.id || event.name || idx}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              onClick={() => setSelectedEvent(event)}
-              className="group bg-brand-beige rounded-3xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col"
-            >
-              {/* Image Grid (Up to 3) */}
-              <div className="h-64 relative bg-gray-200 overflow-hidden">
-                <div className={`grid h-full ${event.gallery && event.gallery.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-                  {event.gallery && event.gallery.length > 0 ? event.gallery.slice(0, 2).map((img: string, i: number) => (
-                    <div key={i} className="relative h-full overflow-hidden">
-                      <img 
-                        src={img} 
-                        alt={`${event.name} ${i}`} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      {i === 1 && event.gallery.length > 2 && (
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white">
-                          <span className="text-xl font-bold">+{event.gallery.length - 2}</span>
-                        </div>
-                      )}
-                    </div>
-                  )) : (
-                    <div className="w-full h-full flex items-center justify-center text-brand-muted">
-                      <Camera size={48} className="opacity-20" />
-                    </div>
-                  )}
-                </div>
-                {/* Year Badge */}
-                <div className="absolute top-4 right-4 px-4 py-1.5 bg-brand-primary text-white text-[10px] font-bold uppercase tracking-widest rounded-full shadow-lg">
-                  {event.year || (event.years ? event.years.join(' & ') : 'Annual')}
-                </div>
-              </div>
+      {/* 2. Upcoming Gatherings */}
+      <section className="py-32 bg-[#fdfdfd]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Upcoming Gatherings</h2>
+              <p className="text-gray-500 font-sans tracking-wide">Curated literary experiences for the discerning reader.</p>
+            </div>
+            <div className="flex flex-wrap gap-8 border-b border-gray-100 pb-2">
+              {filters.map(filter => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors pb-2 -mb-[10px] border-b-2 ${
+                    activeFilter === filter ? 'border-brand-primary text-brand-secondary' : 'border-transparent text-gray-400 hover:text-brand-secondary'
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </div>
 
-              {/* Details Beneath */}
-              <div className="p-8 space-y-4 flex-grow flex flex-col">
-                <div className="space-y-2">
-                  <h3 className="text-2xl font-serif font-bold text-brand-secondary group-hover:text-brand-primary transition-colors leading-tight">
-                    {event.name}
-                  </h3>
-                  <div className="flex items-center space-x-2 text-brand-muted font-sans font-medium text-sm">
-                    <MapPin size={16} className="text-brand-primary" />
-                    <span>{event.location}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-20">
+            {filteredEvents.slice(0, 3).map((event, i) => (
+              <motion.div 
+                key={event.id || i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group"
+              >
+                <div 
+                  className="relative aspect-[4/3] mb-8 overflow-hidden rounded-sm cursor-pointer"
+                  onClick={() => setSelectedEvent(event)}
+                >
+                  <img 
+                    src={event.gallery?.[0] || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=800'} 
+                    alt={event.name} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-[8px] font-bold uppercase tracking-widest text-brand-secondary rounded-sm">
+                    {event.year || 'NOV 05'}
                   </div>
                 </div>
                 
-                <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">
-                  {event.description || `Showcasing sessions and networking at ${event.name}.`}
-                </p>
-
-                <div className="mt-auto pt-6 flex items-center justify-between border-t border-gray-100 italic font-serif text-brand-primary text-sm">
-                  <span>View full gallery</span>
-                  <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-primary">
+                      {event.type || 'Workshop'}
+                    </span>
+                    <h3 className="text-2xl font-serif text-brand-secondary leading-tight min-h-[4rem]">
+                      {event.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 font-sans leading-relaxed line-clamp-2">
+                      {event.description || 'A deep dive into literary excellence and creative expression.'}
+                    </p>
+                  </div>
+                  <button 
+                    onClick={() => setSelectedEvent(event)}
+                    className="w-full py-4 border border-gray-200 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:border-brand-primary hover:bg-brand-primary hover:text-white transition-all"
+                  >
+                    Register
+                  </button>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Tradition & Quote Section */}
+      <section className="grid grid-cols-1 lg:grid-cols-2">
+        {/* Tradition Block */}
+        <div className="bg-[#b9f0f0] p-16 lg:p-32 space-y-12">
+          <div className="space-y-8">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-secondary/60">Weekly Tradition</span>
+            <h2 className="text-5xl lg:text-6xl font-serif text-brand-secondary leading-tight">Poetry Under <br /> The Skylight</h2>
+            <p className="text-brand-secondary/70 font-sans leading-relaxed text-lg max-w-md">
+              Every Friday evening, we open our doors for local poets and enthusiasts to share 
+              their latest works under the stars of our glass atrium.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-12 pt-8">
+            <div className="space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40">When</span>
+              <p className="text-sm font-bold text-brand-secondary">Fridays, 7:00 PM</p>
+            </div>
+            <div className="space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40">Price</span>
+              <p className="text-sm font-bold text-brand-secondary">Free Entry</p>
+            </div>
+          </div>
         </div>
 
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="mt-16 flex items-center justify-center space-x-2">
-            <button 
-              onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-              disabled={currentPage === 1}
-              className={`w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center transition-all ${currentPage === 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-brand-primary hover:text-white hover:border-brand-primary text-brand-secondary'}`}
-            >
-              <ArrowLeft size={18} />
-            </button>
-            
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-              <button
-                key={pageNum}
-                onClick={() => handlePageChange(pageNum)}
-                className={`w-12 h-12 rounded-full font-sans font-bold text-sm transition-all ${currentPage === pageNum ? 'bg-brand-primary text-white' : 'text-brand-muted hover:text-brand-primary hover:bg-brand-beige'}`}
-              >
-                {pageNum}
-              </button>
-            ))}
-
-            <button 
-              onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-              disabled={currentPage === totalPages}
-              className={`w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center transition-all ${currentPage === totalPages ? 'opacity-30 cursor-not-allowed' : 'hover:bg-brand-primary hover:text-white hover:border-brand-primary text-brand-secondary'}`}
-            >
-              <ArrowRight size={18} />
-            </button>
+        {/* Quote Block */}
+        <div className="relative aspect-square lg:aspect-auto group overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=1200" 
+            alt="Quote BG" 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[4s]"
+          />
+          <div className="absolute inset-0 bg-brand-secondary/40 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 flex items-center justify-center p-12 text-center">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white italic leading-tight tracking-tight max-w-lg">
+              "Words are, of course, the most powerful drug used by mankind."
+            </h2>
           </div>
-        )}
+        </div>
+      </section>
+
+      {/* 4. Newsletter Section */}
+      <section className="py-40 bg-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="bg-[#fef9f8] p-16 lg:p-24 rounded-sm text-center space-y-12 border border-[#fff0ed]">
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Never Miss a Chapter</h2>
+              <p className="text-gray-500 font-sans max-w-xl mx-auto leading-relaxed">
+                Join our literary circle to receive early access to event tickets, 
+                exclusive author interviews, and monthly curation lists.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row max-w-xl mx-auto gap-0 bg-white border border-gray-100 shadow-sm">
+              <input 
+                type="email" 
+                placeholder="Your email address" 
+                className="flex-grow px-8 py-5 text-sm outline-none bg-transparent"
+              />
+              <button className="px-12 py-5 bg-[#c0392b] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] hover:bg-brand-secondary transition-colors">
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Preview Modal */}
@@ -151,7 +238,7 @@ export default function Events() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative bg-white w-full max-w-5xl max-h-full rounded-[40px] shadow-3xl overflow-hidden flex flex-col lg:flex-row"
+              className="relative bg-white w-full max-w-5xl max-h-full rounded-sm shadow-3xl overflow-hidden flex flex-col lg:flex-row"
             >
               <button 
                 onClick={() => setSelectedEvent(null)}
@@ -162,17 +249,27 @@ export default function Events() {
 
               {/* Gallery Side */}
               <div className="w-full lg:w-1/2 bg-gray-100 h-[300px] lg:h-auto overflow-y-auto p-8 space-y-4">
-                {selectedEvent.gallery?.map((img: string, i: number) => (
-                  <motion.img 
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    src={img} 
-                    alt={`${selectedEvent.name} gallery ${i}`}
-                    className="w-full rounded-2xl shadow-md"
-                  />
-                ))}
+                {selectedEvent.gallery?.length > 0 ? (
+                  selectedEvent.gallery?.map((img: string, i: number) => (
+                    <motion.img 
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      src={img} 
+                      alt={`${selectedEvent.name} gallery ${i}`}
+                      className="w-full rounded-sm shadow-md"
+                    />
+                  ))
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <img 
+                      src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=800" 
+                      className="w-full rounded-sm shadow-md" 
+                      alt="Placeholder event image"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Content Side */}
@@ -180,14 +277,14 @@ export default function Events() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3 text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.2em]">
                     <Calendar size={14} />
-                    <span>{selectedEvent.year || (selectedEvent.years ? selectedEvent.years.join(' & ') : 'Annual Event')}</span>
+                    <span>{selectedEvent.year || 'Annual Event'}</span>
                   </div>
                   <h2 className="text-4xl lg:text-5xl font-serif text-brand-secondary leading-tight">
                     {selectedEvent.name}
                   </h2>
                 </div>
 
-                <div className="flex items-center space-x-3 p-4 bg-brand-beige border border-brand-primary/10 rounded-2xl">
+                <div className="flex items-center space-x-3 p-6 bg-brand-beige rounded-sm">
                   <MapPin className="text-brand-primary" size={24} />
                   <div>
                     <p className="text-[10px] uppercase font-bold tracking-widest text-brand-muted">Location</p>
@@ -205,9 +302,9 @@ export default function Events() {
                 <div className="pt-8">
                   <button 
                     onClick={() => setSelectedEvent(null)}
-                    className="w-full py-4 bg-brand-secondary text-white font-sans font-bold text-sm uppercase tracking-widest rounded-full hover:bg-brand-primary transition-all shadow-xl"
+                    className="w-full py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20"
                   >
-                    Close Preview
+                    Register Now
                   </button>
                 </div>
               </div>
@@ -216,32 +313,6 @@ export default function Events() {
         )}
       </AnimatePresence>
 
-      {/* Featured Event Promo */}
-      <section className="bg-brand-beige py-24 overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-           <div className="order-2 lg:order-1 space-y-8">
-              <span className="text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.3em]">Coming Up Next</span>
-              <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Chennai International Book Fair <span className="italic text-brand-primary">2026</span></h2>
-              <p className="text-gray-600 font-sans leading-relaxed text-lg">
-                We are thrilled to represent Ghana at the Chennai International Book Fair in India. Join us as we showcase our diverse range of children's literature and educational resources to a global audience.
-              </p>
-              <button className="px-10 py-5 bg-brand-secondary text-white font-sans font-bold text-sm uppercase tracking-widest rounded-full hover:bg-brand-primary transition-all shadow-xl hover:shadow-2xl">
-                Get more details
-              </button>
-           </div>
-           <div className="order-1 lg:order-2">
-              <div className="relative group">
-                <img 
-                  src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Book Fair" 
-                  className="rounded-3xl shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-700" 
-                />
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-primary/20 rounded-full blur-3xl" />
-                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-brand-primary/20 rounded-full blur-3xl" />
-              </div>
-           </div>
-        </div>
-      </section>
     </div>
   );
 }

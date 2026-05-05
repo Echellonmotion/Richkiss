@@ -1,140 +1,163 @@
 import { motion } from 'motion/react';
-import { Mail, Phone, MapPin, Send, Facebook, Twitter, Instagram } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { COMPANY_INFO } from '../constants/content';
 
 export default function Contact() {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      {/* Header */}
-      <section className="bg-brand-beige py-24 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <span className="text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.3em]">Contact Us</span>
-          <h1 className="text-5xl md:text-7xl font-serif text-brand-secondary leading-tight">
-            Let's <span className="italic text-brand-primary">Connect</span>
-          </h1>
-          <p className="text-brand-muted max-w-2xl mx-auto font-sans text-lg">
-            Whether you're an author, a school administrator, or a fellow book lover, we'd love to hear from you.
-          </p>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-          {/* Contact Info */}
-          <div className="space-y-12">
-            <div className="space-y-8">
-              <h2 className="text-4xl font-serif text-brand-secondary">Get in touch <span className="italic">directly</span></h2>
-              <p className="text-gray-600 font-sans leading-relaxed">
-                Visit our head office in Accra or reach out via phone or email. Our team is available Monday to Friday, 8am to 5pm.
-              </p>
-            </div>
-
-            <div className="space-y-8">
-              <div className="flex items-start space-x-6 group">
-                <div className="w-14 h-14 bg-brand-beige rounded-2xl flex items-center justify-center text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-colors flex-shrink-0">
-                  <MapPin size={24} />
-                </div>
-                <div className="space-y-1">
-                  <h4 className="font-serif font-bold text-xl">Head Office</h4>
-                  <p className="text-brand-muted font-sans text-sm">{COMPANY_INFO.headOffice}</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-6 group">
-                <div className="w-14 h-14 bg-brand-beige rounded-2xl flex items-center justify-center text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-colors flex-shrink-0">
-                  <Phone size={24} />
-                </div>
-                <div className="space-y-1">
-                  <h4 className="font-serif font-bold text-xl">Phone</h4>
-                  <p className="text-brand-muted font-sans text-sm">{COMPANY_INFO.phone.join(' / ')}</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-6 group">
-                <div className="w-14 h-14 bg-brand-beige rounded-2xl flex items-center justify-center text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-colors flex-shrink-0">
-                  <Mail size={24} />
-                </div>
-                <div className="space-y-1">
-                  <h4 className="font-serif font-bold text-xl">Email</h4>
-                  <p className="text-brand-muted font-sans text-sm">{COMPANY_INFO.email}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-8 space-y-4">
-              <p className="font-sans font-bold text-xs uppercase tracking-widest text-brand-muted">Follow Us</p>
-              <div className="flex space-x-4">
-                {[Facebook, Twitter, Instagram].map((Icon, i) => (
-                  <a key={i} href="#" className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-brand-secondary hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all">
-                    <Icon size={20} />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
+    <div className="flex flex-col min-h-screen bg-white pt-32">
+      {/* 1. Header Section */}
+      <section className="pb-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-brand-beige p-12 rounded-3xl shadow-sm border border-gray-100"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl"
           >
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">First Name</label>
-                  <input type="text" className="w-full px-6 py-4 bg-white rounded-xl border border-transparent focus:border-brand-primary outline-none font-sans text-sm transition-all shadow-sm" placeholder="John" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Last Name</label>
-                  <input type="text" className="w-full px-6 py-4 bg-white rounded-xl border border-transparent focus:border-brand-primary outline-none font-sans text-sm transition-all shadow-sm" placeholder="Doe" />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Email Address</label>
-                <input type="email" className="w-full px-6 py-4 bg-white rounded-xl border border-transparent focus:border-brand-primary outline-none font-sans text-sm transition-all shadow-sm" placeholder="john@example.com" />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Subject</label>
-                <select className="w-full px-6 py-4 bg-white rounded-xl border border-transparent focus:border-brand-primary outline-none font-sans text-sm transition-all shadow-sm">
-                  <option>General Inquiry</option>
-                  <option>Book Supply</option>
-                  <option>Submission Inquiry</option>
-                  <option>Partnership</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Message</label>
-                <textarea rows={5} className="w-full px-6 py-4 bg-white rounded-xl border border-transparent focus:border-brand-primary outline-none font-sans text-sm transition-all shadow-sm resize-none" placeholder="Tell us more about how we can help you..."></textarea>
-              </div>
-
-              <button type="submit" className="w-full py-5 bg-brand-primary text-white font-sans font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-brand-secondary transition-all shadow-xl shadow-brand-primary/20 flex items-center justify-center space-x-3">
-                <span>Send Message</span>
-                <Send size={18} />
-              </button>
-            </form>
+            <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-tight mb-8">
+              Get in Touch
+            </h1>
+            <p className="text-lg text-gray-500 font-sans leading-relaxed">
+              We believe in the beauty of conversations. Whether you're looking for a rare 
+              first edition or want to host a literary event, we're here to help.
+            </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Map Integration */}
-      <section className="h-[500px] bg-gray-100 grayscale hover:grayscale-0 transition-all duration-1000 border-t border-gray-100">
-         <iframe 
-           title="Richkiss Publishers Head Office"
-           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15881.332349320078!2d-0.2452!3d5.6417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9966b4ca2db1%3A0x88c4f0689b96eb9d!2sDome%2C%20Accra%2C%20Ghana!5e0!3m2!1sen!2sgh!4v1714512000000!5m2!1sen!2sgh" 
-           width="100%" 
-           height="100%" 
-           style={{ border: 0 }} 
-           allowFullScreen 
-           loading="lazy" 
-           referrerPolicy="no-referrer-when-downgrade"
-           className="w-full h-full opacity-80 hover:opacity-100 transition-opacity duration-500"
-         />
+      {/* 2. Main Content Grid */}
+      <section className="pb-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+            
+            {/* Left: Form Column */}
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="lg:col-span-7 bg-white p-12 lg:p-20 shadow-[0_40px_80px_rgba(0,0,0,0.05)] rounded-sm border border-gray-50"
+            >
+              <h2 className="text-3xl font-serif text-brand-secondary mb-12 italic">Send a Message</h2>
+              <form className="space-y-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="Your full name"
+                      className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
+                    />
+                  </div>
+                  <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Email Address</label>
+                    <input 
+                      type="email" 
+                      placeholder="hello@example.com"
+                      className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Subject</label>
+                  <input 
+                    type="text" 
+                    placeholder="What can we help you with?"
+                    className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
+                  />
+                </div>
+
+                <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Message</label>
+                  <textarea 
+                    rows={4}
+                    placeholder="Type your message here..."
+                    className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300 resize-none"
+                  />
+                </div>
+
+                <div className="pt-8">
+                  <button className="px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20">
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+
+            {/* Right: Info & Image Column */}
+            <div className="lg:col-span-5 space-y-20">
+              {/* Contact Details */}
+              <div className="space-y-12">
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff5722]">The Flagship Store</h4>
+                  <p className="text-2xl font-serif text-brand-secondary leading-relaxed">
+                    {COMPANY_INFO.headOffice.split(',').map((part, i) => (
+                      <span key={i} className="block">{part.trim()}</span>
+                    ))}
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff5722]">Contact Details</h4>
+                  <div className="space-y-2 text-brand-secondary font-sans font-bold text-lg">
+                    <p>{COMPANY_INFO.phone[0]}</p>
+                    <p className="underline underline-offset-8 decoration-gray-200 hover:decoration-brand-primary transition-colors cursor-pointer text-base font-normal">
+                      {COMPANY_INFO.email}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff5722]">Opening Hours</h4>
+                  <div className="space-y-3 font-sans text-sm text-gray-600">
+                    <div className="flex justify-between items-center max-w-[280px]">
+                      <span>Mon – Fri</span>
+                      <span className="font-bold text-brand-secondary">9:00 – 19:00</span>
+                    </div>
+                    <div className="flex justify-between items-center max-w-[280px]">
+                      <span>Saturday</span>
+                      <span className="font-bold text-brand-secondary">10:00 – 18:00</span>
+                    </div>
+                    <div className="flex justify-between items-center max-w-[280px]">
+                      <span>Sunday</span>
+                      <span className="font-bold text-brand-secondary">11:00 – 17:00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Side Image */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="aspect-[4/6] bg-gray-50 rounded-sm overflow-hidden"
+              >
+                <img 
+                  src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1200" 
+                  alt="Store Atmosphere"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[3s]"
+                />
+              </motion.div>
+            </div>
+
+          </div>
+        </div>
       </section>
+
+      {/* 3. Map Section */}
+      <section className="h-[600px] w-full grayscale border-y border-gray-100 opacity-60 hover:opacity-100 transition-all duration-1000">
+        <iframe 
+          title="Richkiss Shop Location"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.5284714101915!2d-0.2073!3d5.6174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9a170889c17!2sRichKiss%20Publications!5e0!3m2!1sen!2sgh!4v1714512000000!5m2!1sen!2sgh" 
+          width="100%" 
+          height="100%" 
+          style={{ border: 0 }} 
+          allowFullScreen 
+          loading="lazy" 
+          referrerPolicy="no-referrer-when-downgrade"
+          className="w-full h-full"
+        />
+      </section>
+
     </div>
   );
 }

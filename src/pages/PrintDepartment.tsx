@@ -77,7 +77,7 @@ export default function PrintDepartment() {
               <div className="space-y-4">
                 <span className="text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.4em]">Established Jan 2010</span>
                 <h1 className="text-5xl lg:text-7xl font-serif leading-tight">
-                  Premium Printing <span className="italic text-brand-primary">& Branding</span>
+                  Premium Printing <span className="text-brand-primary">& Branding</span>
                 </h1>
               </div>
               <p className="text-gray-400 text-lg font-sans leading-relaxed max-w-xl">
@@ -184,7 +184,7 @@ export default function PrintDepartment() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-4 flex flex-col space-y-6">
-              <h2 className="text-4xl font-serif">Trust From Our <span className="italic text-brand-primary">Partners</span></h2>
+              <h2 className="text-4xl font-serif">Trust From Our <span className="text-brand-primary">Partners</span></h2>
               <p className="text-gray-400 font-sans text-sm leading-relaxed">
                 We painstakingly build strong relationships with our clients, getting to know their needs and preferences to achieve expected outcomes.
               </p>
@@ -192,7 +192,7 @@ export default function PrintDepartment() {
             <div className="lg:col-span-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-[40px] p-10 lg:p-16 relative">
               <Quote className="absolute top-10 right-10 text-brand-primary opacity-20" size={80} />
               <div className="space-y-8">
-                <p className="text-xl lg:text-2xl font-serif leading-relaxed italic text-gray-200">
+                <p className="text-xl lg:text-2xl font-serif leading-relaxed text-gray-200">
                   "The team at Richkiss demonstrated an excellent level of proficiency. Their professionalism, innovation, creativity, and attention to detail truly set them apart in the industry. We unreservedly recommend Richkiss for any printing and signage needs."
                 </p>
                 <div className="flex items-center space-x-4">
@@ -216,7 +216,7 @@ export default function PrintDepartment() {
         <div className="max-w-5xl mx-auto px-4">
           <div className="bg-brand-beige rounded-[60px] p-12 lg:p-20 text-center space-y-12 border border-brand-primary/5">
             <div className="space-y-4">
-              <h2 className="text-4xl lg:text-5xl font-serif text-brand-secondary">Let's Bring Your <span className="italic text-brand-primary">Ideas</span> To Life</h2>
+              <h2 className="text-4xl lg:text-5xl font-serif text-brand-secondary">Let's Bring Your <span className="text-brand-primary">Ideas</span> To Life</h2>
               <p className="text-brand-muted font-sans font-medium tracking-wide">AVAILABLE FOR PROJECTS OF ALL SCALES</p>
             </div>
             

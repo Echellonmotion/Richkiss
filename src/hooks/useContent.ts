@@ -28,11 +28,17 @@ export function useContent() {
     
     // Settings
     const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), 
-      (doc) => {
-        if (doc.exists()) {
-          const data = doc.data();
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
           setSettings(data);
-          localStorage.setItem('site_settings', JSON.stringify(data));
+          try {
+            // Only cache if it's stringifiable (avoid circular refs if any exist)
+            const stringified = JSON.stringify(data);
+            localStorage.setItem('site_settings', stringified);
+          } catch (e) {
+            console.warn('Failed to cache settings due to non-serializable data:', e);
+          }
         }
         settingsLoaded = true;
         checkLoading();
@@ -103,6 +109,13 @@ export function useContent() {
     logoUrl: settings?.logoUrl || "", 
     footerLogoUrl: settings?.footerLogoUrl || "",
     heroImageUrl: settings?.heroImageUrl || "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000",
+    heroImages: settings?.heroImages && settings.heroImages.length > 0 ? settings.heroImages : [
+      "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000",
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2000",
+      "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=2000",
+      "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80&w=2000",
+      "https://images.unsplash.com/photo-1491841573634-28140fc7ced7?auto=format&fit=crop&q=80&w=2000"
+    ],
     tagline: settings?.tagline || "Inspiring Excellence in Publishing",
     phoneNumbers: settings?.phoneNumbers || COMPANY_INFO.phone,
     contactEmail: settings?.contactEmail || COMPANY_INFO.email,

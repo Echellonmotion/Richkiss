@@ -1,96 +1,120 @@
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { useContent } from '../../hooks/useContent';
+import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Hero() {
   const { settings } = useContent();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const images = settings.heroImages || [];
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  const handleNext = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <section className="relative min-h-[85vh] flex items-center bg-brand-beige overflow-hidden">
-      {/* Background Shapes */}
-      <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full bg-white hidden lg:block" style={{ borderRadius: '0 0 0 100%' }} />
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl" />
-      <div className="absolute top-1/2 -right-48 w-96 h-96 bg-brand-primary/10 rounded-full blur-3xl transform -translate-y-1/2" />
+    <section className="relative min-h-[90vh] flex items-center bg-[#fdfdfd] overflow-hidden pt-16">
+      {/* Background patterns - subtle floral/abstract lines from ref */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <svg className="w-full h-full" viewBox="0 0 100 100">
+          <pattern id="leaf-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M10 5 Q15 0 20 5 T10 20 T0 5 Q5 0 10 5" fill="currentColor" className="text-brand-secondary" />
+          </pattern>
+          <rect x="0" y="0" width="100" height="100" fill="url(#leaf-pattern)" />
+        </svg>
+      </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        {/* Content */}
+        {/* Content - Left Aligned */}
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8 }}
           className="space-y-8"
         >
-          <div className="space-y-2">
-            <span className="inline-block text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.3em]">
-              ESTABLISHED 2010
-            </span>
-            <h1 className="text-5xl md:text-7xl font-serif text-brand-secondary leading-[1.1] tracking-tight">
-              {settings.tagline?.split(' ').slice(0, 3).join(' ') || 'Nurturing Minds'} with <span className="italic block text-brand-primary">{settings.tagline?.split(' ').slice(3).join(' ') || 'Authentic Stories'}</span>
+          <div className="space-y-4">
+            <h1 className="text-6xl md:text-8xl font-serif text-brand-secondary leading-[1.1] tracking-tight">
+               {settings.tagline?.split(' ').slice(0, 2).join(' ') || 'Biggest'} <span className="block text-brand-primary">{settings.tagline?.split(' ').slice(2).join(' ') || 'Bookstore In Ghana'}</span>
             </h1>
+            <p className="text-xl text-gray-500 font-sans max-w-lg leading-relaxed">
+              We deliver books all over the world 10,000+ books in stock
+            </p>
           </div>
           
-          <p className="text-lg text-gray-600 font-sans leading-relaxed max-w-lg line-clamp-3">
-            {settings.aboutText || 'Richkiss Publishers is a Ghanaian literary house dedicated to high-quality education and the preservation of African storytelling for the next generation.'}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+          <div className="pt-4">
             <Link 
               to="/catalogue" 
-              className="w-full sm:w-auto px-10 py-5 bg-brand-primary text-white font-sans font-bold text-sm uppercase tracking-widest rounded-full hover:bg-brand-secondary transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 duration-300 text-center"
+              className="inline-block px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-widest rounded-sm hover:translate-y-[-2px] transition-all shadow-xl shadow-orange-500/20"
             >
-              Explore our books
-            </Link>
-            <Link 
-              to="/about" 
-              className="group flex items-center space-x-2 text-sm font-bold uppercase tracking-widest text-brand-secondary"
-            >
-              <span>The Richkiss Legacy</span>
-              <div className="w-10 h-[1px] bg-brand-secondary group-hover:w-16 transition-all duration-300" />
+              Meet our bestseller →
             </Link>
           </div>
 
-          <div className="pt-8 grid grid-cols-3 gap-8 border-t border-brand-primary/10">
-            <div>
-              <p className="text-3xl font-serif font-bold text-brand-secondary">14+</p>
-              <p className="text-[10px] uppercase tracking-widest font-bold text-brand-muted">Years of Legacy</p>
-            </div>
-            <div>
-              <p className="text-3xl font-serif font-bold text-brand-secondary">500+</p>
-              <p className="text-[10px] uppercase tracking-widest font-bold text-brand-muted">Original Titles</p>
-            </div>
-            <div>
-              <p className="text-3xl font-serif font-bold text-brand-secondary">6+</p>
-              <p className="text-[10px] uppercase tracking-widest font-bold text-brand-muted">Global Regions</p>
-            </div>
+          {/* Dots as pagination placeholder like in ref */}
+          <div className="flex space-x-2 pt-12">
+            {[0, 1, 2].map(i => (
+              <div key={i} className={`h-1 rounded-full transition-all duration-500 ${i === 0 ? 'w-8 bg-brand-secondary' : 'w-4 bg-gray-200'}`} />
+            ))}
           </div>
         </motion.div>
 
-        {/* Visual - Removed floating AI-style accents */}
+        {/* Visual - Staggered Book Arrangement */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-          className="relative lg:h-[600px] flex items-center justify-center"
+          transition={{ duration: 1 }}
+          className="relative h-[600px] flex items-center justify-center"
         >
-          {/* Main Hero Image - More grounded border/shadow */}
-          <div className="relative z-10 w-full max-w-md aspect-[3/4] rounded-sm overflow-hidden shadow-2xl border-[12px] border-white transform hover:rotate-1 transition-transform duration-700 group">
+          {/* Back Book */}
+          <motion.div 
+            animate={{ y: [0, -10, 0], rotate: [-2, -3, -2] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute z-10 w-full max-w-[280px] aspect-[3/4] rounded-sm overflow-hidden shadow-[20px_20px_60px_rgba(0,0,0,0.15)] border-8 border-white bg-white -translate-x-12 -translate-y-8"
+          >
              <img 
-               src={settings.heroImageUrl} 
-               alt="Book reading" 
-               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+               src={images[1] || images[0]} 
+               alt="Book cover" 
+               className="w-full h-full object-cover grayscale-[0.2]"
              />
-          </div>
+             <div className="absolute inset-0 bg-brand-secondary/5" />
+          </motion.div>
 
-          {/* Background Decorative Lines - More architectural, less tech-blob */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-            <div className="w-full h-full grid grid-cols-6 gap-0">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="border-r border-brand-primary h-full" />
-              ))}
-            </div>
-          </div>
+          {/* Front Book */}
+          <motion.div 
+             animate={{ y: [0, -15, 0], rotate: [2, 1, 2] }}
+             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+             className="relative z-20 w-full max-w-[320px] aspect-[3/4] rounded-sm overflow-hidden shadow-[30px_30px_80px_rgba(0,0,0,0.2)] border-[12px] border-white bg-white translate-x-8 translate-y-8"
+          >
+             <img 
+               src={images[0]} 
+               alt="Main Book" 
+               className="w-full h-full object-cover"
+             />
+          </motion.div>
+
+          {/* Floater Element (like the mini cover in ref) */}
+          <motion.div 
+            animate={{ y: [0, -5, 0], rotate: [8, 12, 8] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute z-30 bottom-12 right-0 w-32 aspect-[3/4] rounded-sm overflow-hidden shadow-2xl border-4 border-white rotate-12"
+          >
+             <img 
+               src={images[2] || images[0]} 
+               alt="Book mini" 
+               className="w-full h-full object-cover"
+             />
+          </motion.div>
         </motion.div>
       </div>
     </section>
+
   );
 }

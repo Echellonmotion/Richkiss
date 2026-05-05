@@ -80,7 +80,7 @@ export default function Admin() {
                 placeholder="Admin Password"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                className={`w-full p-5 bg-brand-beige/50 border-2 rounded-2xl outline-none transition-all ${loginError ? 'border-red-400 shake italic text-red-500' : 'border-transparent focus:bg-white focus:border-brand-primary'}`}
+                className={`w-full p-5 bg-brand-beige/50 border-2 rounded-2xl outline-none transition-all ${loginError ? 'border-red-400 shake text-red-500' : 'border-transparent focus:bg-white focus:border-brand-primary'}`}
               />
             </div>
             <button 
@@ -158,7 +158,7 @@ export default function Admin() {
         ...formData,
         companyName: formData.companyName || settings.companyName,
         logoUrl: formData.logoUrl || settings.logoUrl,
-        heroImageUrl: formData.heroImageUrl || settings.heroImageUrl || "",
+        heroImages: formData.heroImages || settings.heroImages || [],
         updatedAt: serverTimestamp()
       };
 
@@ -322,22 +322,40 @@ export default function Admin() {
                           )}
                         </div>
 
-                        <div className="pt-4 mt-4 border-t border-gray-100">
-                           <ImageUpload 
-                             onUploadComplete={(url) => setFormData(prev => ({ ...prev, heroImageUrl: url }))}
-                             folder="hero"
-                             label="Homepage Hero Image"
-                           />
-                           {formData.heroImageUrl && (
-                             <div className="flex items-center space-x-4 p-4 bg-brand-primary/10 rounded-2xl border border-brand-primary/20">
-                               <div className="w-32 h-20 bg-gray-200 rounded-xl overflow-hidden border border-gray-100 shadow-sm transition-all focus-within:ring-2 focus-within:ring-brand-primary">
-                                  <img src={formData.heroImageUrl} alt="Hero Preview" className="w-full h-full object-cover" />
-                               </div>
-                               <div className="flex-grow text-brand-primary">
-                                 <p className="text-[10px] font-bold uppercase tracking-widest">HERO IMAGE UPDATED</p>
-                               </div>
-                             </div>
+                        <div className="pt-4 mt-4 border-t border-gray-100 space-y-4">
+                           <div className="flex justify-between items-center">
+                             <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Homepage Hero Slider (Up to 5)</label>
+                             <span className="text-[10px] font-bold text-brand-primary">{formData.heroImages?.length || 0}/5</span>
+                           </div>
+                           
+                           {(!formData.heroImages || formData.heroImages.length < 5) && (
+                             <ImageUpload 
+                               onUploadComplete={(url) => setFormData(prev => ({ ...prev, heroImages: [...(prev.heroImages || []), url] }))}
+                               folder="hero"
+                               label="Add Hero Image"
+                             />
                            )}
+
+                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                             {formData.heroImages?.map((img: string, i: number) => (
+                               <div key={i} className="relative aspect-[3/4] bg-gray-200 rounded-2xl overflow-hidden border border-gray-100 shadow-sm group">
+                                  <img src={img} alt={`Hero ${i+1}`} className="w-full h-full object-cover" />
+                                  <button 
+                                    type="button"
+                                    onClick={() => {
+                                      const newImages = formData.heroImages.filter((_: any, idx: number) => idx !== i);
+                                      setFormData({ ...formData, heroImages: newImages });
+                                    }}
+                                    className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                  >
+                                    <Trash2 size={14} />
+                                  </button>
+                                  <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/50 text-white text-[8px] font-bold rounded uppercase">
+                                    Slide {i + 1}
+                                  </div>
+                               </div>
+                             ))}
+                           </div>
                         </div>
                      </div>
                     <div className="space-y-4">
@@ -399,14 +417,16 @@ export default function Admin() {
                           </div>
                        </div>
                        <div className="space-y-4 md:col-span-2">
-                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Active Hero Image</h4>
-                          <div className="w-full aspect-[21/9] bg-brand-beige rounded-[32px] overflow-hidden border border-gray-100">
-                             {settings.heroImageUrl ? (
-                               <img src={settings.heroImageUrl} alt="Hero" className="w-full h-full object-cover" />
-                             ) : (
-                               <div className="w-full h-full flex flex-col items-center justify-center text-brand-muted opacity-50 space-y-2">
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Active Hero Slider</h4>
+                          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                             {settings.heroImages && settings.heroImages.length > 0 ? settings.heroImages.map((img: string, i: number) => (
+                               <div key={i} className="aspect-[3/4] bg-brand-beige rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+                                  <img src={img} alt={`Slide ${i+1}`} className="w-full h-full object-cover" />
+                               </div>
+                             )) : (
+                               <div className="col-span-full aspect-[21/9] bg-brand-beige rounded-[32px] overflow-hidden border border-gray-100 flex flex-col items-center justify-center text-brand-muted opacity-50 space-y-2">
                                   <ImageIcon size={48} />
-                                  <p className="text-xs uppercase tracking-widest font-bold">No custom hero image set</p>
+                                  <p className="text-xs uppercase tracking-widest font-bold">No custom hero images set</p>
                                </div>
                              )}
                           </div>

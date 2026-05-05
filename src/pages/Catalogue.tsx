@@ -1,20 +1,32 @@
 import { useState, useMemo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useContent } from '../hooks/useContent';
-import { Eye, Search, Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { 
+  Filter, 
+  ChevronLeft, 
+  ChevronRight, 
+  ArrowRight,
+  X,
+  BookOpen,
+  Info
+} from 'lucide-react';
 
 export default function Catalogue() {
   const { categories, books, loading } = useContent();
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const [selectedBook, setSelectedBook] = useState<any>(null);
+  const itemsPerPage = 6;
 
   const filteredBooks = useMemo(() => {
     return books.filter((book: any) => {
       const matchesCategory = activeCategory === 'all' || book.categorySlug === activeCategory;
-      const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            book.author.toLowerCase().includes(searchQuery.toLowerCase());
+      const title = book.title?.toString() || '';
+      const author = book.author?.toString() || '';
+      const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            author.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [books, activeCategory, searchQuery]);
@@ -31,210 +43,293 @@ export default function Catalogue() {
     return filteredBooks.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredBooks, currentPage, itemsPerPage]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading Catalogue...</div>;
-
   return (
-    <div className="bg-white min-h-screen">
-      {/* Header */}
-      <section className="bg-brand-beige py-24 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <span className="text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.3em]">Our Full Collection</span>
-          <h1 className="text-5xl md:text-7xl font-serif text-brand-secondary leading-tight">
-            Book <span className="italic text-brand-primary">Catalogue</span>
-          </h1>
-          <p className="text-brand-muted max-w-2xl mx-auto font-sans text-lg">
-            Explore our diverse range of African stories, educational materials, and creative publishing works.
-          </p>
-        </div>
-      </section>
-
-      {/* Filter & Search Bar */}
-      <section className="sticky top-20 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 py-6">
+    <div className="bg-white min-h-screen flex flex-col pt-32">
+      {/* 1. Header Section */}
+      <section className="pb-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-            {/* Search */}
-            <div className="relative w-full lg:max-w-md">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input 
-                type="text" 
-                placeholder="Search by title or author..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-brand-beige/50 border border-transparent focus:bg-white focus:border-brand-primary/20 rounded-full py-3.5 pl-12 pr-6 text-sm outline-none transition-all"
-              />
-              {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-primary"
-                >
-                  <X size={16} />
-                </button>
-              )}
-            </div>
-
-            {/* Category Filter */}
-            <div className="flex flex-wrap justify-center gap-2">
-              <button 
-                onClick={() => setActiveCategory('all')}
-                className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${activeCategory === 'all' ? 'bg-brand-secondary text-white shadow-lg' : 'bg-brand-beige text-brand-secondary hover:bg-brand-primary/10'}`}
-              >
-                All
-              </button>
-              {categories.map((cat: any) => (
-                <button 
-                  key={cat.id || cat.slug}
-                  onClick={() => setActiveCategory(cat.slug)}
-                  className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${activeCategory === cat.slug ? 'bg-brand-secondary text-white shadow-lg' : 'bg-brand-beige text-brand-secondary hover:bg-brand-primary/10'}`}
-                >
-                  {cat.name}
-                </button>
-              ))}
-            </div>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-2xl"
+          >
+            <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-tight mb-8">
+              Curated Editions
+            </h1>
+            <p className="text-lg text-gray-500 font-sans leading-relaxed">
+              A collection of essential reading material, hand-selected by our editors. From 
+              contemporary masterpieces to timeless classics, explore stories that shape our world.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Results Count */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex justify-between items-end">
-        <div className="space-y-1">
-          <p className="text-xs font-bold font-sans text-brand-muted uppercase tracking-[0.2em]">
-            Showing {filteredBooks.length} {filteredBooks.length === 1 ? 'book' : 'books'}
-          </p>
-          {totalPages > 1 && (
-            <p className="text-[10px] font-medium text-brand-primary/60 uppercase tracking-widest">
-              Page {currentPage} of {totalPages}
-            </p>
-          )}
-        </div>
-      </div>
+      {/* 2. Main Content Grid */}
+      <section className="pb-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row gap-20">
+            
+            {/* Sidebar */}
+            <aside className="lg:w-64 shrink-0 space-y-16">
+              {/* Category Filter */}
+              <div className="space-y-8">
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Category</h4>
+                <div className="flex flex-col space-y-4">
+                  <button 
+                    onClick={() => setActiveCategory('all')}
+                    className={`text-left text-sm font-bold transition-colors hover:text-brand-primary ${activeCategory === 'all' ? 'text-brand-primary' : 'text-brand-secondary'}`}
+                  >
+                    All Titles
+                  </button>
+                  {categories.map((cat: any) => (
+                    <button 
+                      key={cat.id || cat.slug}
+                      onClick={() => setActiveCategory(cat.slug)}
+                      className={`text-left text-sm font-medium transition-colors hover:text-brand-primary ${activeCategory === cat.slug ? 'text-brand-primary font-bold' : 'text-gray-600'}`}
+                    >
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-      {/* Books Grid */}
-      <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
-          <AnimatePresence mode="popLayout">
-            {paginatedBooks.map((book: any) => (
+              {/* Sort Dropdown */}
+              <div className="space-y-4">
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Sort By</h4>
+                <div className="relative group">
+                   <div className="border-b-2 border-gray-100 flex items-center justify-between py-2 cursor-pointer group-hover:border-brand-primary transition-colors">
+                      <span className="text-sm font-bold text-brand-secondary">Newest Arrivals</span>
+                      <ChevronRight size={14} className="rotate-90 text-gray-300" />
+                   </div>
+                </div>
+              </div>
+
+              {/* Member Picks Ad */}
               <motion.div 
-                key={book.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                className="group"
+                whileHover={{ y: -5 }}
+                className="bg-[#b9f0f0] p-10 space-y-6 rounded-sm shadow-sm"
               >
-                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-6 shadow-md hover:shadow-2xl transition-all duration-500">
-                  <img 
-                    src={book.coverUrl || book.cover} 
-                    alt={book.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                  />
-                  
-                  {/* Category Tag */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-[8px] font-bold uppercase tracking-widest text-brand-primary rounded-full shadow-sm">
-                      {book.categorySlug}
-                    </span>
-                  </div>
+                 <h5 className="text-2xl font-serif text-brand-secondary leading-tight italic">Member Picks</h5>
+                 <p className="text-xs font-medium text-brand-secondary/70 leading-relaxed">
+                   Join our society for early access to signed first editions and exclusive events.
+                 </p>
+                 <Link 
+                   to="/contact" 
+                   className="inline-block text-[10px] font-bold uppercase tracking-widest text-brand-secondary underline underline-offset-8"
+                 >
+                   Learn More
+                 </Link>
+              </motion.div>
+            </aside>
 
-                  {/* Actions Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
-                    <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-secondary hover:bg-brand-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300">
-                      <Eye size={20} />
+            {/* Main Grid */}
+            <div className="flex-grow">
+               {loading && paginatedBooks.length === 0 ? (
+                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-20">
+                    {[1,2,3,4,5,6].map(i => (
+                      <div key={i} className="animate-pulse space-y-4">
+                        <div className="aspect-[3/4] bg-gray-100 rounded-sm" />
+                        <div className="h-4 bg-gray-100 w-1/4 rounded" />
+                        <div className="h-6 bg-gray-100 w-3/4 rounded" />
+                        <div className="h-4 bg-gray-100 w-1/2 rounded" />
+                      </div>
+                    ))}
+                 </div>
+               ) : (
+                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-20">
+                    <AnimatePresence mode="popLayout">
+                    {paginatedBooks.map((book: any, i) => (
+                      <motion.div 
+                        key={book.id}
+                        layout
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ delay: (i % 3) * 0.1 }}
+                        className="group flex flex-col"
+                      >
+                        <div 
+                          className="relative aspect-[3/4] mb-8 overflow-hidden rounded-sm bg-gray-50 flex items-center justify-center p-6 lg:p-12 cursor-pointer group/card"
+                          onClick={() => setSelectedBook(book)}
+                        >
+                          <img 
+                            src={book.coverUrl || book.cover} 
+                            alt={book.title} 
+                            className="w-full h-full object-contain shadow-[20px_20px_40px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-700" 
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
+                          
+                          {/* Quick Preview Hover */}
+                          <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover/card:translate-y-0 transition-transform duration-500">
+                             <div className="bg-white/95 backdrop-blur-md py-3 text-center rounded-sm shadow-xl">
+                               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary flex items-center justify-center gap-2">
+                                 <BookOpen size={12} />
+                                 <span>Quick Preview</span>
+                               </p>
+                             </div>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div className="flex">
+                            <span className="px-3 py-1 bg-brand-primary/10 text-[8px] font-bold uppercase tracking-[0.2em] text-brand-primary rounded-sm">
+                              {book.categorySlug}
+                            </span>
+                          </div>
+                          <div className="space-y-1">
+                             <h3 
+                               className="text-2xl font-serif text-brand-secondary leading-tight group-hover:text-brand-primary transition-colors cursor-pointer"
+                               onClick={() => setSelectedBook(book)}
+                             >
+                               {book.title}
+                             </h3>
+                             <p className="text-sm font-medium text-gray-500">{book.author}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+               </div>
+               )}
+
+               {/* Pagination */}
+               {totalPages > 1 && (
+                  <div className="mt-32 pt-8 border-t border-gray-100 flex items-center justify-center gap-12">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="inline-flex items-center space-x-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary disabled:opacity-20 hover:text-brand-primary transition-colors"
+                    >
+                      <ChevronLeft size={16} />
+                      <span>Previous</span>
+                    </button>
+                    
+                    <div className="flex items-center space-x-6">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${
+                            currentPage === page ? 'text-brand-primary border-b-2 border-brand-primary' : 'text-gray-400 hover:text-brand-secondary'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="inline-flex items-center space-x-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary disabled:opacity-20 hover:text-brand-primary transition-colors"
+                    >
+                      <span>Next</span>
+                      <ChevronRight size={16} />
                     </button>
                   </div>
-                </div>
+               )}
 
-                <div className="space-y-2">
-                  <p className="text-xs font-bold font-sans text-brand-primary uppercase tracking-[0.2em]">{book.author}</p>
-                  <h3 className="text-xl font-serif font-bold text-brand-secondary group-hover:text-brand-primary transition-colors line-clamp-2 min-h-[3.5rem]">{book.title}</h3>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+               {filteredBooks.length === 0 && (
+                 <div className="text-center py-32 space-y-8">
+                   <div className="w-24 h-24 bg-brand-beige rounded-full flex items-center justify-center mx-auto text-brand-primary/20">
+                     <Filter size={48} />
+                   </div>
+                   <h3 className="text-3xl font-serif text-brand-secondary">No Curated Editions Found</h3>
+                   <p className="text-gray-500 max-w-sm mx-auto font-sans leading-relaxed">
+                     We couldn't find any books matching your criteria. Try adjusting your filters.
+                   </p>
+                   <button 
+                     onClick={() => { setSearchQuery(''); setActiveCategory('all'); }}
+                     className="text-brand-primary font-bold uppercase tracking-[0.2em] text-[10px] underline underline-offset-8"
+                   >
+                     Clear all selections
+                   </button>
+                 </div>
+               )}
+            </div>
+          </div>
         </div>
-
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="mt-20 flex justify-center items-center space-x-2">
-            <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="p-3 rounded-full bg-brand-beige text-brand-secondary disabled:opacity-30 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-white transition-all shadow-sm"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            
-            <div className="flex items-center space-x-2 px-4">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
-                // Only show a subset of pages if there are many
-                if (
-                  totalPages > 7 && 
-                  page !== 1 && 
-                  page !== totalPages && 
-                  Math.abs(page - currentPage) > 1
-                ) {
-                  if (page === 2 || page === totalPages - 1) return <span key={page} className="text-brand-muted">...</span>;
-                  return null;
-                }
-
-                return (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`w-10 h-10 rounded-full text-xs font-bold transition-all ${
-                      currentPage === page 
-                        ? 'bg-brand-secondary text-white shadow-md' 
-                        : 'bg-brand-beige text-brand-secondary hover:bg-brand-primary/10'
-                    }`}
-                  >
-                    {page}
-                  </button>
-                );
-              })}
-            </div>
-
-            <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="p-3 rounded-full bg-brand-beige text-brand-secondary disabled:opacity-30 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-white transition-all shadow-sm"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-        )}
-
-        {filteredBooks.length === 0 && (
-          <div className="text-center py-24 space-y-6">
-            <div className="w-20 h-20 bg-brand-beige rounded-full flex items-center justify-center mx-auto text-brand-primary/40">
-              <Filter size={40} />
-            </div>
-            <h3 className="text-2xl font-serif text-brand-secondary">No books found</h3>
-            <p className="text-brand-muted max-w-sm mx-auto">
-              We couldn't find any books matching your search "{searchQuery}". Try a different term or clear your filters.
-            </p>
-            <button 
-              onClick={() => { setSearchQuery(''); setActiveCategory('all'); }}
-              className="text-brand-primary font-bold uppercase tracking-widest text-xs underline underline-offset-8"
-            >
-              Clear all filters
-            </button>
-          </div>
-        )}
       </section>
 
-      {/* Newsletter */}
-      <section className="bg-brand-secondary text-white py-24 overflow-hidden relative">
-         <div className="max-w-4xl mx-auto px-4 text-center space-y-8 relative z-10">
-            <h2 className="text-4xl font-serif">Stay <span className="italic text-brand-primary">Updated</span></h2>
-            <p className="text-gray-400 font-sans max-w-xl mx-auto">
-              Subscribe to get notified about new catalogue additions and exclusive literary events.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input type="email" placeholder="Your email address" className="flex-grow px-6 py-4 rounded-full bg-white/10 border border-white/20 focus:border-brand-primary outline-none text-white text-sm" />
-              <button className="px-8 py-4 bg-brand-primary text-white text-sm font-bold uppercase tracking-widest rounded-full hover:bg-white hover:text-brand-primary transition-all">Join us</button>
-            </form>
-         </div>
-      </section>
+      {/* 3. Preview Modal */}
+      <AnimatePresence>
+        {selectedBook && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+             <motion.div 
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               exit={{ opacity: 0 }}
+               onClick={() => setSelectedBook(null)}
+               className="absolute inset-0 bg-brand-secondary/40 backdrop-blur-sm"
+             />
+             
+             <motion.div 
+               initial={{ opacity: 0, scale: 0.95, y: 20 }}
+               animate={{ opacity: 1, scale: 1, y: 0 }}
+               exit={{ opacity: 0, scale: 0.95, y: 20 }}
+               className="relative w-full max-w-5xl bg-white rounded-sm shadow-[0_50px_100px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+             >
+                <button 
+                  onClick={() => setSelectedBook(null)}
+                  className="absolute top-6 right-6 z-10 w-10 h-10 bg-white shadow-xl rounded-full flex items-center justify-center text-brand-secondary hover:text-brand-primary transition-colors"
+                >
+                  <X size={20} />
+                </button>
+
+                {/* Left Side: Large Image */}
+                <div className="w-full md:w-1/2 bg-[#f8f8f8] p-12 lg:p-20 flex items-center justify-center">
+                   <motion.img 
+                     layoutId={`book-${selectedBook.id}`}
+                     src={selectedBook.coverUrl || selectedBook.cover} 
+                     alt={selectedBook.title}
+                     className="max-h-full max-w-full object-contain shadow-[30px_30px_60px_rgba(0,0,0,0.15)]"
+                   />
+                </div>
+
+                {/* Right Side: Content */}
+                <div className="w-full md:w-1/2 p-12 lg:p-20 overflow-y-auto space-y-12">
+                   <div className="space-y-6">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary">Curated Edition</span>
+                      <h2 className="text-4xl lg:text-5xl font-serif text-brand-secondary leading-tight">
+                        {selectedBook.title}
+                      </h2>
+                      <div className="flex items-center space-x-4 border-b border-gray-100 pb-6">
+                         <div className="w-8 h-8 rounded-full bg-brand-beige flex items-center justify-center">
+                           <BookOpen size={14} className="text-brand-primary" />
+                         </div>
+                         <p className="text-lg font-medium text-gray-600">By {selectedBook.author}</p>
+                      </div>
+                   </div>
+
+                   <div className="space-y-6">
+                      <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Synopsis</h4>
+                      <p className="text-gray-500 font-sans leading-relaxed text-sm md:text-base">
+                        {selectedBook.description || "A masterfully crafted narrative that explores the depths of the human experience. This edition features original commentary and restoration, bringing the author's vision to life with unprecedented clarity."}
+                      </p>
+                   </div>
+
+                   <div className="grid grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+                      <div>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Category</p>
+                        <p className="text-xs font-bold text-brand-secondary uppercase tracking-[0.1em]">{selectedBook.categorySlug}</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Format</p>
+                        <p className="text-xs font-bold text-brand-secondary uppercase tracking-[0.1em]">Hardcover / Digital</p>
+                      </div>
+                   </div>
+
+                   <div className="pt-8">
+                     <button className="w-full py-5 bg-brand-secondary text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                       <Info size={14} />
+                       <span>Inquire for Availability</span>
+                     </button>
+                   </div>
+                </div>
+             </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
