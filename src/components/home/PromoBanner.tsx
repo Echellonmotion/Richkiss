@@ -1,7 +1,10 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { useContent } from '../../hooks/useContent';
 
 export default function PromoBanner() {
+  const { settings } = useContent();
+
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,17 +27,20 @@ export default function PromoBanner() {
           {/* Right Side: Content */}
           <div className="w-full md:w-1/2 p-12 md:p-24 text-center md:text-left space-y-6">
             <div className="space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-400">More Bang For Your Book</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-400">Our Heritage</span>
               <h2 className="text-4xl md:text-6xl font-serif text-brand-secondary leading-tight">
-                20% Off Select Books
+                {settings.promoBannerTitle || "Our Story Continues."}
               </h2>
+              <p className="text-gray-500 font-sans text-sm max-w-sm">
+                {settings.promoBannerText || "Discover excellence in literary publishing and the journey of knowledge."}
+              </p>
             </div>
             <div className="pt-4">
               <Link 
-                to="/catalogue" 
+                to="/about" 
                 className="inline-block px-10 py-4 bg-brand-secondary text-white font-sans font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-brand-primary transition-all shadow-xl shadow-black/10"
               >
-                Shop now
+                Learn More
               </Link>
             </div>
           </div>

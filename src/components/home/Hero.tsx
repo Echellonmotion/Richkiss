@@ -7,7 +7,11 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 export default function Hero() {
   const { settings } = useContent();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const images = settings.heroImages || [];
+  const images = settings.heroImages && settings.heroImages.length > 0 ? settings.heroImages : [
+    "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000",
+    "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2000",
+    "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=2000"
+  ];
 
   useEffect(() => {
     if (images.length <= 1) return;

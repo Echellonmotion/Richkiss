@@ -4,8 +4,10 @@ import {
   Quote,
   ArrowRight
 } from 'lucide-react';
+import { useContent } from '../hooks/useContent';
 
 export default function OurClients() {
+  const { settings } = useContent();
   const partners = [
     "The Oxford Collective", "Marlowe Press", "National Archive", 
     "Serpent's Tail", "Vintage House", "Borough Libraries", 
@@ -71,7 +73,7 @@ export default function OurClients() {
             >
               <div className="aspect-[4/5] bg-gray-50 rounded-sm overflow-hidden shadow-2xl relative group">
                 <img 
-                  src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1500" 
+                  src={settings.clientsHeroImageUrl || "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1500"} 
                   alt="Partner Atmosphere" 
                   className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-[3s]" 
                 />

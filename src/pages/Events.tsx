@@ -7,17 +7,22 @@ import { Link } from 'react-router-dom';
 export default function Events() {
   const { events, loading } = useContent();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [activeFilter, setActiveFilter] = useState('ALL EVENTS');
-
-  const filters = ['ALL EVENTS', 'SIGNINGS', 'WORKSHOPS', 'CLUBS'];
-
-  const filteredEvents = useMemo(() => {
-    if (activeFilter === 'ALL EVENTS') return events;
-    // Map existing event types or just use for layout demonstration
-    return events; 
-  }, [events, activeFilter]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 6;
 
   if (loading) return <div className="min-h-screen flex items-center justify-center font-serif text-2xl">Loading Events...</div>;
+
+  const featuredEvent = events[0] || {
+    name: "An Evening with Elena Vance",
+    description: "Join us for an exclusive reading and discussion of her latest masterpiece, \"The Silent Echo,\" followed by an intimate Q&A session and book signing.",
+    location: "Main Atrium",
+    year: "October 24, 2024"
+  };
+
+  const indexOfLastEvent = currentPage * eventsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
+  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
+  const totalPages = Math.ceil(events.length / eventsPerPage);
 
   return (
     <div className="bg-white min-h-screen pt-32">
@@ -35,27 +40,29 @@ export default function Events() {
               </span>
               <div className="space-y-6">
                 <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-tight">
-                  An Evening with <br /> Elena Vance
+                  {featuredEvent.name}
                 </h1>
                 <p className="text-lg text-gray-500 font-sans leading-relaxed max-w-lg">
-                  Join us for an exclusive reading and discussion of her latest masterpiece, 
-                  "The Silent Echo," followed by an intimate Q&A session and book signing.
+                  {featuredEvent.description}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-8">
                 <div className="flex items-center space-x-3 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-widest">
                   <Calendar size={18} className="text-gray-400" />
-                  <span>October 24, 2024</span>
+                  <span>{featuredEvent.year || 'TBA'}</span>
                 </div>
                 <div className="flex items-center space-x-3 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-widest">
                   <MapPin size={18} className="text-gray-400" />
-                  <span>Main Atrium</span>
+                  <span>{featuredEvent.location || 'Announcement Soon'}</span>
                 </div>
               </div>
 
-              <button className="px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20">
-                Register Now
+              <button 
+                onClick={() => setSelectedEvent(featuredEvent)}
+                className="px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20"
+              >
+                View Highlights
               </button>
             </motion.div>
 
@@ -66,15 +73,15 @@ export default function Events() {
             >
               <div 
                 className="grid grid-cols-2 gap-4 opacity-40 grayscale group cursor-pointer" 
-                onClick={() => setSelectedEvent(events[0])}
+                onClick={() => setSelectedEvent(featuredEvent)}
               >
                  <div className="space-y-4">
-                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=600" className="w-full aspect-[3/4] object-cover rounded-sm" alt="Faded event 1" />
-                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=600" className="w-full aspect-square object-cover rounded-sm" alt="Faded event 2" />
+                    <img src={featuredEvent.gallery?.[0] || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=600"} className="w-full aspect-[3/4] object-cover rounded-sm" alt="Faded event 1" />
+                    <img src={featuredEvent.gallery?.[1] || "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=600"} className="w-full aspect-square object-cover rounded-sm" alt="Faded event 2" />
                  </div>
                  <div className="space-y-4 pt-12">
-                    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=600" className="w-full aspect-square object-cover rounded-sm" alt="Faded event 3" />
-                    <img src="https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80&w=600" className="w-full aspect-[3/4] object-cover rounded-sm" alt="Faded event 4" />
+                    <img src={featuredEvent.gallery?.[2] || "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=600"} className="w-full aspect-square object-cover rounded-sm" alt="Faded event 3" />
+                    <img src={featuredEvent.gallery?.[3] || "https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80&w=600"} className="w-full aspect-[3/4] object-cover rounded-sm" alt="Faded event 4" />
                  </div>
               </div>
               <div className="absolute inset-0 bg-gradient-to-l from-white via-transparent to-transparent pointer-events-none" />
@@ -83,31 +90,18 @@ export default function Events() {
         </div>
       </section>
 
-      {/* 2. Upcoming Gatherings */}
+      {/* 2. Archived Events */}
       <section className="py-32 bg-[#fdfdfd]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
             <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Upcoming Gatherings</h2>
-              <p className="text-gray-500 font-sans tracking-wide">Curated literary experiences for the discerning reader.</p>
-            </div>
-            <div className="flex flex-wrap gap-8 border-b border-gray-100 pb-2">
-              {filters.map(filter => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors pb-2 -mb-[10px] border-b-2 ${
-                    activeFilter === filter ? 'border-brand-primary text-brand-secondary' : 'border-transparent text-gray-400 hover:text-brand-secondary'
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
+              <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Archived Gatherings</h2>
+              <p className="text-gray-500 font-sans tracking-wide">A retrospective of our most celebrated literary moments and discussions.</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-20">
-            {filteredEvents.slice(0, 3).map((event, i) => (
+            {currentEvents.map((event, i) => (
               <motion.div 
                 key={event.id || i}
                 initial={{ opacity: 0, y: 20 }}
@@ -146,52 +140,79 @@ export default function Events() {
                     onClick={() => setSelectedEvent(event)}
                     className="w-full py-4 border border-gray-200 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:border-brand-primary hover:bg-brand-primary hover:text-white transition-all"
                   >
-                    Register
+                    Event Recap
                   </button>
                 </div>
               </motion.div>
             ))}
           </div>
+
+          {totalPages > 1 && (
+            <div className="mt-20 flex justify-center items-center space-x-4">
+              <button 
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-6 py-3 border border-gray-200 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-widest rounded-sm disabled:opacity-30 hover:border-brand-primary transition-colors"
+              >
+                Previous
+              </button>
+              <div className="flex items-center space-x-2">
+                {[...Array(totalPages)].map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`w-10 h-10 rounded-sm font-sans font-bold text-xs transition-colors ${
+                      currentPage === i + 1 ? 'bg-brand-secondary text-white' : 'border border-gray-100 text-gray-400 hover:border-brand-primary'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+              <button 
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-6 py-3 border border-gray-200 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-widest rounded-sm disabled:opacity-30 hover:border-brand-primary transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* 3. Tradition & Quote Section */}
+      {/* 3. Literary Wisdom Section */}
       <section className="grid grid-cols-1 lg:grid-cols-2">
-        {/* Tradition Block */}
-        <div className="bg-[#b9f0f0] p-16 lg:p-32 space-y-12">
+        {/* Quote Block 1 */}
+        <div className="bg-brand-secondary p-16 lg:p-32 flex flex-col justify-center space-y-12 text-white">
           <div className="space-y-8">
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-secondary/60">Weekly Tradition</span>
-            <h2 className="text-5xl lg:text-6xl font-serif text-brand-secondary leading-tight">Poetry Under <br /> The Skylight</h2>
-            <p className="text-brand-secondary/70 font-sans leading-relaxed text-lg max-w-md">
-              Every Friday evening, we open our doors for local poets and enthusiasts to share 
-              their latest works under the stars of our glass atrium.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-12 pt-8">
-            <div className="space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40">When</span>
-              <p className="text-sm font-bold text-brand-secondary">Fridays, 7:00 PM</p>
-            </div>
-            <div className="space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary/40">Price</span>
-              <p className="text-sm font-bold text-brand-secondary">Free Entry</p>
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary">Our Ethos</span>
+            <h2 className="text-4xl lg:text-5xl font-serif leading-tight italic">
+              "Until the lions have their own historians, the history of the hunt will always glorify the hunter."
+            </h2>
+            <div className="pt-4 border-t border-white/10">
+              <p className="font-sans font-bold text-xs uppercase tracking-widest">— Chinua Achebe</p>
+              <p className="text-white/50 text-[10px] mt-1 uppercase tracking-widest font-sans">The Father of Modern African Literature</p>
             </div>
           </div>
         </div>
 
-        {/* Quote Block */}
+        {/* Brand Quote Block */}
         <div className="relative aspect-square lg:aspect-auto group overflow-hidden">
           <img 
-            src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=1200" 
-            alt="Quote BG" 
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[4s]"
+            src="https://images.unsplash.com/photo-1524311588024-d2317178412b?auto=format&fit=crop&q=80&w=1200" 
+            alt="Richkiss Vision" 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[4s] grayscale"
           />
-          <div className="absolute inset-0 bg-brand-secondary/40 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-brand-secondary/60 backdrop-blur-[2px]" />
           <div className="absolute inset-0 flex items-center justify-center p-12 text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white italic leading-tight tracking-tight max-w-lg">
-              "Words are, of course, the most powerful drug used by mankind."
-            </h2>
+            <div className="space-y-6">
+              <h2 className="text-3xl md:text-4xl font-serif text-white leading-tight tracking-tight max-w-lg">
+                Crafting excellence in every chapter, preserving African heritage through the art of fine publishing.
+              </h2>
+              <div className="w-12 h-[1px] bg-brand-primary mx-auto" />
+              <p className="text-white/70 font-sans text-[10px] uppercase tracking-[0.3em]">The Richkiss Standard</p>
+            </div>
           </div>
         </div>
       </section>
@@ -304,7 +325,7 @@ export default function Events() {
                     onClick={() => setSelectedEvent(null)}
                     className="w-full py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20"
                   >
-                    Register Now
+                    Close Recap
                   </button>
                 </div>
               </div>

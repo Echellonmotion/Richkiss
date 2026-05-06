@@ -5,6 +5,7 @@ import PromoBanner from '../components/home/PromoBanner';
 import TopCategories from '../components/home/TopCategories';
 import { useContent } from '../hooks/useContent';
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const { settings, events } = useContent();
@@ -27,7 +28,7 @@ export default function Home() {
           <div className="lg:w-1/2 flex justify-center order-2 lg:order-1">
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1524311588024-d2317178412b?auto=format&fit=crop&q=80&w=800" 
+                src={settings.visionImageUrl || "https://images.unsplash.com/photo-1524311588024-d2317178412b?auto=format&fit=crop&q=80&w=800"} 
                 alt="Vision" 
                 className="w-full max-w-md rounded-sm border-8 border-white shadow-2xl grayscale hover:grayscale-0 transition-all duration-700" 
               />
@@ -47,12 +48,14 @@ export default function Home() {
               "{settings.vision || 'To be a leading publishing brand in Ghana and beyond, renowned for excellence in literary publishing.'}"
             </p>
             <div className="pt-4">
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                className="px-10 py-5 border-2 border-brand-primary text-brand-primary font-sans font-bold text-sm uppercase tracking-widest rounded-full hover:bg-brand-primary hover:text-white transition-all"
-              >
-                Learn More About Us
-              </motion.button>
+              <Link to="/about">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  className="px-10 py-5 border-2 border-brand-primary text-brand-primary font-sans font-bold text-sm uppercase tracking-widest rounded-full hover:bg-brand-primary hover:text-white transition-all"
+                >
+                  Learn More About Us
+                </motion.button>
+              </Link>
             </div>
           </div>
         </div>

@@ -3,22 +3,22 @@ import { Link } from 'react-router-dom';
 
 const features = [
   {
-    title: "New Release.",
-    cta: "Shop now",
+    title: "New Arrivals.",
+    cta: "View all",
     color: "bg-[#e53935]", // Red
     image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
     link: "/catalogue"
   },
   {
-    title: "Pre Order Now.",
-    cta: "Shop now",
+    title: "Featured Works.",
+    cta: "Explore",
     color: "bg-[#4fc3f7]", // Blue
     image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400",
     link: "/catalogue"
   },
   {
-    title: "Top Rated.",
-    cta: "Shop now",
+    title: "Global Editions.",
+    cta: "Discover",
     color: "bg-[#7986cb]", // Purple
     image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&q=80&w=400",
     link: "/catalogue"

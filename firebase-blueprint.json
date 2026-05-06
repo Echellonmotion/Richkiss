@@ -14,8 +14,13 @@
         "phoneNumbers": { "type": "array", "items": { "type": "string" }, "description": "Contact phone numbers" },
         "aboutText": { "type": "string", "description": "Main about us text" },
         "vision": { "type": "string" },
+        "visionImageUrl": { "type": "string", "description": "Image for the vision section on home" },
+        "promoBannerTitle": { "type": "string", "description": "Promo banner heading" },
+        "promoBannerText": { "type": "string", "description": "Promo banner subtext" },
         "mission": { "type": "string" },
-        "commitment": { "type": "string" }
+        "commitment": { "type": "string" },
+        "careersHeroImageUrl": { "type": "string" },
+        "clientsHeroImageUrl": { "type": "string" }
       },
       "required": ["companyName", "logoUrl"]
     },
@@ -26,9 +31,22 @@
       "properties": {
         "name": { "type": "string" },
         "slug": { "type": "string" },
-        "description": { "type": "string" }
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string", "description": "Category icon/image URL" }
       },
       "required": ["name", "slug"]
+    },
+    "WhyRichkissItem": {
+      "title": "Why Richkiss Item",
+      "description": "Benefits/Features listed on careers page",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "order": { "type": "integer" }
+      },
+      "required": ["title", "imageUrl"]
     },
     "Book": {
       "title": "Book",
@@ -56,6 +74,18 @@
         "gallery": { "type": "array", "items": { "type": "string" } }
       },
       "required": ["name", "location"]
+    },
+    "PrintWork": {
+      "title": "Print Work",
+      "description": "Portfolio items for the print department",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "category": { "type": "string" },
+        "order": { "type": "integer" }
+      },
+      "required": ["title", "imageUrl"]
     }
   },
   "firestore": {
@@ -74,6 +104,14 @@
     "events": {
       "schema": "Event",
       "description": "Collection of events"
+    },
+    "whyRichkiss": {
+      "schema": "WhyRichkissItem",
+      "description": "Benefits/Value props for careers page"
+    },
+    "printWorks": {
+      "schema": "PrintWork",
+      "description": "Portfolio items for the print department section"
     }
   }
 }

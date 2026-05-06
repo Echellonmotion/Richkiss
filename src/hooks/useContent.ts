@@ -11,6 +11,8 @@ export function useContent() {
   const [categories, setCategories] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
+  const [whyRichkiss, setWhyRichkiss] = useState<any[]>([]);
+  const [printWorks, setPrintWorks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,9 +21,11 @@ export function useContent() {
     let categoriesLoaded = false;
     let booksLoaded = false;
     let eventsLoaded = false;
+    let whyRichkissLoaded = false;
+    let printWorksLoaded = false;
 
     const checkLoading = () => {
-      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded) {
+      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded && whyRichkissLoaded && printWorksLoaded) {
         setLoading(false);
       }
     };
@@ -95,11 +99,46 @@ export function useContent() {
       }
     );
 
+    // Why Richkiss
+    const unsubWhy = onSnapshot(collection(db, 'whyRichkiss'), 
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Sort by order if available
+        data.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+        setWhyRichkiss(data);
+        whyRichkissLoaded = true;
+        checkLoading();
+      },
+      (err) => {
+        console.error('WhyRichkiss Snapshot Error:', err.message);
+        whyRichkissLoaded = true;
+        checkLoading();
+      }
+    );
+
+    // Print Works
+    const unsubPrint = onSnapshot(collection(db, 'printWorks'), 
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        data.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+        setPrintWorks(data);
+        printWorksLoaded = true;
+        checkLoading();
+      },
+      (err) => {
+        console.error('PrintWorks Snapshot Error:', err.message);
+        printWorksLoaded = true;
+        checkLoading();
+      }
+    );
+
     return () => {
       unsubSettings();
       unsubCategories();
       unsubBooks();
       unsubEvents();
+      unsubWhy();
+      unsubPrint();
     };
   }, []);
 
@@ -117,6 +156,11 @@ export function useContent() {
       "https://images.unsplash.com/photo-1491841573634-28140fc7ced7?auto=format&fit=crop&q=80&w=2000"
     ],
     tagline: settings?.tagline || "Inspiring Excellence in Publishing",
+    visionImageUrl: settings?.visionImageUrl || "https://images.unsplash.com/photo-1524311588024-d2317178412b?auto=format&fit=crop&q=80&w=800",
+    promoBannerTitle: settings?.promoBannerTitle || "Our Story Continues.",
+    promoBannerText: settings?.promoBannerText || "Join our literary community for exclusive updates and events.",
+    careersHeroImageUrl: settings?.careersHeroImageUrl || "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2000",
+    clientsHeroImageUrl: settings?.clientsHeroImageUrl || "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=2000",
     phoneNumbers: settings?.phoneNumbers || COMPANY_INFO.phone,
     contactEmail: settings?.contactEmail || COMPANY_INFO.email,
     aboutText: settings?.aboutText || COMPANY_INFO.aboutUs,
@@ -134,6 +178,8 @@ export function useContent() {
     categories: mergedCategories, 
     books: mergedBooks, 
     events: mergedEvents,
+    whyRichkiss,
+    printWorks,
     loading 
   };
 }

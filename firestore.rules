@@ -40,6 +40,11 @@ service cloud.firestore {
              (data.get('tagline', '') is string) &&
              (data.get('aboutText', '') is string) &&
              (data.get('vision', '') is string) &&
+             (data.get('visionImageUrl', '') is string) &&
+             (data.get('promoBannerTitle', '') is string) &&
+             (data.get('promoBannerText', '') is string) &&
+             (data.get('careersHeroImageUrl', '') is string) &&
+             (data.get('clientsHeroImageUrl', '') is string) &&
              (data.get('mission', '') is string) &&
              (data.get('commitment', '') is string) &&
              (data.get('updatedAt', request.time) is timestamp);
@@ -49,7 +54,15 @@ service cloud.firestore {
       return (data.get('name', '') is string) && data.get('name', '').size() <= 100 &&
              (data.get('slug', '') is string) && data.get('slug', '').size() <= 100 &&
              (data.get('description', '') is string) &&
+             (data.get('imageUrl', '') is string) &&
              (data.get('createdAt', request.time) is timestamp || data.get('updatedAt', request.time) is timestamp);
+    }
+
+    function isValidWhyRichkiss(data) {
+      return (data.get('title', '') is string) && data.get('title', '').size() <= 200 &&
+             (data.get('description', '') is string) &&
+             (data.get('imageUrl', '') is string) &&
+             (data.get('order', 0) is int);
     }
 
     function isValidBook(data) {
@@ -69,6 +82,13 @@ service cloud.firestore {
              (data.get('description', '') is string) &&
              (data.get('gallery', []) is list) &&
              (data.get('createdAt', request.time) is timestamp || data.get('updatedAt', request.time) is timestamp);
+    }
+
+    function isValidPrintWork(data) {
+      return (data.get('title', '') is string) && data.get('title', '').size() <= 200 &&
+             (data.get('imageUrl', '') is string) && data.get('imageUrl', '').size() <= 1000 &&
+             (data.get('category', '') is string) &&
+             (data.get('order', 0) is int);
     }
 
     // Match Blocks
@@ -95,6 +115,20 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isAdmin() && isValidId(eventId) && isValidEvent(incoming());
       allow update: if isAdmin() && isValidEvent(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /whyRichkiss/{itemId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidId(itemId) && isValidWhyRichkiss(incoming());
+      allow update: if isAdmin() && isValidWhyRichkiss(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /printWorks/{workId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidId(workId) && isValidPrintWork(incoming());
+      allow update: if isAdmin() && isValidPrintWork(incoming());
       allow delete: if isAdmin();
     }
   }

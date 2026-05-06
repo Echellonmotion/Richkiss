@@ -23,7 +23,7 @@ export default function TopCategories() {
             >
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-gray-100 shadow-sm group-hover:shadow-lg group-hover:border-brand-primary transition-all duration-500">
                 <img 
-                  src={cat.image || `https://images.unsplash.com/photo-1544640808-32ca72ac7f67?auto=format&fit=crop&q=80&w=200`} 
+                  src={cat.imageUrl || cat.image || `https://images.unsplash.com/photo-1544640808-32ca72ac7f67?auto=format&fit=crop&q=80&w=200`} 
                   alt={cat.name} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />

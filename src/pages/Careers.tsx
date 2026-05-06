@@ -7,8 +7,11 @@ import {
   BookOpen
 } from 'lucide-react';
 import { COMPANY_INFO } from '../constants/content';
+import { useContent } from '../hooks/useContent';
 
 export default function Careers() {
+  const { settings, whyRichkiss } = useContent();
+  
   const jobCategories = [
     {
       title: "Editorial",
@@ -71,7 +74,7 @@ export default function Careers() {
             >
                <div className="relative aspect-[4/3] rounded-sm overflow-hidden shadow-[20px_20px_60px_rgba(0,0,0,0.05)] border-white border-[1px]">
                   <img 
-                    src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1500" 
+                    src={settings.careersHeroImageUrl || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1500"} 
                     alt="Work Atmosphere" 
                     className="w-full h-full object-cover"
                   />
@@ -150,45 +153,46 @@ export default function Careers() {
 
       {/* 3. Why Us Section */}
       <section className="py-40 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-24">
-          <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Why Richkiss?</h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+          <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary text-center">Why Richkiss?</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
-            {[
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {(whyRichkiss.length > 0 ? whyRichkiss : [
               {
-                icon: <Leaf className="text-[#e29578]" />,
-                bg: "bg-[#fff0ed]",
+                imageUrl: "https://images.unsplash.com/photo-1542601906990-b4d3fb77db21?auto=format&fit=crop&q=80&w=600",
                 title: "Sustainable Practices",
-                desc: "From carbon-neutral shipping to 100% recycled paper stocks, we prioritize the planet as much as the prose."
+                description: "From carbon-neutral shipping to 100% recycled paper stocks, we prioritize the planet as much as the prose."
               },
               {
-                icon: <Sparkles className="text-[#00bfa5]" />,
-                bg: "bg-[#b9f0f0]",
+                imageUrl: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=600",
                 title: "Creative Freedom",
-                desc: "We operate like a small boutique press with the resources of a global leader, giving you space to innovate."
+                description: "We operate like a small boutique press with the resources of a global leader, giving you space to innovate."
               },
               {
-                icon: <BookOpen className="text-[#3498db]" />,
-                bg: "bg-[#e1f5fe]",
+                imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=600",
                 title: "Literary Culture",
-                desc: "Enjoy a generous annual book stipend, silent reading hours, and frequent author-led workshops."
+                description: "Enjoy a generous annual book stipend, silent reading hours, and frequent author-led workshops."
               }
-            ].map((item, i) => (
+            ]).map((item, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="space-y-8"
+                className="group space-y-6"
               >
-                <div className={`w-16 h-16 ${item.bg} rounded-sm flex items-center justify-center mx-auto`}>
-                  {item.icon}
+                <div className="aspect-[4/5] rounded-sm overflow-hidden bg-gray-100">
+                  <img 
+                    src={item.imageUrl} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                  />
                 </div>
                 <div className="space-y-4">
                   <h4 className="text-xl font-serif text-brand-secondary">{item.title}</h4>
                   <p className="text-sm text-gray-400 font-sans leading-relaxed">
-                    {item.desc}
+                    {item.description}
                   </p>
                 </div>
               </motion.div>

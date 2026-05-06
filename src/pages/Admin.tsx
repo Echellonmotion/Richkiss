@@ -36,8 +36,8 @@ import { COMPANY_INFO, BOOK_CATEGORIES } from '../constants/content';
 
 export default function Admin() {
   const { isAuthenticated, loading: authLoading, login, logout } = useAuth();
-  const { settings, categories, books, events, loading: contentLoading } = useContent();
-  const [activeTab, setActiveTab] = useState<'settings' | 'categories' | 'books' | 'events'>('settings');
+  const { settings, categories, books, events, whyRichkiss, printWorks, loading: contentLoading } = useContent();
+  const [activeTab, setActiveTab] = useState<'settings' | 'categories' | 'books' | 'events' | 'whyRichkiss' | 'printWorks'>('settings');
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [status, setStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
@@ -234,6 +234,8 @@ export default function Admin() {
             { id: 'categories', label: 'Categories', icon: Layout },
             { id: 'books', label: 'Book Catalogue', icon: Book },
             { id: 'events', label: 'Events & Gallery', icon: Calendar },
+            { id: 'whyRichkiss', label: 'Why Richkiss', icon: CheckCircle2 },
+            { id: 'printWorks', label: 'Print Works', icon: ImageIcon },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -320,6 +322,68 @@ export default function Admin() {
                               </div>
                             </div>
                           )}
+                        </div>
+
+                        <div className="pt-4 mt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-8">
+                           <div className="space-y-4">
+                              <ImageUpload 
+                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, visionImageUrl: url }))}
+                                folder="site"
+                                label="Home Vision Section Image"
+                              />
+                              {formData.visionImageUrl && (
+                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                  <img src={formData.visionImageUrl} alt="Vision" className="w-full h-full object-cover" />
+                                </div>
+                              )}
+                           </div>
+                           <div className="space-y-4">
+                              <ImageUpload 
+                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, careersHeroImageUrl: url }))}
+                                folder="headers"
+                                label="Careers Page Hero Image"
+                              />
+                              {formData.careersHeroImageUrl && (
+                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                  <img src={formData.careersHeroImageUrl} alt="Careers" className="w-full h-full object-cover" />
+                                </div>
+                              )}
+                           </div>
+                           <div className="space-y-4">
+                              <ImageUpload 
+                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, clientsHeroImageUrl: url }))}
+                                folder="headers"
+                                label="Clients Page Hero Image"
+                              />
+                              {formData.clientsHeroImageUrl && (
+                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                  <img src={formData.clientsHeroImageUrl} alt="Clients" className="w-full h-full object-cover" />
+                                </div>
+                              )}
+                           </div>
+                        </div>
+
+                        <div className="pt-4 mt-4 border-t border-gray-100 flex flex-col md:flex-row gap-6">
+                           <div className="flex-grow space-y-4">
+                              <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Promo Banner Title</label>
+                              <input 
+                                type="text" 
+                                value={formData.promoBannerTitle} 
+                                onChange={e => setFormData({ ...formData, promoBannerTitle: e.target.value })}
+                                className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary"
+                                placeholder="e.g. Our Story Continues."
+                              />
+                           </div>
+                           <div className="flex-grow space-y-4">
+                              <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Promo Banner Subtext</label>
+                              <input 
+                                type="text" 
+                                value={formData.promoBannerText} 
+                                onChange={e => setFormData({ ...formData, promoBannerText: e.target.value })}
+                                className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary"
+                                placeholder="e.g. Join our literary community..."
+                              />
+                           </div>
                         </div>
 
                         <div className="pt-4 mt-4 border-t border-gray-100 space-y-4">
@@ -469,9 +533,18 @@ export default function Admin() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {categories.map((cat: any) => (
                     <div key={cat.id} className="p-6 bg-brand-beige/30 rounded-3xl border border-gray-100 flex items-center justify-between group">
-                       <div className="space-y-1">
-                          <h3 className="font-serif font-bold text-lg text-brand-secondary">{cat.name}</h3>
-                          <p className="text-xs text-brand-muted uppercase tracking-widest">{cat.slug}</p>
+                       <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm bg-gray-200">
+                             {cat.imageUrl ? (
+                               <img src={cat.imageUrl} alt={cat.name} className="w-full h-full object-cover" />
+                             ) : (
+                               <div className="w-full h-full flex items-center justify-center text-brand-muted"><Layout size={20} /></div>
+                             )}
+                          </div>
+                          <div className="space-y-1">
+                             <h3 className="font-serif font-bold text-lg text-brand-secondary">{cat.name}</h3>
+                             <p className="text-xs text-brand-muted uppercase tracking-widest">{cat.slug}</p>
+                          </div>
                        </div>
                        <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button 
@@ -503,6 +576,16 @@ export default function Admin() {
                       >
                         <h3 className="text-2xl font-serif text-brand-secondary">{isEditing === 'new-category' ? 'New Category' : 'Edit Category'}</h3>
                         <div className="space-y-4">
+                           <ImageUpload 
+                             onUploadComplete={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                             folder="categories"
+                             label="Category Icon/Image"
+                           />
+                           {formData.imageUrl && (
+                             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-primary shadow-lg">
+                               <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                             </div>
+                           )}
                            <input 
                              placeholder="Name"
                              className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
@@ -793,6 +876,190 @@ export default function Admin() {
                              <span>{isSaving ? 'Saving Event...' : 'Save Event'}</span>
                            </button>
                            <button onClick={() => setIsEditing(null)} disabled={isSaving} className="px-8 py-4 border border-gray-200 rounded-full font-bold">Cancel</button>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+            {activeTab === 'whyRichkiss' && (
+              <div className="space-y-8">
+                <div className="flex justify-between items-center mb-10">
+                  <h2 className="text-3xl font-serif text-brand-secondary">Why Richkiss? (Careers)</h2>
+                  <button 
+                    onClick={() => { setIsEditing('new-why'); setFormData({ order: whyRichkiss.length }); }}
+                    className="flex items-center space-x-2 px-6 py-3 bg-brand-primary text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+                  >
+                    <Plus size={14} />
+                    <span>Add New Item</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {whyRichkiss.map((item: any) => (
+                    <div key={item.id} className="p-6 bg-brand-beige/30 rounded-3xl border border-gray-100 flex items-center justify-between group">
+                       <div className="flex items-center space-x-4">
+                          <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm bg-white">
+                             <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="space-y-1">
+                             <h3 className="font-serif font-bold text-lg text-brand-secondary">{item.title}</h3>
+                             <p className="text-xs text-brand-muted line-clamp-1 max-w-xs">{item.description}</p>
+                          </div>
+                       </div>
+                       <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => { setIsEditing(item.id); setFormData(item); }} className="p-2 bg-white rounded-lg text-brand-secondary hover:text-brand-primary"><Edit2 size={16} /></button>
+                          <button onClick={() => handleDelete('whyRichkiss', item.id)} className="p-2 bg-white rounded-lg text-red-500 hover:bg-red-500 hover:text-white"><Trash2 size={16} /></button>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+
+                <AnimatePresence>
+                  {(isEditing === 'new-why' || whyRichkiss.some(i => i.id === isEditing)) && (
+                    <motion.div 
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[60] bg-brand-secondary/80 backdrop-blur-sm flex items-center justify-center p-4"
+                    >
+                      <motion.div 
+                        initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
+                        className="bg-white p-10 rounded-[40px] shadow-2xl max-w-lg w-full space-y-8"
+                      >
+                        <h3 className="text-2xl font-serif text-brand-secondary">Value Proposition Item</h3>
+                        <div className="space-y-4">
+                           <ImageUpload 
+                             onUploadComplete={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                             folder="careers"
+                             label="Section Image (Card)"
+                           />
+                           {formData.imageUrl && (
+                              <div className="aspect-video w-full rounded-2xl overflow-hidden border">
+                                <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                              </div>
+                           )}
+                           <input 
+                             placeholder="Title"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             value={formData.title}
+                             onChange={e => setFormData({ ...formData, title: e.target.value })}
+                           />
+                           <textarea 
+                             placeholder="Description"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             rows={3}
+                             value={formData.description}
+                             onChange={e => setFormData({ ...formData, description: e.target.value })}
+                           />
+                           <input 
+                             type="number"
+                             placeholder="Display Order"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             value={formData.order}
+                             onChange={e => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                           />
+                        </div>
+                        <div className="flex space-x-4">
+                           <button 
+                             onClick={() => handleSaveItem('whyRichkiss', formData, isEditing === 'new-why' ? undefined : isEditing as string)}
+                             className="flex-grow py-4 bg-brand-secondary text-white rounded-full font-bold shadow-lg"
+                           >
+                             Save Item
+                           </button>
+                           <button onClick={() => setIsEditing(null)} className="px-8 py-4 border border-gray-100 rounded-full font-bold">Cancel</button>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {activeTab === 'printWorks' && (
+              <div className="space-y-8">
+                <div className="flex justify-between items-center mb-10">
+                  <h2 className="text-3xl font-serif text-brand-secondary">Our Works (Print Dept)</h2>
+                  <button 
+                    onClick={() => { setIsEditing('new-work'); setFormData({ order: printWorks.length }); }}
+                    className="flex items-center space-x-2 px-6 py-3 bg-brand-primary text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+                  >
+                    <Plus size={14} />
+                    <span>Add New Work</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {printWorks.map((work: any) => (
+                    <div key={work.id} className="p-4 bg-brand-beige/30 rounded-3xl border border-gray-100 space-y-4 group">
+                       <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-gray-200">
+                          <img src={work.imageUrl} alt={work.title} className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
+                             <button onClick={() => { setIsEditing(work.id); setFormData(work); }} className="p-3 bg-white rounded-xl text-brand-secondary hover:text-brand-primary">
+                                <Edit2 size={18} />
+                             </button>
+                             <button onClick={() => handleDelete('printWorks', work.id)} className="p-3 bg-white rounded-xl text-red-500">
+                                <Trash2 size={18} />
+                             </button>
+                          </div>
+                       </div>
+                       <div className="px-2">
+                          <h3 className="font-bold font-serif text-brand-secondary line-clamp-1">{work.title}</h3>
+                          <p className="text-[10px] text-brand-primary font-bold uppercase tracking-widest">{work.category || 'General'}</p>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+
+                <AnimatePresence>
+                  {(isEditing === 'new-work' || printWorks.some(w => w.id === isEditing)) && (
+                    <motion.div 
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[60] bg-brand-secondary/80 backdrop-blur-sm flex items-center justify-center p-4"
+                    >
+                      <motion.div 
+                        initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
+                        className="bg-white p-10 rounded-[40px] shadow-2xl max-w-lg w-full space-y-8"
+                      >
+                        <h3 className="text-2xl font-serif text-brand-secondary">Portfolio Work Item</h3>
+                        <div className="space-y-4">
+                           <ImageUpload 
+                             onUploadComplete={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                             folder="print-works"
+                             label="Work Showcase Image"
+                           />
+                           {formData.imageUrl && (
+                              <div className="aspect-video w-full rounded-2xl overflow-hidden border">
+                                <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                              </div>
+                           )}
+                           <input 
+                             placeholder="Title"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             value={formData.title}
+                             onChange={e => setFormData({ ...formData, title: e.target.value })}
+                           />
+                           <input 
+                             placeholder="Category (e.g. Graphic Design)"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             value={formData.category}
+                             onChange={e => setFormData({ ...formData, category: e.target.value })}
+                           />
+                           <input 
+                             type="number"
+                             placeholder="Display Order"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             value={formData.order}
+                             onChange={e => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                           />
+                        </div>
+                        <div className="flex space-x-4">
+                           <button 
+                             onClick={() => handleSaveItem('printWorks', formData, isEditing === 'new-work' ? undefined : isEditing as string)}
+                             className="flex-grow py-4 bg-brand-secondary text-white rounded-full font-bold shadow-lg"
+                           >
+                             Save Work Item
+                           </button>
+                           <button onClick={() => setIsEditing(null)} className="px-8 py-4 border border-gray-100 rounded-full font-bold">Cancel</button>
                         </div>
                       </motion.div>
                     </motion.div>
