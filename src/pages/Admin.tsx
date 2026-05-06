@@ -143,7 +143,7 @@ export default function Admin() {
 
       setStatus({ type: 'success', msg: 'Database seeded successfully!' });
     } catch (err: any) {
-      console.error('Seed Error:', err?.message || err);
+      console.error('Seed Error:', err?.message || String(err));
       setStatus({ type: 'error', msg: 'Failed to seed database.' });
     }
   };
@@ -166,7 +166,7 @@ export default function Admin() {
       setStatus({ type: 'success', msg: 'Settings updated successfully!' });
       setIsEditing(null);
     } catch (err: any) {
-      console.error('Update Settings Error:', err?.message || err);
+      console.error('Update Settings Error:', err?.message || String(err));
       setStatus({ type: 'error', msg: `Update failed: ${err?.message || 'Check firestore permissions'}` });
     } finally {
       setIsSaving(false);
@@ -179,7 +179,7 @@ export default function Admin() {
       await deleteDoc(doc(db, coll, id));
       setStatus({ type: 'success', msg: 'Deleted successfully' });
     } catch (err: any) {
-      console.error('Delete Error:', err?.message || err);
+      console.error('Delete Error:', err?.message || String(err));
       setStatus({ type: 'error', msg: 'Delete failed' });
     }
   };
@@ -197,7 +197,7 @@ export default function Admin() {
       setIsEditing(null);
       setFormData({});
     } catch (err: any) {
-      console.error('Save Item Error:', err?.message || err);
+      console.error('Save Item Error:', err?.message || String(err));
       setStatus({ type: 'error', msg: `Save failed: ${err?.message || 'Check connection'}` });
     } finally {
       setIsSaving(false);

@@ -71,7 +71,7 @@ export default function ImageUpload({ onUploadComplete, label = 'Upload Image' }
         } else {
           try {
             const err = JSON.parse(xhr.responseText);
-            console.error('Cloudinary Error:', err?.error?.message || err);
+            console.error('Cloudinary Error:', err?.error?.message || String(err));
             setError(`Upload failed: ${err.error?.message || 'Unknown error'}`);
           } catch (parseErr) {
             console.error('Cloudinary Parse Error:', xhr.responseText);
@@ -88,7 +88,7 @@ export default function ImageUpload({ onUploadComplete, label = 'Upload Image' }
 
       xhr.send(formData);
     } catch (err: any) {
-      console.error('Initiation Error:', err?.message || err);
+      console.error('Initiation Error:', err?.message || String(err));
       setError(`Failed to start upload: ${err?.message || 'Unknown error'}`);
       setUploading(false);
     }

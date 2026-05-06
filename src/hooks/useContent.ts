@@ -4,10 +4,7 @@ import { db } from '../lib/firebase';
 import { COMPANY_INFO, BOOK_CATEGORIES } from '../constants/content';
 
 export function useContent() {
-  const [settings, setSettings] = useState<any>(() => {
-    const cached = localStorage.getItem('site_settings');
-    return cached ? JSON.parse(cached) : null;
-  });
+  const [settings, setSettings] = useState<any>(null);
   const [categories, setCategories] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -24,6 +21,36 @@ export function useContent() {
     let whyRichkissLoaded = false;
     let printWorksLoaded = false;
 
+    const sanitizeData = (data: any): any => {
+      if (!data || typeof data !== 'object') return data;
+      
+      // Handle Firebase Timestamps (they have a toDate function)
+      if (typeof data.toDate === 'function') {
+        return data.toDate().toISOString();
+      }
+
+      // Handle arrays
+      if (Array.isArray(data)) {
+        return data.map(sanitizeData);
+      }
+
+      // ONLY recurse into plain objects. 
+      // If it has a constructor other than Object, it's a complex type (like a ref)
+      if (data.constructor !== Object) {
+        // If it's a special type we know how to stringify, do it.
+        // Otherwise, skip or return a placeholder to avoid circularity.
+        return String(data);
+      }
+      
+      const sanitized: any = {};
+      for (const [key, value] of Object.entries(data)) {
+        // Skip private firebase props
+        if (key.startsWith('_')) continue;
+        sanitized[key] = sanitizeData(value);
+      }
+      return sanitized;
+    };
+
     const checkLoading = () => {
       if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded && whyRichkissLoaded && printWorksLoaded) {
         setLoading(false);
@@ -34,15 +61,7 @@ export function useContent() {
     const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), 
       (snapshot) => {
         if (snapshot.exists()) {
-          const data = snapshot.data();
-          setSettings(data);
-          try {
-            // Only cache if it's stringifiable (avoid circular refs if any exist)
-            const stringified = JSON.stringify(data);
-            localStorage.setItem('site_settings', stringified);
-          } catch (e) {
-            console.warn('Failed to cache settings due to non-serializable data:', e);
-          }
+          setSettings(sanitizeData(snapshot.data()));
         }
         settingsLoaded = true;
         checkLoading();
@@ -57,7 +76,7 @@ export function useContent() {
     // Categories
     const unsubCategories = onSnapshot(collection(db, 'categories'), 
       (snapshot) => {
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
         if (data.length > 0) setCategories(data);
         categoriesLoaded = true;
         checkLoading();
@@ -72,7 +91,7 @@ export function useContent() {
     // Books
     const unsubBooks = onSnapshot(collection(db, 'books'), 
       (snapshot) => {
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
         if (data.length > 0) setBooks(data);
         booksLoaded = true;
         checkLoading();
@@ -87,7 +106,7 @@ export function useContent() {
     // Events
     const unsubEvents = onSnapshot(collection(db, 'events'), 
       (snapshot) => {
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
         if (data.length > 0) setEvents(data);
         eventsLoaded = true;
         checkLoading();
@@ -102,7 +121,7 @@ export function useContent() {
     // Why Richkiss
     const unsubWhy = onSnapshot(collection(db, 'whyRichkiss'), 
       (snapshot) => {
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
         // Sort by order if available
         data.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
         setWhyRichkiss(data);
@@ -119,7 +138,7 @@ export function useContent() {
     // Print Works
     const unsubPrint = onSnapshot(collection(db, 'printWorks'), 
       (snapshot) => {
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
         data.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
         setPrintWorks(data);
         printWorksLoaded = true;
