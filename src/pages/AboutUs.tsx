@@ -156,8 +156,8 @@ export default function AboutUs() {
                   : 'bg-white border border-gray-100 shadow-sm'
                 }`}
               >
-                <div className={item.theme === 'dark' ? 'text-white/80' : 'text-brand-primary'}>
-                  {item.icon}
+                <div className="w-16 h-16 bg-brand-primary text-white flex items-center justify-center rounded-full mb-6 font-serif text-2xl font-bold">
+                  {i + 1}
                 </div>
                 <div className="space-y-5">
                   <h3 className={`text-2xl font-serif ${item.theme === 'dark' ? 'text-white' : 'text-brand-secondary'}`}>

@@ -8,6 +8,7 @@ export function useContent() {
   const [categories, setCategories] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
   const [whyRichkiss, setWhyRichkiss] = useState<any[]>([]);
   const [printWorks, setPrintWorks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -151,6 +152,15 @@ export function useContent() {
       }
     );
 
+    // Partners
+    const unsubPartners = onSnapshot(collection(db, 'partners'), 
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
+        setPartners(data);
+      }, (err) => {
+        console.error('Partners Snapshot Error:', err.message);
+      });
+
     return () => {
       unsubSettings();
       unsubCategories();
@@ -158,6 +168,7 @@ export function useContent() {
       unsubEvents();
       unsubWhy();
       unsubPrint();
+      unsubPartners();
     };
   }, []);
 
@@ -176,6 +187,9 @@ export function useContent() {
     ],
     tagline: settings?.tagline || "Inspiring Excellence in Publishing",
     visionImageUrl: settings?.visionImageUrl || "https://images.unsplash.com/photo-1524311588024-d2317178412b?auto=format&fit=crop&q=80&w=800",
+    featureCard1Url: settings?.featureCard1Url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
+    featureCard2Url: settings?.featureCard2Url || "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400",
+    featureCard3Url: settings?.featureCard3Url || "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&q=80&w=400",
     promoBannerTitle: settings?.promoBannerTitle || "Our Story Continues.",
     promoBannerText: settings?.promoBannerText || "Join our literary community for exclusive updates and events.",
     careersHeroImageUrl: settings?.careersHeroImageUrl || "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2000",
@@ -197,6 +211,7 @@ export function useContent() {
     categories: mergedCategories, 
     books: mergedBooks, 
     events: mergedEvents,
+    partners,
     whyRichkiss,
     printWorks,
     loading 

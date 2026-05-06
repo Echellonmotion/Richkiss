@@ -91,6 +91,12 @@ service cloud.firestore {
              (data.get('order', 0) is int);
     }
 
+    function isValidPartner(data) {
+      return (data.get('name', '') is string) && data.get('name', '').size() <= 200 &&
+             (data.get('logoUrl', '') is string) && data.get('logoUrl', '').size() <= 1000 &&
+             (data.get('order', 0) is int);
+    }
+
     // Match Blocks
     match /settings/global {
       allow read: if true;
@@ -129,6 +135,13 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isAdmin() && isValidId(workId) && isValidPrintWork(incoming());
       allow update: if isAdmin() && isValidPrintWork(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /partners/{partnerId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidId(partnerId) && isValidPartner(incoming());
+      allow update: if isAdmin() && isValidPartner(incoming());
       allow delete: if isAdmin();
     }
   }

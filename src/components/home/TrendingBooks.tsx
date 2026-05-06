@@ -8,7 +8,8 @@ import BookPreviewModal from '../BookPreviewModal';
 export default function TrendingBooks() {
   const { books } = useContent();
   const [selectedBook, setSelectedBook] = useState<any>(null);
-  const trending = books.slice(0, 6);
+  const featured = books.filter((b: any) => b.featured).slice(0, 6);
+  const trending = featured.length > 0 ? featured : books.slice(0, 6);
 
   return (
     <section className="py-24 bg-white">

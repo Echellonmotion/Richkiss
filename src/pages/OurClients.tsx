@@ -7,12 +7,13 @@ import {
 import { useContent } from '../hooks/useContent';
 
 export default function OurClients() {
-  const { settings } = useContent();
-  const partners = [
+  const { settings, partners: cmsPartners } = useContent();
+  const staticPartners = [
     "The Oxford Collective", "Marlowe Press", "National Archive", 
     "Serpent's Tail", "Vintage House", "Borough Libraries", 
     "The Royal Guild", "Curzon Literary", "Ivory Tower", "Pioneer Arts"
   ];
+  const partners = cmsPartners.length > 0 ? cmsPartners : staticPartners.map(name => ({ name }));
 
   const testimonials = [
     {
@@ -73,7 +74,7 @@ export default function OurClients() {
             >
               <div className="aspect-[4/5] bg-gray-50 rounded-sm overflow-hidden shadow-2xl relative group">
                 <img 
-                  src={settings.clientsHeroImageUrl || "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1500"} 
+                  src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=1500" 
                   alt="Partner Atmosphere" 
                   className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-[3s]" 
                 />
@@ -95,16 +96,20 @@ export default function OurClients() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {partners.map((partner, i) => (
               <motion.div 
-                key={partner}
+                key={partner.id || partner.name || i}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
                 className="bg-white p-10 aspect-square flex items-center justify-center border border-gray-50 shadow-sm hover:shadow-md transition-shadow group"
               >
-                <p className="text-base font-serif text-brand-secondary/60 group-hover:text-brand-primary transition-colors leading-tight">
-                  {partner}
-                </p>
+                {partner.logoUrl ? (
+                  <img src={partner.logoUrl} alt={partner.name} className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all text-xs font-serif" />
+                ) : (
+                  <p className="text-base font-serif text-brand-secondary/60 group-hover:text-brand-primary transition-colors leading-tight">
+                    {partner.name}
+                  </p>
+                )}
               </motion.div>
             ))}
           </div>

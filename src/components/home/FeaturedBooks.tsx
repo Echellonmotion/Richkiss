@@ -5,7 +5,8 @@ import { useContent } from '../../hooks/useContent';
 
 export default function FeaturedBooks() {
   const { books } = useContent();
-  const featured = books.filter((b: any) => b.featured).slice(0, 3);
+  const newArrivals = books.filter((b: any) => b.isNew).slice(0, 3);
+  const featured = newArrivals.length > 0 ? newArrivals : books.filter((b: any) => b.featured).slice(0, 3);
 
   return (
     <section className="py-32 bg-white">
@@ -14,7 +15,7 @@ export default function FeaturedBooks() {
           <div className="space-y-4 max-w-2xl">
             <span className="text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.3em]">Curated Collection</span>
             <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary leading-tight">
-              Discover Our <span>Latest Releases</span>
+              Discover Our <span>New Arrivals</span>
             </h2>
             <p className="text-brand-muted font-sans leading-relaxed">
               Explore our hand-picked selection of top-selling books across our various labels. From enchanting children's tales to comprehensive educational resources.
@@ -45,7 +46,9 @@ export default function FeaturedBooks() {
                 
                 {/* Overlay Tags */}
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-brand-primary text-white text-[10px] font-bold uppercase tracking-widest rounded-full">New</span>
+                  <span className="px-3 py-1 bg-brand-primary text-white text-[10px] font-bold uppercase tracking-widest rounded-full">
+                    {book.isNew ? 'New' : 'Featured'}
+                  </span>
                 </div>
 
                 {/* Actions Overlay */}

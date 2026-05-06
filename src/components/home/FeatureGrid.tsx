@@ -1,31 +1,34 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-
-const features = [
-  {
-    title: "New Arrivals.",
-    cta: "View all",
-    color: "bg-[#e53935]", // Red
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
-    link: "/catalogue"
-  },
-  {
-    title: "Featured Works.",
-    cta: "Explore",
-    color: "bg-[#4fc3f7]", // Blue
-    image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400",
-    link: "/catalogue"
-  },
-  {
-    title: "Global Editions.",
-    cta: "Discover",
-    color: "bg-[#7986cb]", // Purple
-    image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&q=80&w=400",
-    link: "/catalogue"
-  }
-];
+import { useContent } from '../../hooks/useContent';
 
 export default function FeatureGrid() {
+  const { settings } = useContent();
+
+  const features = [
+    {
+      title: "New Arrivals.",
+      cta: "View all",
+      color: "bg-[#e53935]", // Red
+      image: settings.featureCard1Url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
+      link: "/catalogue"
+    },
+    {
+      title: "Featured Works.",
+      cta: "Explore",
+      color: "bg-[#4fc3f7]", // Blue
+      image: settings.featureCard2Url || "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400",
+      link: "/print"
+    },
+    {
+      title: "Global Editions.",
+      cta: "Discover",
+      color: "bg-[#7986cb]", // Purple
+      image: settings.featureCard3Url || "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&q=80&w=400",
+      link: "/catalogue"
+    }
+  ];
+
   return (
     <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">

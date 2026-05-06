@@ -1,20 +1,57 @@
 import Hero from '../components/home/Hero';
+import FeaturedBooks from '../components/home/FeaturedBooks';
 import TrendingBooks from '../components/home/TrendingBooks';
 import FeatureGrid from '../components/home/FeatureGrid';
 import PromoBanner from '../components/home/PromoBanner';
 import TopCategories from '../components/home/TopCategories';
 import { useContent } from '../hooks/useContent';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { ImageIcon, ArrowRight } from 'lucide-react';
 
 export default function Home() {
-  const { settings, events } = useContent();
+  const { settings, events, printWorks } = useContent();
 
   return (
     <div className="flex flex-col">
       <Hero />
       
+      <FeaturedBooks />
+
       <FeatureGrid />
+
+      {/* Featured Print Works Section */}
+      <section className="py-24 bg-[#fffcfb]">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary">Print & Branding</span>
+                <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Featured Works</h2>
+              </div>
+              <Link to="/print" className="text-xs font-bold uppercase tracking-widest text-brand-muted hover:text-brand-primary transition-colors flex items-center gap-2">
+                 Explore Portfolio <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+               {printWorks.slice(0, 4).map((work: any, i: number) => (
+                 <motion.div 
+                   key={work.id || i}
+                   initial={{ opacity: 0, scale: 0.95 }}
+                   whileInView={{ opacity: 1, scale: 1 }}
+                   viewport={{ once: true }}
+                   transition={{ delay: i * 0.1 }}
+                   className="group relative aspect-[4/5] bg-gray-100 rounded-sm overflow-hidden shadow-sm"
+                 >
+                    <img src={work.imageUrl} alt={work.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                    <div className="absolute inset-0 bg-brand-secondary/60 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-6 text-center">
+                       <span className="text-white text-[10px] font-bold uppercase tracking-widest leading-relaxed">{work.title}</span>
+                    </div>
+                 </motion.div>
+               ))}
+            </div>
+         </div>
+      </section>
 
       <PromoBanner />
 

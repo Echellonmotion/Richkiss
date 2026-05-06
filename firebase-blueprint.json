@@ -86,6 +86,17 @@
         "order": { "type": "integer" }
       },
       "required": ["title", "imageUrl"]
+    },
+    "Partner": {
+      "title": "Partner Logo",
+      "description": "Partner/Client logos displayed on the site",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "order": { "type": "integer" }
+      },
+      "required": ["name", "logoUrl"]
     }
   },
   "firestore": {
@@ -112,6 +123,10 @@
     "printWorks": {
       "schema": "PrintWork",
       "description": "Portfolio items for the print department section"
+    },
+    "partners": {
+      "schema": "Partner",
+      "description": "Collection of partner logos"
     }
   }
 }
