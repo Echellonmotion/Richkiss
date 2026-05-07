@@ -25,15 +25,39 @@ export default function Hero() {
   const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center bg-[#fdfdfd] overflow-hidden pt-16">
-      {/* Background patterns - subtle floral/abstract lines from ref */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-        <svg className="w-full h-full" viewBox="0 0 100 100">
-          <pattern id="leaf-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M10 5 Q15 0 20 5 T10 20 T0 5 Q5 0 10 5" fill="currentColor" className="text-brand-secondary" />
+    <section className="relative min-h-[95vh] flex items-center bg-white overflow-hidden pt-48 lg:pt-64">
+      {/* Background Layer 1: Mesh Gradient */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-primary/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-primary/5 rounded-full blur-[100px]" />
+        <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-brand-beige rounded-full blur-[80px]" />
+      </div>
+
+      {/* Background Layer 2: Grainy Texture */}
+      <div className="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-overlay">
+        <svg className="w-full h-full">
+          <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+        </svg>
+      </div>
+
+      {/* Background Layer 3: Decorative Patterns */}
+      <div className="absolute inset-0 opacity-[0.07] pointer-events-none">
+        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <pattern id="leaf-pattern" x="0" y="0" width="15" height="15" patternUnits="userSpaceOnUse">
+            <path d="M7.5 2 Q10 0 12.5 2 T7.5 10 T2.5 2 Q5 0 7.5 2" fill="currentColor" className="text-brand-primary" />
           </pattern>
           <rect x="0" y="0" width="100" height="100" fill="url(#leaf-pattern)" />
         </svg>
+      </div>
+
+      {/* Large Decorative Text (Branded Watermark) */}
+      <div className="absolute -left-20 top-1/2 -translate-y-1/2 rotate-90 select-none pointer-events-none overflow-hidden hidden xl:block">
+        <span className="text-[180px] font-serif font-black text-brand-secondary/[0.02] leading-none whitespace-nowrap">
+          RICHKISS PUBLISHERS
+        </span>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

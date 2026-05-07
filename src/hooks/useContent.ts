@@ -21,39 +21,50 @@ export function useContent() {
     let eventsLoaded = false;
     let whyRichkissLoaded = false;
     let printWorksLoaded = false;
+    let partnersLoaded = false;
 
-    const sanitizeData = (data: any): any => {
-      if (!data || typeof data !== 'object') return data;
+    const sanitizeData = (data: any, seen = new WeakSet()): any => {
+      if (data === null || data === undefined) return data;
+      if (typeof data !== 'object') return data;
       
-      // Handle Firebase Timestamps (they have a toDate function)
+      // Handle Firebase Timestamps
       if (typeof data.toDate === 'function') {
         return data.toDate().toISOString();
       }
 
+      // Check for circularity
+      if (seen.has(data)) return '[Circular]';
+      seen.add(data);
+
       // Handle arrays
       if (Array.isArray(data)) {
-        return data.map(sanitizeData);
+        return data.map(item => sanitizeData(item, seen));
       }
 
-      // ONLY recurse into plain objects. 
-      // If it has a constructor other than Object, it's a complex type (like a ref)
-      if (data.constructor !== Object) {
-        // If it's a special type we know how to stringify, do it.
-        // Otherwise, skip or return a placeholder to avoid circularity.
+      // ONLY recurse into plain objects
+      const isPlainObject = Object.prototype.toString.call(data) === '[object Object]' && 
+                           (Object.getPrototypeOf(data) === null || Object.getPrototypeOf(data) === Object.prototype);
+      
+      if (!isPlainObject) {
         return String(data);
       }
       
       const sanitized: any = {};
-      for (const [key, value] of Object.entries(data)) {
-        // Skip private firebase props
-        if (key.startsWith('_')) continue;
-        sanitized[key] = sanitizeData(value);
+      try {
+        const keys = Object.keys(data);
+        for (const key of keys) {
+          // Skip private firebase props
+          if (key.startsWith('_')) continue;
+          sanitized[key] = sanitizeData(data[key], seen);
+        }
+      } catch (e) {
+        return '[Error Sanitizing Object]';
       }
       return sanitized;
     };
 
     const checkLoading = () => {
-      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded && whyRichkissLoaded && printWorksLoaded) {
+      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded && whyRichkissLoaded && printWorksLoaded && partnersLoaded) {
         setLoading(false);
       }
     };
@@ -157,6 +168,8 @@ export function useContent() {
       (snapshot) => {
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
         setPartners(data);
+        partnersLoaded = true;
+        checkLoading();
       }, (err) => {
         console.error('Partners Snapshot Error:', err.message);
       });

@@ -6,13 +6,19 @@ export default function PromoBanner() {
   const { settings } = useContent();
 
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 bg-white relative overflow-hidden">
+      {/* Background Decorative Mesh Filter */}
+      <div className="absolute inset-0 z-0 opacity-[0.4] pointer-events-none">
+        <div className="absolute top-0 right-0 w-[40%] h-[100%] bg-brand-primary/5 blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[30%] h-[30%] bg-[#fcfaf7] blur-[80px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div 
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="relative bg-[#f0f2f5] rounded-sm overflow-hidden min-h-[450px] flex flex-col md:flex-row items-center"
+          className="relative bg-white border border-gray-100 rounded-sm overflow-hidden min-h-[450px] flex flex-col md:flex-row items-center shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)]"
         >
           {/* Left Side: Subject Image */}
           <div className="w-full md:w-1/2 h-[300px] md:h-full relative overflow-hidden">

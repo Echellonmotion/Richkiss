@@ -36,7 +36,7 @@ export default function Careers() {
   ];
 
   return (
-    <div className="min-h-screen bg-white flex flex-col pt-32">
+    <div className="min-h-screen bg-white flex flex-col pt-48 lg:pt-64">
       {/* 1. Hero Section */}
       <section className="pb-32 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

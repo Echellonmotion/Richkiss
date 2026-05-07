@@ -9,8 +9,15 @@ export default function FeaturedBooks() {
   const featured = newArrivals.length > 0 ? newArrivals : books.filter((b: any) => b.featured).slice(0, 3);
 
   return (
-    <section className="py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-32 bg-white relative overflow-hidden">
+      {/* Background Watermark */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none z-0 opacity-[0.02]">
+        <h2 className="text-[40vw] font-serif font-black text-brand-secondary whitespace-nowrap leading-none">
+          LITERACY
+        </h2>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 space-y-6 md:space-y-0">
           <div className="space-y-4 max-w-2xl">
             <span className="text-brand-primary font-sans font-bold text-xs uppercase tracking-[0.3em]">Curated Collection</span>

@@ -11,7 +11,7 @@ import { COMPANY_INFO } from '../constants/content';
 
 export default function AboutUs() {
   return (
-    <div className="min-h-screen bg-white flex flex-col pt-32">
+    <div className="min-h-screen bg-white flex flex-col pt-48 lg:pt-64">
       {/* 1. Heritage Hero Section */}
       <section className="pb-24 bg-[#fdfdfd]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -87,7 +87,7 @@ export default function AboutUs() {
                 <div className="flex items-center space-x-4">
                   <div className="w-10 h-[1px] bg-brand-primary/30" />
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-secondary">
-                    E. S. Kissiedu, Founder
+                    NANA MANUKURE KISSIEDU, Founder
                   </p>
                 </div>
               </motion.div>
