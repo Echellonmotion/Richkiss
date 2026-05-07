@@ -58,7 +58,12 @@
         "price": { "type": "string" },
         "coverUrl": { "type": "string" },
         "categorySlug": { "type": "string" },
-        "featured": { "type": "boolean" }
+        "featured": { "type": "boolean" },
+        "year": { "type": "string" },
+        "isbn": { "type": "string" },
+        "dimensions": { "type": "string" },
+        "bindingPages": { "type": "string" },
+        "description": { "type": "string", "description": "Book blurb/synopsis" }
       },
       "required": ["title", "author", "coverUrl", "categorySlug"]
     },

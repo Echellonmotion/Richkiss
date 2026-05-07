@@ -59,19 +59,27 @@ export default function BookPreviewModal({ selectedBook, onClose }: BookPreviewM
 
               <div className="space-y-6">
                 <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Synopsis</h4>
-                <p className="text-gray-500 font-sans leading-relaxed text-sm md:text-base">
-                  {selectedBook.description || "A masterfully crafted narrative that explores the depths of the human experience. This edition features original commentary and restoration, bringing the author's vision to life with unprecedented clarity."}
+                <p className="text-gray-500 font-sans leading-relaxed text-sm md:text-base whitespace-pre-line">
+                  {selectedBook.description || "A masterfully crafted narrative that explores the depths of the human experience."}
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+              <div className="grid grid-cols-2 gap-8 pt-8 border-t border-gray-100 font-sans">
                 <div>
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Category</p>
-                  <p className="text-xs font-bold text-brand-secondary uppercase tracking-[0.1em] text-blue-600">{selectedBook.categorySlug}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">ISBN</p>
+                  <p className="text-xs font-bold text-brand-secondary">{selectedBook.isbn || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Format</p>
-                  <p className="text-xs font-bold text-brand-secondary uppercase tracking-[0.1em]">Hardcover / Digital</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Year</p>
+                  <p className="text-xs font-bold text-brand-secondary">{selectedBook.year || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Dimensions</p>
+                  <p className="text-xs font-bold text-brand-secondary">{selectedBook.dimensions || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Format & Pages</p>
+                  <p className="text-xs font-bold text-brand-secondary">{selectedBook.bindingPages || 'N/A'}</p>
                 </div>
               </div>
 

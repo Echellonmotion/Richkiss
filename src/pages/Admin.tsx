@@ -128,11 +128,16 @@ export default function Admin() {
         for (const book of cat.books) {
           await addDoc(collection(db, 'books'), {
             title: book.title,
-            author: book.author,
-            price: book.price,
-            coverUrl: book.cover,
+            author: (book as any).author,
+            price: (book as any).price,
+            coverUrl: (book as any).cover,
             categorySlug: cat.slug,
-            featured: true
+            featured: true,
+            year: (book as any).year || "",
+            isbn: (book as any).isbn || "",
+            dimensions: (book as any).dimensions || "",
+            bindingPages: (book as any).bindingPages || "",
+            description: (book as any).description || ""
           });
         }
       }
@@ -748,6 +753,52 @@ export default function Admin() {
                                 placeholder="GH₵ 0.00"
                                 value={formData.price}
                                 onChange={e => setFormData({ ...formData, price: e.target.value })}
+                              />
+                           </div>
+                           <div className="space-y-4">
+                              <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Year of Publication</label>
+                              <input 
+                                className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                                placeholder="e.g. 2024"
+                                value={formData.year}
+                                onChange={e => setFormData({ ...formData, year: e.target.value })}
+                              />
+                           </div>
+                           <div className="space-y-4">
+                              <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">ISBN</label>
+                              <input 
+                                className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                                placeholder="e.g. 978-..."
+                                value={formData.isbn}
+                                onChange={e => setFormData({ ...formData, isbn: e.target.value })}
+                              />
+                           </div>
+                           <div className="space-y-4">
+                              <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Dimensions</label>
+                              <input 
+                                className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                                placeholder="e.g. 8.5 x 8.8 INCHES"
+                                value={formData.dimensions}
+                                onChange={e => setFormData({ ...formData, dimensions: e.target.value })}
+                              />
+                           </div>
+                           <div className="space-y-4">
+                              <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Binding & Pages</label>
+                              <input 
+                                className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                                placeholder="e.g. PAPERBACK / 42 PAGES"
+                                value={formData.bindingPages}
+                                onChange={e => setFormData({ ...formData, bindingPages: e.target.value })}
+                              />
+                           </div>
+                           <div className="space-y-4 md:col-span-2">
+                              <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Synopsis / Blurb</label>
+                              <textarea 
+                                rows={4}
+                                className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                                placeholder="Enter book description..."
+                                value={formData.description}
+                                onChange={e => setFormData({ ...formData, description: e.target.value })}
                               />
                            </div>
                            <div className="space-y-4">
