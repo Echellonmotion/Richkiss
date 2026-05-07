@@ -12,23 +12,23 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand and About */}
           <div className="space-y-6">
-            <Link to="/" className="flex items-center space-x-4">
+            <Link to="/" className="flex items-center space-x-2">
               {settings.footerLogoUrl || settings.logoUrl ? (
                 <img 
                   src={settings.footerLogoUrl || settings.logoUrl} 
                   alt={settings.companyName || "Logo"} 
-                  className="h-40 w-auto object-contain" 
+                  className="h-20 w-auto object-contain" 
                 />
               ) : (
                 <>
-                  <div className="w-20 h-20 bg-brand-primary rounded-xl flex items-center justify-center text-white">
-                    <BookOpen size={48} />
+                  <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white">
+                    <BookOpen size={24} />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-serif text-4xl font-bold tracking-tight leading-none text-white uppercase">
+                    <span className="font-serif text-xl font-bold tracking-tight leading-none text-white uppercase">
                       {settings.companyName?.split(' ')[0] || 'RICHKISS'}
                     </span>
-                    <span className="text-[18px] uppercase tracking-[0.2em] text-gray-400 font-sans font-semibold mt-1">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-sans font-semibold mt-1">
                       {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
                     </span>
                   </div>

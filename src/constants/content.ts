@@ -152,7 +152,7 @@ export const BOOK_CATEGORIES = [
       { 
         id: "c5", 
         title: "KOJO WRITES A STORY", 
-        author: "SAMUEL UGOH", 
+        author: "NANA MANUKURE KISSIEDU", 
         cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=800", 
         price: "GH₵ 42.00",
         year: "2020",
@@ -228,7 +228,7 @@ export const BOOK_CATEGORIES = [
       { 
         id: "n1", 
         title: "AYORKOR", 
-        author: "SAMUEL UGOH", 
+        author: "NANA MANUKURE KISSIEDU", 
         cover: "https://images.unsplash.com/photo-1543005041-789647247bf2?auto=format&fit=crop&q=80&w=800", 
         price: "GH₵ 60.00",
         year: "2020",
@@ -264,7 +264,7 @@ export const BOOK_CATEGORIES = [
       { 
         id: "n4", 
         title: "AN OMNIBUS OF SHORT STORIES FROM GHANA", 
-        author: "KOSSY ASAMOAH, NANA MANUKURE KISSIEDU & SAMUEL UGOH", 
+        author: "NANA MANUKURE KISSIEDU", 
         cover: "https://images.unsplash.com/photo-1524567245596-5cbe78709f06?auto=format&fit=crop&q=80&w=800", 
         price: "GH₵ 70.00",
         year: "2024",
@@ -284,7 +284,7 @@ export const BOOK_CATEGORIES = [
       { 
         id: "new1", 
         title: "WORLA WANTS ANOTHER FRIEND", 
-        author: "OHUI AGBENYEGA ALLOTEY", 
+        author: "NANA MANUKURE KISSIEDU", 
         cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=800", 
         price: "GH₵ 40.00",
         year: "2025",

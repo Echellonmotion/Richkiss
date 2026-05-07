@@ -4,7 +4,7 @@ import { COMPANY_INFO } from '../constants/content';
 
 export default function Contact() {
   return (
-    <div className="flex flex-col min-h-screen bg-white pt-48 lg:pt-64">
+    <div className="flex flex-col min-h-screen bg-white pt-32">
       {/* 1. Header Section */}
       <section className="pb-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

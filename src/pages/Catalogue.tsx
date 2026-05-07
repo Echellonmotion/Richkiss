@@ -43,7 +43,7 @@ export default function Catalogue() {
   }, [filteredBooks, currentPage, itemsPerPage]);
 
   return (
-    <div className="bg-white min-h-screen flex flex-col pt-48 lg:pt-64">
+    <div className="bg-white min-h-screen flex flex-col pt-32">
       {/* 1. Header Section */}
       <section className="pb-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -21,25 +21,25 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-48 lg:h-64">
+        <div className="flex justify-between items-center h-24 lg:h-32">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-6 group">
+          <Link to="/" className="flex items-center space-x-3 group">
             {settings.logoUrl ? (
               <img 
                 src={settings.logoUrl} 
                 alt={settings.companyName || "Logo"} 
-                className="h-32 lg:h-48 w-auto object-contain transition-transform duration-200" 
+                className="h-16 lg:h-24 w-auto object-contain transition-transform duration-200" 
               />
             ) : (
-              <div className="flex items-center space-x-4">
-                 <div className="w-20 h-20 bg-brand-primary rounded-xl flex items-center justify-center text-white font-bold">
-                    <BookOpen size={48} />
+              <div className="flex items-center space-x-2">
+                 <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white font-bold">
+                    <BookOpen size={24} />
                  </div>
                  <div className="flex flex-col">
-                    <span className="font-serif text-4xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
+                    <span className="font-serif text-xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
                       {settings.companyName?.split(' ')[0] || 'RICHKISS'}
                     </span>
-                    <span className="text-[18px] uppercase tracking-[0.2em] text-brand-muted font-sans font-semibold mt-1">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-brand-muted font-sans font-semibold mt-1">
                       {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
                     </span>
                  </div>

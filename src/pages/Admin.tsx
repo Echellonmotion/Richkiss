@@ -50,7 +50,7 @@ export default function Admin() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-brand-beige flex items-center justify-center p-4 pt-48 lg:pt-64">
+      <div className="min-h-screen bg-brand-beige flex items-center justify-center p-4">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -211,9 +211,9 @@ export default function Admin() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-beige pt-48 lg:pt-64">
+    <div className="min-h-screen bg-brand-beige pt-32">
       {/* Admin Sidebar/Topnav */}
-      <div className="bg-brand-secondary text-white p-6 shadow-xl sticky top-48 lg:top-64 z-40 flex items-center justify-between">
+      <div className="bg-brand-secondary text-white p-6 shadow-xl sticky top-24 lg:top-32 z-40 flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center">
             <Database size={20} />
@@ -672,7 +672,7 @@ export default function Admin() {
                 <div className="flex justify-between items-center mb-10">
                   <h2 className="text-3xl font-serif text-brand-secondary">Book Collection</h2>
                   <button 
-                    onClick={() => { setIsEditing('new-book'); setFormData({ categorySlug: categories[0]?.slug }); }}
+                    onClick={() => { setIsEditing('new-book'); setFormData({ author: "NANA MANUKURE KISSIEDU", categorySlug: categories[0]?.slug }); }}
                     className="flex items-center space-x-2 px-6 py-3 bg-brand-primary text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
                   >
                     <Plus size={14} />

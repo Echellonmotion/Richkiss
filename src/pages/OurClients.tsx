@@ -36,7 +36,7 @@ export default function OurClients() {
   ];
 
   return (
-    <div className="min-h-screen bg-white flex flex-col pt-48 lg:pt-64">
+    <div className="min-h-screen bg-white flex flex-col pt-32">
       {/* 1. Hero Section */}
       <section className="pb-32 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -43,7 +43,7 @@ export default function PrintDepartment() {
   return (
     <div className="min-h-screen bg-white">
       {/* 1. Hero Section */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden pt-48 lg:pt-64">
+      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img 
             src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=2000" 

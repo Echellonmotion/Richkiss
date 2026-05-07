@@ -25,7 +25,7 @@ export default function Hero() {
   const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <section className="relative min-h-[95vh] flex items-center bg-white overflow-hidden pt-48 lg:pt-64">
+    <section className="relative min-h-[95vh] flex items-center bg-white overflow-hidden pt-16">
       {/* Background Layer 1: Mesh Gradient */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-primary/10 rounded-full blur-[120px] animate-pulse" />
