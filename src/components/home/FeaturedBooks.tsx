@@ -9,7 +9,7 @@ export default function FeaturedBooks() {
   const featured = newArrivals.length > 0 ? newArrivals : books.filter((b: any) => b.featured).slice(0, 3);
 
   return (
-    <section className="py-32 bg-white relative overflow-hidden">
+    <section className="py-32 bg-brand-beige relative overflow-hidden border-t border-brand-primary/5">
       {/* Background Watermark */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none z-0 opacity-[0.02]">
         <h2 className="text-[40vw] font-serif font-black text-brand-secondary whitespace-nowrap leading-none">
@@ -76,7 +76,7 @@ export default function FeaturedBooks() {
           {/* See More Card */}
           <Link 
             to="/catalogue"
-            className="flex flex-col items-center justify-center aspect-[3/4] bg-brand-beige rounded-2xl border-2 border-dashed border-brand-primary/20 hover:border-brand-primary hover:bg-white transition-all duration-500 text-center px-8"
+            className="flex flex-col items-center justify-center aspect-[3/4] bg-white rounded-2xl border-2 border-dashed border-brand-primary/20 hover:border-brand-primary hover:shadow-xl transition-all duration-500 text-center px-8"
           >
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-brand-primary shadow-sm mb-4">
               <ArrowRight size={24} />
