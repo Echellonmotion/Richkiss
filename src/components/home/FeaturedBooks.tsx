@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Eye } from 'lucide-react';
+import { ArrowRight, Eye, BookOpen } from 'lucide-react';
 import { useContent } from '../../hooks/useContent';
 
 export default function FeaturedBooks() {
@@ -52,11 +52,17 @@ export default function FeaturedBooks() {
                 className="group"
               >
                 <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-6 shadow-md hover:shadow-2xl transition-all duration-500">
-                  <img 
-                    src={book.coverUrl || book.cover} 
-                    alt={book.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                  />
+                  {(book.coverUrl || book.cover) ? (
+                    <img 
+                      src={book.coverUrl || book.cover} 
+                      alt={book.title} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                      <BookOpen size={48} />
+                    </div>
+                  )}
                   
                   {/* Overlay Tags */}
                   <div className="absolute top-4 left-4">

@@ -13,6 +13,7 @@ import {
   X, 
   LogIn, 
   LogOut, 
+  BookOpen,
   Image as ImageIcon,
   Database,
   CheckCircle2,
@@ -331,105 +332,113 @@ export default function Admin() {
                           )}
                         </div>
 
-                        <div className="pt-4 mt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-8">
-                           <div className="space-y-4">
-                              <ImageUpload 
-                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, visionImageUrl: url }))}
-                                folder="site"
-                                label="Home Vision Section Image"
-                              />
-                              {formData.visionImageUrl && (
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img src={formData.visionImageUrl} alt="Vision" className="w-full h-full object-cover" />
-                                </div>
-                              )}
+                         <div className="pt-8 mt-8 border-t border-gray-100">
+                           <h3 className="text-sm font-bold uppercase tracking-widest text-brand-primary mb-6">Page-Specific Hero & Section Images</h3>
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, visionImageUrl: url }))}
+                                  folder="site"
+                                  label="Home Vision Section Image"
+                                />
+                                {formData.visionImageUrl && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.visionImageUrl} alt="Vision" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, careersHeroImageUrl: url }))}
+                                  folder="headers"
+                                  label="Careers Page Hero Image"
+                                />
+                                {formData.careersHeroImageUrl && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.careersHeroImageUrl} alt="Careers" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, clientsHeroImageUrl: url }))}
+                                  folder="headers"
+                                  label="Clients Page Hero Image"
+                                />
+                                {formData.clientsHeroImageUrl && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.clientsHeroImageUrl} alt="Clients" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, printHeroImageUrl: url }))}
+                                  folder="headers"
+                                  label="Print & Branding Hero Image"
+                                />
+                                {formData.printHeroImageUrl && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, printAboutImageUrl: url }))}
+                                  folder="site"
+                                  label="Print & Branding About Image"
+                                />
+                                {formData.printAboutImageUrl && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
                            </div>
+                         </div>
 
-                           <div className="space-y-4">
-                              <ImageUpload 
-                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, featureCard1Url: url }))}
-                                folder="site"
-                                label="Home Feature Card 1 Image (New Arrivals)"
-                              />
-                              {formData.featureCard1Url && (
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img src={formData.featureCard1Url} alt="Feature 1" className="w-full h-full object-cover" />
-                                </div>
-                              )}
+                         <div className="pt-8 mt-8 border-t border-gray-100">
+                           <h3 className="text-sm font-bold uppercase tracking-widest text-brand-primary mb-6">Home Feature Cards</h3>
+                           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, featureCard1Url: url }))}
+                                  folder="site"
+                                  label="Card 1: New Arrivals"
+                                />
+                                {formData.featureCard1Url && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.featureCard1Url} alt="Feature 1" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, featureCard2Url: url }))}
+                                  folder="site"
+                                  label="Card 2: Featured Works"
+                                />
+                                {formData.featureCard2Url && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.featureCard2Url} alt="Feature 2" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, featureCard3Url: url }))}
+                                  folder="site"
+                                  label="Card 3: Global Editions"
+                                />
+                                {formData.featureCard3Url && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.featureCard3Url} alt="Feature 3" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
                            </div>
-                           <div className="space-y-4">
-                              <ImageUpload 
-                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, featureCard2Url: url }))}
-                                folder="site"
-                                label="Home Feature Card 2 Image (Featured Works)"
-                              />
-                              {formData.featureCard2Url && (
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img src={formData.featureCard2Url} alt="Feature 2" className="w-full h-full object-cover" />
-                                </div>
-                              )}
-                           </div>
-                           <div className="space-y-4">
-                              <ImageUpload 
-                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, featureCard3Url: url }))}
-                                folder="site"
-                                label="Home Feature Card 3 Image (Global Editions)"
-                              />
-                              {formData.featureCard3Url && (
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img src={formData.featureCard3Url} alt="Feature 3" className="w-full h-full object-cover" />
-                                </div>
-                              )}
-                           </div>
-                           <div className="space-y-4">
-                              <ImageUpload 
-                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, careersHeroImageUrl: url }))}
-                                folder="headers"
-                                label="Careers Page Hero Image"
-                              />
-                              {formData.careersHeroImageUrl && (
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img src={formData.careersHeroImageUrl} alt="Careers" className="w-full h-full object-cover" />
-                                </div>
-                              )}
-                           </div>
-                           <div className="space-y-4">
-                              <ImageUpload 
-                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, clientsHeroImageUrl: url }))}
-                                folder="headers"
-                                label="Clients Page Hero Image"
-                              />
-                              {formData.clientsHeroImageUrl && (
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img src={formData.clientsHeroImageUrl} alt="Clients" className="w-full h-full object-cover" />
-                                </div>
-                              )}
-                           </div>
-                           <div className="space-y-4">
-                              <ImageUpload 
-                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, printHeroImageUrl: url }))}
-                                folder="headers"
-                                label="Print & Branding Hero Image"
-                              />
-                              {formData.printHeroImageUrl && (
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img src={formData.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
-                                </div>
-                              )}
-                           </div>
-                           <div className="space-y-4">
-                              <ImageUpload 
-                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, printAboutImageUrl: url }))}
-                                folder="site"
-                                label="Print & Branding About Image"
-                              />
-                              {formData.printAboutImageUrl && (
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img src={formData.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
-                                </div>
-                              )}
-                           </div>
-                        </div>
+                         </div>
 
                         <div className="pt-4 mt-4 border-t border-gray-100 flex flex-col md:flex-row gap-6">
                            <div className="flex-grow space-y-4">
@@ -535,7 +544,11 @@ export default function Admin() {
                        <div className="space-y-4">
                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Main Logo</h4>
                           <div className="w-full aspect-video bg-brand-beige rounded-3xl overflow-hidden flex items-center justify-center p-8 border border-gray-100">
-                             <img src={settings.logoUrl} alt="Main Logo" className="max-w-full max-h-full object-contain" />
+                             {settings.logoUrl ? (
+                               <img src={settings.logoUrl} alt="Main Logo" className="max-w-full max-h-full object-contain" />
+                             ) : (
+                               <div className="text-brand-muted"><BookOpen size={48} /></div>
+                             )}
                           </div>
                        </div>
                        <div className="space-y-4">
@@ -561,6 +574,31 @@ export default function Admin() {
                                   <p className="text-xs uppercase tracking-widest font-bold">No custom hero images set</p>
                                </div>
                              )}
+                          </div>
+                       </div>
+                       <div className="space-y-4 md:col-span-2">
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Print & Branding Assets</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <p className="text-[9px] font-bold text-brand-muted uppercase">Hero Image</p>
+                              <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                {settings.printHeroImageUrl ? (
+                                  <img src={settings.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                )}
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-[9px] font-bold text-brand-muted uppercase">About Section Image</p>
+                              <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                {settings.printAboutImageUrl ? (
+                                  <img src={settings.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                )}
+                              </div>
+                            </div>
                           </div>
                        </div>
                     </div>
@@ -708,7 +746,11 @@ export default function Admin() {
                   {books.map((book: any) => (
                     <div key={book.id} className="p-4 bg-brand-beige/30 rounded-3xl border border-gray-100 space-y-4 group">
                        <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200">
-                          <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover" />
+                          {book.coverUrl ? (
+                            <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100"><Book size={48} /></div>
+                          )}
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
                              <button onClick={() => { setIsEditing(book.id); setFormData(book); }} className="p-3 bg-white rounded-xl text-brand-secondary hover:text-brand-primary transition-all scale-90 group-hover:scale-100">
                                 <Edit2 size={18} />
@@ -901,9 +943,11 @@ export default function Admin() {
                           <p className="text-sm text-gray-500 leading-relaxed max-w-2xl">{event.description}</p>
                           <div className="flex flex-wrap gap-2 pt-4">
                              {event.gallery?.map((img: string, i: number) => (
-                               <div key={i} className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-gray-100">
-                                  <img src={img} alt="gallery" className="w-full h-full object-cover" />
-                               </div>
+                               img ? (
+                                 <div key={i} className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-gray-100">
+                                    <img src={img} alt="gallery" className="w-full h-full object-cover" />
+                                 </div>
+                               ) : null
                              ))}
                           </div>
                        </div>
@@ -984,18 +1028,20 @@ export default function Admin() {
 
                               <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 pt-4">
                                 {formData.gallery?.map((img: string, i: number) => (
-                                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden group/img">
-                                     <img src={img} alt="gallery" className="w-full h-full object-cover" />
-                                     <button 
-                                       onClick={() => {
-                                         const newGallery = formData.gallery.filter((_: any, idx: number) => idx !== i);
-                                         setFormData({ ...formData, gallery: newGallery });
-                                       }}
-                                       className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity"
-                                     >
-                                       <X size={10} />
-                                     </button>
-                                  </div>
+                                  img ? (
+                                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden group/img">
+                                       <img src={img} alt="gallery" className="w-full h-full object-cover" />
+                                       <button 
+                                         onClick={() => {
+                                           const newGallery = formData.gallery.filter((_: any, idx: number) => idx !== i);
+                                           setFormData({ ...formData, gallery: newGallery });
+                                         }}
+                                         className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity"
+                                       >
+                                         <X size={10} />
+                                       </button>
+                                    </div>
+                                  ) : null
                                 ))}
                               </div>
                            </div>
@@ -1034,7 +1080,11 @@ export default function Admin() {
                   {partners.map((partner: any) => (
                     <div key={partner.id} className="p-4 bg-brand-beige/30 rounded-3xl border border-gray-100 flex flex-col items-center space-y-4 group">
                        <div className="w-full aspect-square bg-white rounded-2xl overflow-hidden flex items-center justify-center p-4 border border-gray-100 shadow-sm transition-all group-hover:shadow-md">
-                          <img src={partner.logoUrl} alt={partner.name} className="max-w-full max-h-full object-contain" />
+                          {partner.logoUrl ? (
+                            <img src={partner.logoUrl} alt={partner.name} className="max-w-full max-h-full object-contain" />
+                          ) : (
+                            <div className="text-xs font-bold text-gray-300">No Logo</div>
+                          )}
                        </div>
                        <div className="text-center w-full">
                           <h3 className="font-serif font-bold text-sm text-brand-secondary line-clamp-1">{partner.name}</h3>

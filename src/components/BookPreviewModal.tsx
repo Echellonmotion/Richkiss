@@ -34,12 +34,18 @@ export default function BookPreviewModal({ selectedBook, onClose }: BookPreviewM
 
             {/* Left Side: Large Image */}
             <div className="w-full md:w-1/2 bg-[#f8f8f8] p-12 lg:p-20 flex items-center justify-center">
-              <motion.img 
-                layoutId={`book-${selectedBook.id}`}
-                src={selectedBook.coverUrl || selectedBook.cover} 
-                alt={selectedBook.title}
-                className="max-h-full max-w-full object-contain shadow-[30px_30px_60px_rgba(0,0,0,0.15)]"
-              />
+              {(selectedBook.coverUrl || selectedBook.cover) ? (
+                <motion.img 
+                  layoutId={`book-${selectedBook.id}`}
+                  src={selectedBook.coverUrl || selectedBook.cover} 
+                  alt={selectedBook.title}
+                  className="max-h-full max-w-full object-contain shadow-[30px_30px_60px_rgba(0,0,0,0.15)]"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-300">
+                  <BookOpen size={80} />
+                </div>
+              )}
             </div>
 
             {/* Right Side: Content */}

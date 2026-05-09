@@ -45,11 +45,15 @@ export default function PrintDepartment() {
       {/* 1. Hero Section */}
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img 
-            src={settings.printHeroImageUrl} 
-            alt="Print Production" 
-            className="w-full h-full object-cover grayscale brightness-50"
-          />
+          {settings.printHeroImageUrl ? (
+            <img 
+              src={settings.printHeroImageUrl} 
+              alt="Print Production" 
+              className="w-full h-full object-cover grayscale brightness-50"
+            />
+          ) : (
+            <div className="w-full h-full bg-brand-secondary" />
+          )}
           {/* Transparent with black overlay */}
           <div className="absolute inset-0 bg-brand-secondary/60 backdrop-blur-[1px] z-[1]" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-[2]" />
@@ -123,11 +127,17 @@ export default function PrintDepartment() {
               viewport={{ once: true }}
               className="relative"
             >
-              <img 
-                src={settings.printAboutImageUrl} 
-                alt="Production"
-                className="rounded-sm shadow-2xl w-full aspect-[4/5] object-cover"
-              />
+              {settings.printAboutImageUrl ? (
+                <img 
+                  src={settings.printAboutImageUrl} 
+                  alt="Production"
+                  className="rounded-sm shadow-2xl w-full aspect-[4/5] object-cover"
+                />
+              ) : (
+                <div className="rounded-sm shadow-2xl w-full aspect-[4/5] bg-gray-100 flex items-center justify-center text-gray-300">
+                  <BookOpen size={48} />
+                </div>
+              )}
               <div className="absolute -left-4 top-1/2 -translate-y-1/2 bg-brand-primary text-white py-12 px-2 [writing-mode:vertical-lr] text-[10px] font-bold uppercase tracking-[0.4em] rotate-180 rounded-sm">
                 WE ARE PROUD OF
               </div>

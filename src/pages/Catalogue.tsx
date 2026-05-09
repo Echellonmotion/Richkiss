@@ -151,11 +151,17 @@ export default function Catalogue() {
                           className="relative aspect-[3/4] mb-8 overflow-hidden rounded-sm bg-gray-50 flex items-center justify-center p-6 lg:p-12 cursor-pointer group/card"
                           onClick={() => setSelectedBook(book)}
                         >
-                          <img 
-                            src={book.coverUrl || book.cover} 
-                            alt={book.title} 
-                            className="w-full h-full object-contain shadow-[20px_20px_40px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-700" 
-                          />
+                          {(book.coverUrl || book.cover) ? (
+                            <img 
+                              src={book.coverUrl || book.cover} 
+                              alt={book.title} 
+                              className="w-full h-full object-contain shadow-[20px_20px_40px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-700" 
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-gray-300">
+                              <BookOpen size={48} />
+                            </div>
+                          )}
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
                           
                           {/* Quick Preview Hover */}

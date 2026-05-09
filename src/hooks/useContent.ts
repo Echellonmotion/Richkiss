@@ -188,8 +188,8 @@ export function useContent() {
   // Merge with static defaults if dynamic data is missing
   const mergedSettings = {
     companyName: settings?.companyName || COMPANY_INFO.name,
-    logoUrl: settings?.logoUrl || "", 
-    footerLogoUrl: settings?.footerLogoUrl || "",
+    logoUrl: settings?.logoUrl || null, 
+    footerLogoUrl: settings?.footerLogoUrl || null,
     heroImageUrl: settings?.heroImageUrl || "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000",
     heroImages: settings?.heroImages && settings.heroImages.length > 0 ? settings.heroImages : [
       "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000",
