@@ -74,6 +74,8 @@ export function useContent() {
       (snapshot) => {
         if (snapshot.exists()) {
           setSettings(sanitizeData(snapshot.data()));
+        } else {
+          setSettings({}); // Ensure state updates even if doc is missing
         }
         settingsLoaded = true;
         checkLoading();
@@ -89,7 +91,7 @@ export function useContent() {
     const unsubCategories = onSnapshot(collection(db, 'categories'), 
       (snapshot) => {
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
-        if (data.length > 0) setCategories(data);
+        setCategories(data); // Set even if empty
         categoriesLoaded = true;
         checkLoading();
       },
@@ -104,7 +106,7 @@ export function useContent() {
     const unsubBooks = onSnapshot(collection(db, 'books'), 
       (snapshot) => {
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
-        if (data.length > 0) setBooks(data);
+        setBooks(data); // Set even if empty
         booksLoaded = true;
         checkLoading();
       },
@@ -119,7 +121,7 @@ export function useContent() {
     const unsubEvents = onSnapshot(collection(db, 'events'), 
       (snapshot) => {
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
-        if (data.length > 0) setEvents(data);
+        setEvents(data); // Set even if empty
         eventsLoaded = true;
         checkLoading();
       },
@@ -172,6 +174,8 @@ export function useContent() {
         checkLoading();
       }, (err) => {
         console.error('Partners Snapshot Error:', err.message);
+        partnersLoaded = true;
+        checkLoading();
       });
 
     return () => {

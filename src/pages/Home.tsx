@@ -83,7 +83,7 @@ export default function Home() {
         {/* Background Image with Parallax-like effect */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000" 
+            src={settings.heroImageUrl || "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000"} 
             alt="" 
             className="w-full h-full object-cover transform scale-105"
           />

@@ -23,7 +23,7 @@ export default function PromoBanner() {
           {/* Left Side: Subject Image */}
           <div className="w-full md:w-1/2 h-[300px] md:h-full relative overflow-hidden">
              <img 
-               src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800" 
+               src={settings.featureCard1Url || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800"} 
                className="w-full h-full object-cover"
                alt="Promotion"
              />
@@ -58,7 +58,7 @@ export default function PromoBanner() {
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="absolute top-1/4 right-8 w-48 aspect-[3/4] skew-x-6 overflow-hidden border-[12px] border-white shadow-2xl"
             >
-               <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover" />
+               <img src={settings.featureCard2Url || "https://images.unsplash.com/photo-1541963463532-d68292c34b19?auto=format&fit=crop&q=80&w=400"} className="w-full h-full object-cover" />
             </motion.div>
           </div>
         </motion.div>

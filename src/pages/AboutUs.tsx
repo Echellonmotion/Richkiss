@@ -7,9 +7,11 @@ import {
   Quote, 
   ArrowRight
 } from 'lucide-react';
-import { COMPANY_INFO } from '../constants/content';
+import { useContent } from '../hooks/useContent';
 
 export default function AboutUs() {
+  const { settings } = useContent();
+
   return (
     <div className="min-h-screen bg-white flex flex-col pt-32">
       {/* 1. Heritage Hero Section */}
@@ -30,9 +32,7 @@ export default function AboutUs() {
                 </h1>
               </div>
               <p className="text-lg text-gray-500 font-sans leading-relaxed max-w-lg">
-                From a small dedicated publishing house in Accra to a leading voice in West African 
-                literature, Richkiss has remained committed to the timeless power of the written word 
-                and the preservation of our cultural narratives.
+                {settings.aboutText || "From a small dedicated publishing house in Accra to a leading voice in West African literature, Richkiss has remained committed to the timeless power of the written word and the preservation of our cultural narratives."}
               </p>
             </motion.div>
             
@@ -44,7 +44,7 @@ export default function AboutUs() {
               className="relative aspect-[4/5] bg-brand-beige rounded-sm overflow-hidden shadow-2xl border-white border-[12px]"
             >
               <img 
-                src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=1000" 
+                src={settings.heroImageUrl || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=1000"} 
                 alt="Heritage" 
                 className="w-full h-full object-cover"
               />
@@ -231,11 +231,11 @@ export default function AboutUs() {
             className="space-y-12"
           >
             <h2 className="text-4xl md:text-6xl font-serif text-brand-secondary italic leading-tight tracking-tight">
-              "Our mission is simple: To ensure that <br className="hidden lg:block" /> every voice worth hearing finds <br className="hidden lg:block" /> a reader worth listening."
+              "{settings.mission || "Our mission is simple: To ensure that every voice worth hearing finds a reader worth listening."}"
             </h2>
             <div className="w-24 h-1 bg-brand-primary mx-auto opacity-30" />
             <p className="text-gray-400 font-sans text-sm tracking-[0.3em] font-bold uppercase">
-              {COMPANY_INFO.vision.split(' ').slice(0, 10).join(' ')}...
+              {settings.vision?.split(' ').slice(0, 10).join(' ') || "TRADING IN EXCELLENCE"}...
             </p>
           </motion.div>
         </div>
