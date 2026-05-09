@@ -405,6 +405,30 @@ export default function Admin() {
                                 </div>
                               )}
                            </div>
+                           <div className="space-y-4">
+                              <ImageUpload 
+                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, printHeroImageUrl: url }))}
+                                folder="headers"
+                                label="Print & Branding Hero Image"
+                              />
+                              {formData.printHeroImageUrl && (
+                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                  <img src={formData.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
+                                </div>
+                              )}
+                           </div>
+                           <div className="space-y-4">
+                              <ImageUpload 
+                                onUploadComplete={(url) => setFormData(prev => ({ ...prev, printAboutImageUrl: url }))}
+                                folder="site"
+                                label="Print & Branding About Image"
+                              />
+                              {formData.printAboutImageUrl && (
+                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                  <img src={formData.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
+                                </div>
+                              )}
+                           </div>
                         </div>
 
                         <div className="pt-4 mt-4 border-t border-gray-100 flex flex-col md:flex-row gap-6">

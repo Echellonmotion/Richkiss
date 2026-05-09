@@ -207,6 +207,8 @@ export function useContent() {
     promoBannerText: settings?.promoBannerText || "Join our literary community for exclusive updates and events.",
     careersHeroImageUrl: settings?.careersHeroImageUrl || "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2000",
     clientsHeroImageUrl: settings?.clientsHeroImageUrl || "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=2000",
+    printHeroImageUrl: settings?.printHeroImageUrl || "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=2000",
+    printAboutImageUrl: settings?.printAboutImageUrl || "https://images.unsplash.com/photo-1562654501-a0ccc0af3fb1?auto=format&fit=crop&q=80&w=1200",
     phoneNumbers: settings?.phoneNumbers || COMPANY_INFO.phone,
     contactEmail: settings?.contactEmail || COMPANY_INFO.email,
     aboutText: settings?.aboutText || COMPANY_INFO.aboutUs,

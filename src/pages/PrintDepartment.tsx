@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 import { useContent } from '../hooks/useContent';
 
 export default function PrintDepartment() {
-  const { printWorks } = useContent();
+  const { settings, printWorks } = useContent();
   const [selectedWork, setSelectedWork] = useState<any | null>(null);
 
   const services = [
@@ -46,7 +46,7 @@ export default function PrintDepartment() {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=2000" 
+            src={settings.printHeroImageUrl} 
             alt="Print Production" 
             className="w-full h-full object-cover grayscale brightness-50"
           />
@@ -124,7 +124,7 @@ export default function PrintDepartment() {
               className="relative"
             >
               <img 
-                src="https://images.unsplash.com/photo-1562654501-a0ccc0af3fb1?auto=format&fit=crop&q=80&w=1200" 
+                src={settings.printAboutImageUrl} 
                 alt="Production"
                 className="rounded-sm shadow-2xl w-full aspect-[4/5] object-cover"
               />
