@@ -18,6 +18,7 @@ import Catalogue from './pages/Catalogue';
 import Admin from './pages/Admin';
 import { AuthProvider } from './context/AuthContext';
 import { useLocation } from 'react-router-dom';
+import { useContent } from './hooks/useContent';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,6 +29,24 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const { settings } = useContent();
+
+  useEffect(() => {
+    if (settings?.logoUrl) {
+      let link: HTMLLinkElement | null = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.getElementsByTagName('head')[0].appendChild(link);
+      }
+      link.href = settings.logoUrl;
+    }
+    
+    if (settings?.companyName) {
+      document.title = settings.companyName;
+    }
+  }, [settings?.logoUrl, settings?.companyName]);
+
   return (
     <AuthProvider>
       <Router>
