@@ -44,7 +44,7 @@ export default function AboutUs() {
               className="relative aspect-[4/5] bg-brand-beige rounded-sm overflow-hidden shadow-2xl border-white border-[12px]"
             >
               <img 
-                src={settings.heroImageUrl || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=1000"} 
+                src={settings.aboutHeritageImageUrl || settings.heroImageUrl || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=1000"} 
                 alt="Heritage" 
                 className="w-full h-full object-cover"
               />
@@ -100,7 +100,7 @@ export default function AboutUs() {
                className="relative aspect-[3/4] lg:aspect-square group overflow-hidden shadow-[40px_40px_80px_rgba(0,0,0,0.1)]"
             >
               <img 
-                src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000" 
+                src={settings.aboutStoryImageUrl || "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000"} 
                 alt="Library Sanctuary" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3s]"
               />

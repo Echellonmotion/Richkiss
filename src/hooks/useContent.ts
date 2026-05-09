@@ -1,7 +1,54 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot, doc } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { db, auth } from '../lib/firebase';
 import { COMPANY_INFO, BOOK_CATEGORIES } from '../constants/content';
+
+enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId?: string | null;
+    email?: string | null;
+    emailVerified?: boolean | null;
+    isAnonymous?: boolean | null;
+    tenantId?: string | null;
+    providerInfo?: {
+      providerId?: string | null;
+      email?: string | null;
+    }[];
+  }
+}
+
+function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+      tenantId: auth.currentUser?.tenantId,
+      providerInfo: auth.currentUser?.providerData?.map(provider => ({
+        providerId: provider.providerId,
+        email: provider.email,
+      })) || []
+    },
+    operationType,
+    path
+  }
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
+}
 
 export function useContent() {
   const [settings, setSettings] = useState<any>(null);
@@ -11,6 +58,7 @@ export function useContent() {
   const [partners, setPartners] = useState<any[]>([]);
   const [whyRichkiss, setWhyRichkiss] = useState<any[]>([]);
   const [printWorks, setPrintWorks] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,15 +70,22 @@ export function useContent() {
     let whyRichkissLoaded = false;
     let printWorksLoaded = false;
     let partnersLoaded = false;
+    let jobsLoaded = false;
 
     const sanitizeData = (data: any, seen = new WeakSet()): any => {
       if (data === null || data === undefined) return data;
-      if (typeof data !== 'object') return data;
       
-      // Handle Firebase Timestamps
-      if (typeof data.toDate === 'function') {
+      // Handle Firebase Timestamps specifically
+      if (data && typeof data.toDate === 'function') {
         return data.toDate().toISOString();
       }
+
+      // Handle simple types
+      const type = typeof data;
+      if (type !== 'object' && type !== 'function') return data;
+      
+      // If it's a function, return it as a string to avoid circularity issues
+      if (type === 'function') return '[Function]';
 
       // Check for circularity
       if (seen.has(data)) return '[Circular]';
@@ -41,30 +96,34 @@ export function useContent() {
         return data.map(item => sanitizeData(item, seen));
       }
 
-      // ONLY recurse into plain objects
+      // Handle Firestore References or other non-plain objects
+      // If it has a 'firestore' property or doesn't look like a plain object, stringify it
       const isPlainObject = Object.prototype.toString.call(data) === '[object Object]' && 
                            (Object.getPrototypeOf(data) === null || Object.getPrototypeOf(data) === Object.prototype);
       
-      if (!isPlainObject) {
-        return String(data);
+      if (!isPlainObject || (data.firestore && data.path)) {
+        // This is a Firestore Reference or other complex object
+        return data.path || String(data);
       }
       
       const sanitized: any = {};
       try {
-        const keys = Object.keys(data);
-        for (const key of keys) {
-          // Skip private firebase props
-          if (key.startsWith('_')) continue;
-          sanitized[key] = sanitizeData(data[key], seen);
+        // Use for...in to catch properties, but double check with hasOwnProperty
+        for (const key in data) {
+          if (Object.prototype.hasOwnProperty.call(data, key)) {
+            // Skip internal-looking properties
+            if (key.startsWith('_')) continue;
+            sanitized[key] = sanitizeData(data[key], seen);
+          }
         }
       } catch (e) {
-        return '[Error Sanitizing Object]';
+        return `[Error sanitizing: ${String(e)}]`;
       }
       return sanitized;
     };
 
     const checkLoading = () => {
-      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded && whyRichkissLoaded && printWorksLoaded && partnersLoaded) {
+      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded && whyRichkissLoaded && printWorksLoaded && partnersLoaded && jobsLoaded) {
         setLoading(false);
       }
     };
@@ -81,9 +140,9 @@ export function useContent() {
         checkLoading();
       },
       (err) => {
-        console.error('Settings Snapshot Error:', err.message);
         settingsLoaded = true;
         checkLoading();
+        handleFirestoreError(err, OperationType.GET, 'settings/global');
       }
     );
 
@@ -96,9 +155,9 @@ export function useContent() {
         checkLoading();
       },
       (err) => {
-        console.error('Categories Snapshot Error:', err.message);
         categoriesLoaded = true;
         checkLoading();
+        handleFirestoreError(err, OperationType.LIST, 'categories');
       }
     );
 
@@ -111,9 +170,9 @@ export function useContent() {
         checkLoading();
       },
       (err) => {
-        console.error('Books Snapshot Error:', err.message);
         booksLoaded = true;
         checkLoading();
+        handleFirestoreError(err, OperationType.LIST, 'books');
       }
     );
 
@@ -126,9 +185,9 @@ export function useContent() {
         checkLoading();
       },
       (err) => {
-        console.error('Events Snapshot Error:', err.message);
         eventsLoaded = true;
         checkLoading();
+        handleFirestoreError(err, OperationType.LIST, 'events');
       }
     );
 
@@ -143,9 +202,9 @@ export function useContent() {
         checkLoading();
       },
       (err) => {
-        console.error('WhyRichkiss Snapshot Error:', err.message);
         whyRichkissLoaded = true;
         checkLoading();
+        handleFirestoreError(err, OperationType.LIST, 'whyRichkiss');
       }
     );
 
@@ -159,9 +218,9 @@ export function useContent() {
         checkLoading();
       },
       (err) => {
-        console.error('PrintWorks Snapshot Error:', err.message);
         printWorksLoaded = true;
         checkLoading();
+        handleFirestoreError(err, OperationType.LIST, 'printWorks');
       }
     );
 
@@ -173,10 +232,25 @@ export function useContent() {
         partnersLoaded = true;
         checkLoading();
       }, (err) => {
-        console.error('Partners Snapshot Error:', err.message);
         partnersLoaded = true;
         checkLoading();
+        handleFirestoreError(err, OperationType.LIST, 'partners');
       });
+
+    // Jobs
+    const unsubJobs = onSnapshot(collection(db, 'jobs'), 
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
+        setJobs(data);
+        jobsLoaded = true;
+        checkLoading();
+      },
+      (err) => {
+        jobsLoaded = true;
+        checkLoading();
+        handleFirestoreError(err, OperationType.LIST, 'jobs');
+      }
+    );
 
     return () => {
       unsubSettings();
@@ -186,6 +260,7 @@ export function useContent() {
       unsubWhy();
       unsubPrint();
       unsubPartners();
+      unsubJobs();
     };
   }, []);
 
@@ -213,6 +288,9 @@ export function useContent() {
     clientsHeroImageUrl: settings?.clientsHeroImageUrl || "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=2000",
     printHeroImageUrl: settings?.printHeroImageUrl || "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=2000",
     printAboutImageUrl: settings?.printAboutImageUrl || "https://images.unsplash.com/photo-1562654501-a0ccc0af3fb1?auto=format&fit=crop&q=80&w=1200",
+    aboutHeritageImageUrl: settings?.aboutHeritageImageUrl || null,
+    aboutStoryImageUrl: settings?.aboutStoryImageUrl || null,
+    careersWhyRichkissImageUrl: settings?.careersWhyRichkissImageUrl || null,
     phoneNumbers: settings?.phoneNumbers || COMPANY_INFO.phone,
     contactEmail: settings?.contactEmail || COMPANY_INFO.email,
     aboutText: settings?.aboutText || COMPANY_INFO.aboutUs,
@@ -232,6 +310,7 @@ export function useContent() {
     events: mergedEvents,
     partners,
     whyRichkiss,
+    jobs,
     printWorks,
     loading 
   };

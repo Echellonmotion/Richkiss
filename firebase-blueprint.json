@@ -20,9 +20,28 @@
         "mission": { "type": "string" },
         "commitment": { "type": "string" },
         "careersHeroImageUrl": { "type": "string" },
-        "clientsHeroImageUrl": { "type": "string" }
+        "careersWhyRichkissImageUrl": { "type": "string" },
+        "clientsHeroImageUrl": { "type": "string" },
+        "printHeroImageUrl": { "type": "string" },
+        "printAboutImageUrl": { "type": "string" },
+        "aboutHeritageImageUrl": { "type": "string" },
+        "aboutStoryImageUrl": { "type": "string" }
       },
       "required": ["companyName", "logoUrl"]
+    },
+    "Job": {
+      "title": "Job Opening",
+      "description": "A career opportunity at the company",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "location": { "type": "string" },
+        "type": { "type": "string" },
+        "desc": { "type": "string" },
+        "imageUrl": { "type": "string" }
+      },
+      "required": ["title", "category"]
     },
     "Category": {
       "title": "Book Category",
@@ -132,6 +151,10 @@
     "partners": {
       "schema": "Partner",
       "description": "Collection of partner logos"
+    },
+    "jobs": {
+      "schema": "Job",
+      "description": "Collection of job openings"
     }
   }
 }

@@ -41,15 +41,15 @@ service cloud.firestore {
              (data.get('aboutText', '') is string) &&
              (data.get('vision', '') is string) &&
              (data.get('visionImageUrl', '') is string) &&
-             (data.get('featureCard1Url', '') is string) &&
-             (data.get('featureCard2Url', '') is string) &&
-             (data.get('featureCard3Url', '') is string) &&
              (data.get('promoBannerTitle', '') is string) &&
              (data.get('promoBannerText', '') is string) &&
              (data.get('careersHeroImageUrl', '') is string) &&
+             (data.get('careersWhyRichkissImageUrl', '') is string) &&
              (data.get('clientsHeroImageUrl', '') is string) &&
              (data.get('printHeroImageUrl', '') is string) &&
              (data.get('printAboutImageUrl', '') is string) &&
+             (data.get('aboutHeritageImageUrl', '') is string) &&
+             (data.get('aboutStoryImageUrl', '') is string) &&
              (data.get('phoneNumbers', []) is list) &&
              (data.get('contactEmail', '') is string) &&
              (data.get('mission', '') is string) &&
@@ -104,6 +104,15 @@ service cloud.firestore {
              (data.get('order', 0) is int);
     }
 
+    function isValidJob(data) {
+      return (data.get('title', '') is string) && data.get('title', '').size() <= 200 &&
+             (data.get('category', '') is string) &&
+             (data.get('location', '') is string) &&
+             (data.get('type', '') is string) &&
+             (data.get('desc', '') is string) &&
+             (data.get('imageUrl', '') is string);
+    }
+
     // Match Blocks
     match /settings/global {
       allow read: if true;
@@ -149,6 +158,13 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isAdmin() && isValidId(partnerId) && isValidPartner(incoming());
       allow update: if isAdmin() && isValidPartner(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /jobs/{jobId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidId(jobId) && isValidJob(incoming());
+      allow update: if isAdmin() && isValidJob(incoming());
       allow delete: if isAdmin();
     }
   }

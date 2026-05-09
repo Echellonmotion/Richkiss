@@ -14,6 +14,7 @@ import {
   LogIn, 
   LogOut, 
   BookOpen,
+  Briefcase,
   Image as ImageIcon,
   Database,
   CheckCircle2,
@@ -38,8 +39,8 @@ import { COMPANY_INFO, BOOK_CATEGORIES } from '../constants/content';
 
 export default function Admin() {
   const { isAuthenticated, loading: authLoading, login, logout } = useAuth();
-  const { settings, categories, books, events, partners, whyRichkiss, printWorks, loading: contentLoading } = useContent();
-  const [activeTab, setActiveTab] = useState<'settings' | 'categories' | 'books' | 'events' | 'partners' | 'whyRichkiss' | 'printWorks'>('settings');
+  const { settings, categories, books, events, partners, whyRichkiss, jobs, printWorks, loading: contentLoading } = useContent();
+  const [activeTab, setActiveTab] = useState<'settings' | 'categories' | 'books' | 'events' | 'partners' | 'whyRichkiss' | 'jobs' | 'printWorks'>('settings');
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [status, setStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
@@ -148,6 +149,40 @@ export default function Admin() {
         await addDoc(collection(db, 'events'), event);
       }
 
+      // Seed Why Richkiss (Value Propositions)
+      const whyDefaults = [
+        {
+          imageUrl: "https://images.unsplash.com/photo-1542601906990-b4d3fb77db21?auto=format&fit=crop&q=80&w=600",
+          title: "Sustainable Practices",
+          description: "From carbon-neutral shipping to 100% recycled paper stocks, we prioritize the planet as much as the prose.",
+          order: 0
+        },
+        {
+          imageUrl: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=600",
+          title: "Creative Freedom",
+          description: "We operate like a small boutique press with the resources of a global leader, giving you space to innovate.",
+          order: 1
+        },
+        {
+          imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=600",
+          title: "Literary Culture",
+          description: "Enjoy a generous annual book stipend, silent reading hours, and frequent author-led workshops.",
+          order: 2
+        }
+      ];
+      for (const item of whyDefaults) {
+        await addDoc(collection(db, 'whyRichkiss'), item);
+      }
+
+      // Seed Jobs
+      const jobDefaults = [
+        { category: "Editorial", title: "Senior Acquisitions Editor", location: "Accra", type: "Full-Time", desc: "Lead our fiction department in discovering new voices from across West Africa.", imageUrl: "https://images.unsplash.com/photo-1554446422-d05db23719d2?auto=format&fit=crop&q=80&w=600" },
+        { category: "Design", title: "Book Cover Designer", location: "Accra", type: "Full-Time", desc: "Crafting visual identities for our upcoming high-end literary fiction series.", imageUrl: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=600" }
+      ];
+      for (const job of jobDefaults) {
+        await addDoc(collection(db, 'jobs'), job);
+      }
+
       setStatus({ type: 'success', msg: 'Database seeded successfully!' });
     } catch (err: any) {
       console.error('Seed Error:', err?.message || String(err));
@@ -243,6 +278,7 @@ export default function Admin() {
             { id: 'events', label: 'Events & Gallery', icon: Calendar },
             { id: 'partners', label: 'Partners Logos', icon: Users },
             { id: 'whyRichkiss', label: 'Why Richkiss', icon: CheckCircle2 },
+            { id: 'jobs', label: 'Job Openings', icon: Briefcase },
             { id: 'printWorks', label: 'Print Works', icon: ImageIcon },
           ].map((tab) => (
             <button
@@ -287,7 +323,11 @@ export default function Admin() {
                 <div className="flex justify-between items-center mb-10">
                   <h2 className="text-3xl font-serif text-brand-secondary">Global Settings</h2>
                   <button 
-                    onClick={() => { setIsEditing('settings'); setFormData(settings); }}
+                    onClick={() => { 
+                      setIsEditing('settings'); 
+                      // Ensure we only have plain data in the form
+                      setFormData({ ...settings }); 
+                    }}
                     className="flex items-center space-x-2 px-6 py-3 bg-brand-primary text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
                   >
                     <Edit2 size={14} />
@@ -335,6 +375,30 @@ export default function Admin() {
                          <div className="pt-8 mt-8 border-t border-gray-100">
                            <h3 className="text-sm font-bold uppercase tracking-widest text-brand-primary mb-6">Page-Specific Hero & Section Images</h3>
                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, aboutHeritageImageUrl: url }))}
+                                  folder="site"
+                                  label="About Page: Heritage Section Image"
+                                />
+                                {formData.aboutHeritageImageUrl && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.aboutHeritageImageUrl} alt="Heritage" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, aboutStoryImageUrl: url }))}
+                                  folder="site"
+                                  label="About Page: Our Story Image"
+                                />
+                                {formData.aboutStoryImageUrl && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.aboutStoryImageUrl} alt="Our Story" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
                              <div className="space-y-4">
                                 <ImageUpload 
                                   onUploadComplete={(url) => setFormData(prev => ({ ...prev, visionImageUrl: url }))}
@@ -392,6 +456,18 @@ export default function Admin() {
                                 {formData.printAboutImageUrl && (
                                   <div className="aspect-video w-full rounded-xl overflow-hidden border">
                                     <img src={formData.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
+                                  </div>
+                                )}
+                             </div>
+                             <div className="space-y-4">
+                                <ImageUpload 
+                                  onUploadComplete={(url) => setFormData(prev => ({ ...prev, careersWhyRichkissImageUrl: url }))}
+                                  folder="site"
+                                  label="Careers Page: Why Richkiss? Image"
+                                />
+                                {formData.careersWhyRichkissImageUrl && (
+                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                    <img src={formData.careersWhyRichkissImageUrl} alt="Why Richkiss" className="w-full h-full object-cover" />
                                   </div>
                                 )}
                              </div>
@@ -614,10 +690,30 @@ export default function Admin() {
                         </div>
 
                         <div className="space-y-4 md:col-span-2">
-                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Print & Branding Assets</h4>
-                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Page-Specific & About Section Assets</h4>
+                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                              <div className="space-y-2">
-                               <p className="text-[9px] font-bold text-brand-muted uppercase">Hero Image</p>
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">About: Heritage Section</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.aboutHeritageImageUrl ? (
+                                   <img src={settings.aboutHeritageImageUrl} alt="About Heritage" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
+                               </div>
+                             </div>
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">About: Our Story</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.aboutStoryImageUrl ? (
+                                   <img src={settings.aboutStoryImageUrl} alt="About Story" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
+                               </div>
+                             </div>
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">Print Hero</p>
                                <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
                                  {settings.printHeroImageUrl ? (
                                    <img src={settings.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
@@ -627,10 +723,30 @@ export default function Admin() {
                                </div>
                              </div>
                              <div className="space-y-2">
-                               <p className="text-[9px] font-bold text-brand-muted uppercase">About Section Image</p>
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">Print About</p>
                                <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
                                  {settings.printAboutImageUrl ? (
                                    <img src={settings.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
+                               </div>
+                             </div>
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">Careers Hero</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.careersHeroImageUrl ? (
+                                   <img src={settings.careersHeroImageUrl} alt="Careers Hero" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
+                               </div>
+                             </div>
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">Careers Why Us</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.careersWhyRichkissImageUrl ? (
+                                   <img src={settings.careersWhyRichkissImageUrl} alt="Careers Why Us" className="w-full h-full object-cover" />
                                  ) : (
                                    <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
                                  )}
@@ -691,7 +807,7 @@ export default function Admin() {
                        </div>
                        <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button 
-                            onClick={() => { setIsEditing(cat.id); setFormData(cat); }}
+                            onClick={() => { setIsEditing(cat.id); setFormData({ ...cat }); }}
                             className="p-2 bg-white rounded-lg text-brand-secondary hover:text-brand-primary"
                           >
                             <Edit2 size={16} />
@@ -789,7 +905,7 @@ export default function Admin() {
                             <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100"><Book size={48} /></div>
                           )}
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
-                             <button onClick={() => { setIsEditing(book.id); setFormData(book); }} className="p-3 bg-white rounded-xl text-brand-secondary hover:text-brand-primary transition-all scale-90 group-hover:scale-100">
+                             <button onClick={() => { setIsEditing(book.id); setFormData({ ...book }); }} className="p-3 bg-white rounded-xl text-brand-secondary hover:text-brand-primary transition-all scale-90 group-hover:scale-100">
                                 <Edit2 size={18} />
                              </button>
                              <button onClick={() => handleDelete('books', book.id)} className="p-3 bg-white rounded-xl text-red-500 hover:bg-red-500 hover:text-white transition-all scale-90 group-hover:scale-100">
@@ -837,7 +953,7 @@ export default function Admin() {
                               <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Title</label>
                               <input 
                                 className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
-                                value={formData.title}
+                                value={formData.title || ''}
                                 onChange={e => setFormData({ ...formData, title: e.target.value })}
                               />
                            </div>
@@ -990,7 +1106,7 @@ export default function Admin() {
                        </div>
                        <div className="flex md:flex-col justify-end space-x-2 md:space-x-0 md:space-y-2">
                           <button 
-                             onClick={() => { setIsEditing(event.id); setFormData(event); }}
+                             onClick={() => { setIsEditing(event.id); setFormData({ ...event }); }}
                              className="flex-grow md:flex-grow-0 p-4 bg-white rounded-2xl text-brand-secondary hover:text-brand-primary shadow-sm"
                           >
                              <Edit2 size={20} />
@@ -1127,7 +1243,7 @@ export default function Admin() {
                           <h3 className="font-serif font-bold text-sm text-brand-secondary line-clamp-1">{partner.name}</h3>
                        </div>
                        <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button onClick={() => { setIsEditing(partner.id); setFormData(partner); }} className="p-2 bg-white rounded-lg text-brand-secondary hover:text-brand-primary shadow-sm"><Edit2 size={14} /></button>
+                          <button onClick={() => { setIsEditing(partner.id); setFormData({ ...partner }); }} className="p-2 bg-white rounded-lg text-brand-secondary hover:text-brand-primary shadow-sm"><Edit2 size={14} /></button>
                           <button onClick={() => handleDelete('partners', partner.id)} className="p-2 bg-white rounded-lg text-red-500 hover:bg-red-500 hover:text-white shadow-sm"><Trash2 size={14} /></button>
                        </div>
                     </div>
@@ -1212,7 +1328,7 @@ export default function Admin() {
                           </div>
                        </div>
                        <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button onClick={() => { setIsEditing(item.id); setFormData(item); }} className="p-2 bg-white rounded-lg text-brand-secondary hover:text-brand-primary"><Edit2 size={16} /></button>
+                          <button onClick={() => { setIsEditing(item.id); setFormData({ ...item }); }} className="p-2 bg-white rounded-lg text-brand-secondary hover:text-brand-primary"><Edit2 size={16} /></button>
                           <button onClick={() => handleDelete('whyRichkiss', item.id)} className="p-2 bg-white rounded-lg text-red-500 hover:bg-red-500 hover:text-white"><Trash2 size={16} /></button>
                        </div>
                     </div>
@@ -1242,24 +1358,24 @@ export default function Admin() {
                               </div>
                            )}
                            <input 
-                             placeholder="Title"
+                             placeholder="Title (e.g., Sustainable Practices)"
                              className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
-                             value={formData.title}
+                             value={formData.title || ''}
                              onChange={e => setFormData({ ...formData, title: e.target.value })}
                            />
                            <textarea 
                              placeholder="Description"
                              className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
                              rows={3}
-                             value={formData.description}
+                             value={formData.description || ''}
                              onChange={e => setFormData({ ...formData, description: e.target.value })}
                            />
                            <input 
                              type="number"
                              placeholder="Display Order"
                              className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
-                             value={formData.order}
-                             onChange={e => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                             value={formData.order || 0}
+                             onChange={e => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
                            />
                         </div>
                         <div className="flex space-x-4">
@@ -1268,6 +1384,111 @@ export default function Admin() {
                              className="flex-grow py-4 bg-brand-secondary text-white rounded-full font-bold shadow-lg"
                            >
                              Save Item
+                           </button>
+                           <button onClick={() => setIsEditing(null)} className="px-8 py-4 border border-gray-100 rounded-full font-bold">Cancel</button>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {activeTab === 'jobs' && (
+              <div className="space-y-8">
+                <div className="flex justify-between items-center mb-10">
+                  <h2 className="text-3xl font-serif text-brand-secondary">Job Openings</h2>
+                  <button 
+                    onClick={() => { setIsEditing('new-job'); setFormData({}); }}
+                    className="flex items-center space-x-2 px-6 py-3 bg-brand-primary text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+                  >
+                    <Plus size={14} />
+                    <span>Add New Job</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {jobs.map((item: any) => (
+                    <div key={item.id} className="p-6 bg-brand-beige/30 rounded-3xl border border-gray-100 flex items-center justify-between group">
+                       <div className="flex items-center space-x-4">
+                          <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm bg-white">
+                             <img src={item.imageUrl || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=200"} alt={item.title} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="space-y-1">
+                             <h3 className="font-serif font-bold text-lg text-brand-secondary">{item.title}</h3>
+                             <p className="text-[10px] text-brand-primary font-bold uppercase tracking-widest">{item.category} • {item.location}</p>
+                          </div>
+                       </div>
+                       <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => { setIsEditing(item.id); setFormData({ ...item }); }} className="p-2 bg-white rounded-lg text-brand-secondary hover:text-brand-primary"><Edit2 size={16} /></button>
+                          <button onClick={() => handleDelete('jobs', item.id)} className="p-2 bg-white rounded-lg text-red-500 hover:bg-red-500 hover:text-white"><Trash2 size={16} /></button>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+
+                <AnimatePresence>
+                  {(isEditing === 'new-job' || jobs.some(i => i.id === isEditing)) && (
+                    <motion.div 
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[60] bg-brand-secondary/80 backdrop-blur-sm flex items-center justify-center p-4"
+                    >
+                      <motion.div 
+                        initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
+                        className="bg-white p-10 rounded-[40px] shadow-2xl max-w-lg w-full space-y-8 overflow-y-auto max-h-[90vh]"
+                      >
+                        <h3 className="text-2xl font-serif text-brand-secondary">Job Opening Details</h3>
+                        <div className="space-y-4">
+                           <ImageUpload 
+                             onUploadComplete={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                             folder="careers"
+                             label="Job Cover Image"
+                           />
+                           {formData.imageUrl && (
+                              <div className="aspect-video w-full rounded-2xl overflow-hidden border">
+                                <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                              </div>
+                           )}
+                           <input 
+                             placeholder="Title (e.g., Senior Acquisitions Editor)"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             value={formData.title || ''}
+                             onChange={e => setFormData({ ...formData, title: e.target.value })}
+                           />
+                           <input 
+                             placeholder="Category (e.g., Editorial, Design)"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             value={formData.category || ''}
+                             onChange={e => setFormData({ ...formData, category: e.target.value })}
+                           />
+                           <div className="grid grid-cols-2 gap-4">
+                             <input 
+                               placeholder="Location (e.g., Accra, Remote)"
+                               className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                               value={formData.location || ''}
+                               onChange={e => setFormData({ ...formData, location: e.target.value })}
+                             />
+                             <input 
+                               placeholder="Type (e.g., Full-Time, Hybrid)"
+                               className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                               value={formData.type || ''}
+                               onChange={e => setFormData({ ...formData, type: e.target.value })}
+                             />
+                           </div>
+                           <textarea 
+                             placeholder="Description"
+                             className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none"
+                             rows={4}
+                             value={formData.desc || ''}
+                             onChange={e => setFormData({ ...formData, desc: e.target.value })}
+                           />
+                        </div>
+                        <div className="flex space-x-4 pt-4">
+                           <button 
+                             onClick={() => handleSaveItem('jobs', formData, isEditing === 'new-job' ? undefined : isEditing as string)}
+                             className="flex-grow py-4 bg-brand-secondary text-white rounded-full font-bold shadow-lg"
+                           >
+                             Save Job Opening
                            </button>
                            <button onClick={() => setIsEditing(null)} className="px-8 py-4 border border-gray-100 rounded-full font-bold">Cancel</button>
                         </div>
@@ -1297,7 +1518,7 @@ export default function Admin() {
                        <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-gray-200">
                           <img src={work.imageUrl} alt={work.title} className="w-full h-full object-cover" />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
-                             <button onClick={() => { setIsEditing(work.id); setFormData(work); }} className="p-3 bg-white rounded-xl text-brand-secondary hover:text-brand-primary">
+                             <button onClick={() => { setIsEditing(work.id); setFormData({ ...work }); }} className="p-3 bg-white rounded-xl text-brand-secondary hover:text-brand-primary">
                                 <Edit2 size={18} />
                              </button>
                              <button onClick={() => handleDelete('printWorks', work.id)} className="p-3 bg-white rounded-xl text-red-500">

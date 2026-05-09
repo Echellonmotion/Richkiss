@@ -10,9 +10,28 @@ import { COMPANY_INFO } from '../constants/content';
 import { useContent } from '../hooks/useContent';
 
 export default function Careers() {
-  const { settings, whyRichkiss } = useContent();
+  const { settings, whyRichkiss, jobs } = useContent();
   
-  const jobCategories = [
+  // Group jobs by category
+  const jobCategories = jobs.reduce((acc: any[], job: any) => {
+    const categoryName = job.category || "General";
+    let category = acc.find(c => c.title === categoryName);
+    if (!category) {
+      category = { title: categoryName, roles: [] };
+      acc.push(category);
+    }
+    category.roles.push({
+      title: job.title,
+      location: job.location,
+      type: job.type,
+      desc: job.desc,
+      imageUrl: job.imageUrl
+    });
+    return acc;
+  }, []);
+
+  // Fallback if no jobs added
+  const displayedJobCategories = jobCategories.length > 0 ? jobCategories : [
     {
       title: "Editorial",
       roles: [
@@ -113,32 +132,37 @@ export default function Careers() {
           </div>
 
           <div className="space-y-24">
-            {jobCategories.map((category) => (
+            {displayedJobCategories.map((category) => (
               <div key={category.title} className="space-y-12">
                 <h3 className="text-2xl font-serif text-[#c0392b] border-b border-[#fff0ed] pb-4 italic">
                   {category.title}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {category.roles.map((role, roleIdx) => (
+                   {category.roles.map((role, roleIdx) => (
                     <motion.div 
                       key={role.title}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: roleIdx * 0.1 }}
-                      className="bg-white p-12 rounded-sm border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 group"
+                      className="bg-white p-12 rounded-sm border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 group relative overflow-hidden"
                     >
-                      <div className="flex justify-between items-start mb-4">
+                      {role.imageUrl && (
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none">
+                          <img src={role.imageUrl} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <div className="flex justify-between items-start mb-4 relative z-10">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">{role.location}</span>
                         <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{role.type}</span>
                       </div>
-                      <h4 className="text-2xl font-serif text-brand-secondary mb-4 group-hover:text-brand-primary transition-colors">
+                      <h4 className="text-2xl font-serif text-brand-secondary mb-4 group-hover:text-brand-primary transition-colors relative z-10">
                         {role.title}
                       </h4>
-                      <p className="text-sm text-gray-500 font-sans leading-relaxed mb-8">
+                      <p className="text-sm text-gray-500 font-sans leading-relaxed mb-8 relative z-10">
                         {role.desc}
                       </p>
-                      <div className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary cursor-pointer hover:text-brand-primary transition-colors">
+                      <div className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-secondary cursor-pointer hover:text-brand-primary transition-colors relative z-10">
                         <span>View Details</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                       </div>
@@ -155,6 +179,17 @@ export default function Careers() {
       <section className="py-40 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
           <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary text-center">Why Richkiss?</h2>
+          
+          {settings.careersWhyRichkissImageUrl && (
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="aspect-[21/9] w-full rounded-sm overflow-hidden shadow-2xl"
+            >
+              <img src={settings.careersWhyRichkissImageUrl} alt="Why Us" className="w-full h-full object-cover" />
+            </motion.div>
+          )}
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {(whyRichkiss.length > 0 ? whyRichkiss : [
