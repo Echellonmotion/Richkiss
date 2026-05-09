@@ -41,10 +41,17 @@ service cloud.firestore {
              (data.get('aboutText', '') is string) &&
              (data.get('vision', '') is string) &&
              (data.get('visionImageUrl', '') is string) &&
+             (data.get('featureCard1Url', '') is string) &&
+             (data.get('featureCard2Url', '') is string) &&
+             (data.get('featureCard3Url', '') is string) &&
              (data.get('promoBannerTitle', '') is string) &&
              (data.get('promoBannerText', '') is string) &&
              (data.get('careersHeroImageUrl', '') is string) &&
              (data.get('clientsHeroImageUrl', '') is string) &&
+             (data.get('printHeroImageUrl', '') is string) &&
+             (data.get('printAboutImageUrl', '') is string) &&
+             (data.get('phoneNumbers', []) is list) &&
+             (data.get('contactEmail', '') is string) &&
              (data.get('mission', '') is string) &&
              (data.get('commitment', '') is string) &&
              (data.get('updatedAt', request.time) is timestamp);

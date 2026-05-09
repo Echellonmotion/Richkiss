@@ -572,36 +572,73 @@ export default function Admin() {
                                <div className="col-span-full aspect-[21/9] bg-brand-beige rounded-[32px] overflow-hidden border border-gray-100 flex flex-col items-center justify-center text-brand-muted opacity-50 space-y-2">
                                   <ImageIcon size={48} />
                                   <p className="text-xs uppercase tracking-widest font-bold">No custom hero images set</p>
+                                </div>
+                              )}
+                           </div>
+                        </div>
+
+                        <div className="space-y-4 md:col-span-2">
+                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Homepage Feature Cards</h4>
+                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">New Arrivals</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.featureCard1Url ? (
+                                   <img src={settings.featureCard1Url} alt="Feature 1" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
                                </div>
-                             )}
-                          </div>
-                       </div>
-                       <div className="space-y-4 md:col-span-2">
-                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Print & Branding Assets</h4>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <p className="text-[9px] font-bold text-brand-muted uppercase">Hero Image</p>
-                              <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
-                                {settings.printHeroImageUrl ? (
-                                  <img src={settings.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
-                                ) : (
-                                  <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
-                                )}
-                              </div>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-[9px] font-bold text-brand-muted uppercase">About Section Image</p>
-                              <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
-                                {settings.printAboutImageUrl ? (
-                                  <img src={settings.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
-                                ) : (
-                                  <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                       </div>
-                    </div>
+                             </div>
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">Featured Works</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.featureCard2Url ? (
+                                   <img src={settings.featureCard2Url} alt="Feature 2" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
+                               </div>
+                             </div>
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">Global Editions</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.featureCard3Url ? (
+                                   <img src={settings.featureCard3Url} alt="Feature 3" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
+                               </div>
+                             </div>
+                           </div>
+                        </div>
+
+                        <div className="space-y-4 md:col-span-2">
+                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">Print & Branding Assets</h4>
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">Hero Image</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.printHeroImageUrl ? (
+                                   <img src={settings.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
+                               </div>
+                             </div>
+                             <div className="space-y-2">
+                               <p className="text-[9px] font-bold text-brand-muted uppercase">About Section Image</p>
+                               <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                                 {settings.printAboutImageUrl ? (
+                                   <img src={settings.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
+                                 ) : (
+                                   <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30"><ImageIcon size={32} /></div>
+                                 )}
+                               </div>
+                             </div>
+                           </div>
+                        </div>
+                     </div>
                     <div className="space-y-4 pt-4 border-t border-gray-100">
                        <h3 className="text-2xl font-serif text-brand-secondary">{settings.companyName}</h3>
                        <p className="text-brand-primary font-bold text-sm tracking-wide">{settings.tagline}</p>
