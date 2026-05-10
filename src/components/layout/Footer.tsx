@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, MapPin, Phone, Mail, Facebook, Twitter, Instagram, Settings } from 'lucide-react';
+import { BookOpen, MapPin, Phone, Mail, Facebook, Twitter, Instagram, Settings, MessageCircle } from 'lucide-react';
 import { COMPANY_INFO, BOOK_CATEGORIES } from '../../constants/content';
 import { useContent } from '../../hooks/useContent';
 
@@ -47,6 +47,14 @@ export default function Footer() {
               </a>
               <a href="#" className="w-10 h-10 rounded-full border border-gray-800 flex items-center justify-center text-gray-400 hover:bg-brand-primary hover:text-white transition-all duration-300">
                 <Instagram size={18} />
+              </a>
+              <a 
+                href={`https://wa.me/${COMPANY_INFO.whatsapp}`} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full border border-gray-800 flex items-center justify-center text-gray-400 hover:bg-[#25D366] hover:text-white transition-all duration-300"
+              >
+                <MessageCircle size={18} />
               </a>
             </div>
           </div>

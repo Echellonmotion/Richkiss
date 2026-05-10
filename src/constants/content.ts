@@ -4,6 +4,7 @@ export const COMPANY_INFO = {
   headOffice: "Dome West, Accra, Ghana",
   email: "richkiss10@gmail.com",
   phone: ["+233 20 168 2254", "+233 24 437 4533"],
+  whatsapp: "233244374533",
   aboutUs: `Richkiss Publishers is a Ghanaian-owned publishing company established in 2010 with a strong commitment to promoting literacy, quality education, and knowledge development through innovative publishing solutions.
 Over the years, the company has become a recognized name in Ghana’s publishing industry, particularly in children and teens literature, book supply, and distribution services and printing services. Richkiss Publishers combines creativity, professionalism, and industry expertise to provide high-quality books and publishing services that meet the needs of schools, institutions, organizations, and the reading public.
 Richkiss Publishers is especially known for its strong contribution to children’s reading materials and books that promote positive values, literacy, and African storytelling.`,

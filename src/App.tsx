@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import FloatingWhatsApp from './components/layout/FloatingWhatsApp';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import PrintDepartment from './pages/PrintDepartment';
@@ -68,6 +69,7 @@ export default function App() {
             </Routes>
           </main>
           <Footer />
+          <FloatingWhatsApp />
         </div>
       </Router>
     </AuthProvider>
