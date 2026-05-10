@@ -30,24 +30,47 @@ interface FirestoreErrorInfo {
 }
 
 function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
-  const errInfo: FirestoreErrorInfo = {
-    error: error instanceof Error ? error.message : String(error),
-    authInfo: {
-      userId: auth.currentUser?.uid,
-      email: auth.currentUser?.email,
-      emailVerified: auth.currentUser?.emailVerified,
-      isAnonymous: auth.currentUser?.isAnonymous,
-      tenantId: auth.currentUser?.tenantId,
-      providerInfo: auth.currentUser?.providerData?.map(provider => ({
-        providerId: provider.providerId,
-        email: provider.email,
-      })) || []
-    },
-    operationType,
-    path
+  let errorMessage = 'Unknown error';
+  if (error instanceof Error) {
+    errorMessage = error.message;
+  } else if (error && typeof error === 'object' && 'message' in error) {
+    errorMessage = String((error as any).message);
+  } else {
+    errorMessage = String(error);
   }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
-  throw new Error(JSON.stringify(errInfo));
+
+  const errInfo: any = {
+    error: errorMessage,
+    operationType,
+    path,
+    authInfo: {
+      userId: auth.currentUser?.uid || null,
+      email: auth.currentUser?.email || null,
+      emailVerified: auth.currentUser?.emailVerified || null,
+      isAnonymous: auth.currentUser?.isAnonymous || null,
+      tenantId: auth.currentUser?.tenantId || null,
+      providerInfo: auth.currentUser?.providerData?.map(provider => ({
+        providerId: provider.providerId || null,
+        email: provider.email || null,
+      })) || []
+    }
+  };
+
+  let jsonString: string;
+  try {
+    jsonString = JSON.stringify(errInfo);
+  } catch (e) {
+    // If stringify fails due to circularity, create a minimal safe version
+    jsonString = JSON.stringify({
+      error: errorMessage,
+      operationType,
+      path,
+      serializationError: 'Circular structure detected'
+    });
+  }
+
+  console.error('Firestore Error: ', jsonString);
+  throw new Error(jsonString);
 }
 
 export function useContent() {

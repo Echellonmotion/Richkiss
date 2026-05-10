@@ -9,9 +9,8 @@ import { useContent } from '../hooks/useContent';
 export default function OurClients() {
   const { settings, partners: cmsPartners } = useContent();
   const staticPartners = [
-    "The Oxford Collective", "Marlowe Press", "National Archive", 
-    "Serpent's Tail", "Vintage House", "Borough Libraries", 
-    "The Royal Guild", "Curzon Literary", "Ivory Tower", "Pioneer Arts"
+    "Princlesgh", "AGAMal", "YiKroSec", 
+    "GreenLac", "ASSN", "UMA"
   ];
   const partners = cmsPartners.length > 0 ? cmsPartners : staticPartners.map(name => ({ name }));
 
@@ -89,7 +88,7 @@ export default function OurClients() {
       <section className="py-32 bg-[#fffcfb]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-20">
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Global Institutions</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary uppercase tracking-widest">CLIENTS</h2>
             <div className="w-12 h-[2px] bg-brand-primary mx-auto" />
           </div>
 

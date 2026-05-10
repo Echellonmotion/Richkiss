@@ -183,6 +183,19 @@ export default function Admin() {
         await addDoc(collection(db, 'jobs'), job);
       }
 
+      // Seed Partners
+      const partnerDefaults = [
+        { name: "Princlesgh" },
+        { name: "AGAMal" },
+        { name: "YiKroSec" },
+        { name: "GreenLac" },
+        { name: "ASSN" },
+        { name: "UMA" }
+      ];
+      for (const partner of partnerDefaults) {
+        await addDoc(collection(db, 'partners'), partner);
+      }
+
       setStatus({ type: 'success', msg: 'Database seeded successfully!' });
     } catch (err: any) {
       console.error('Seed Error:', err?.message || String(err));
@@ -344,13 +357,22 @@ export default function Admin() {
                           label="Main Logo (Header)"
                         />
                         {formData.logoUrl && (
-                          <div className="flex items-center space-x-4 p-4 bg-brand-beige/30 rounded-2xl border border-brand-primary/10">
-                            <div className="w-16 h-16 bg-white rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100 shadow-sm transition-all">
-                               <img src={formData.logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
+                          <div className="relative group/img">
+                            <div className="flex items-center space-x-4 p-4 bg-brand-beige/30 rounded-2xl border border-brand-primary/10">
+                              <div className="w-16 h-16 bg-white rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100 shadow-sm transition-all">
+                                 <img src={formData.logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
+                              </div>
+                              <div className="flex-grow">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">LOGO UPDATED</p>
+                              </div>
                             </div>
-                            <div className="flex-grow">
-                              <p className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">LOGO UPDATED</p>
-                            </div>
+                            <button 
+                              type="button"
+                              onClick={() => setFormData(prev => ({ ...prev, logoUrl: '' }))}
+                              className="absolute -top-2 -right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                            >
+                              <X size={12} />
+                            </button>
                           </div>
                         )}
                         
@@ -361,13 +383,22 @@ export default function Admin() {
                             label="Footer Logo (Optional)"
                           />
                           {formData.footerLogoUrl && (
-                            <div className="flex items-center space-x-4 p-4 bg-brand-secondary/10 rounded-2xl border border-brand-secondary/20">
-                              <div className="w-16 h-16 bg-brand-secondary rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100 shadow-sm transition-all">
-                                 <img src={formData.footerLogoUrl} alt="Footer Logo Preview" className="max-w-full max-h-full object-contain" />
+                            <div className="relative group/img">
+                              <div className="flex items-center space-x-4 p-4 bg-brand-secondary/10 rounded-2xl border border-brand-secondary/20">
+                                <div className="w-16 h-16 bg-brand-secondary rounded-xl overflow-hidden flex items-center justify-center p-2 border border-gray-100 shadow-sm transition-all">
+                                   <img src={formData.footerLogoUrl} alt="Footer Logo Preview" className="max-w-full max-h-full object-contain" />
+                                </div>
+                                <div className="flex-grow text-brand-secondary">
+                                  <p className="text-[10px] font-bold uppercase tracking-widest">FOOTER LOGO UPDATED</p>
+                                </div>
                               </div>
-                              <div className="flex-grow text-brand-secondary">
-                                <p className="text-[10px] font-bold uppercase tracking-widest">FOOTER LOGO UPDATED</p>
-                              </div>
+                              <button 
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, footerLogoUrl: '' }))}
+                                className="absolute -top-2 -right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                              >
+                                <X size={12} />
+                              </button>
                             </div>
                           )}
                         </div>
@@ -381,11 +412,20 @@ export default function Admin() {
                                   folder="site"
                                   label="About Page: Heritage Section Image"
                                 />
-                                {formData.aboutHeritageImageUrl && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.aboutHeritageImageUrl} alt="Heritage" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.aboutHeritageImageUrl && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.aboutHeritageImageUrl} alt="Heritage" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, aboutHeritageImageUrl: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -393,11 +433,20 @@ export default function Admin() {
                                   folder="site"
                                   label="About Page: Our Story Image"
                                 />
-                                {formData.aboutStoryImageUrl && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.aboutStoryImageUrl} alt="Our Story" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.aboutStoryImageUrl && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.aboutStoryImageUrl} alt="Our Story" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, aboutStoryImageUrl: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -405,11 +454,20 @@ export default function Admin() {
                                   folder="site"
                                   label="Home Vision Section Image"
                                 />
-                                {formData.visionImageUrl && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.visionImageUrl} alt="Vision" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.visionImageUrl && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.visionImageUrl} alt="Vision" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, visionImageUrl: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -417,11 +475,20 @@ export default function Admin() {
                                   folder="headers"
                                   label="Careers Page Hero Image"
                                 />
-                                {formData.careersHeroImageUrl && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.careersHeroImageUrl} alt="Careers" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.careersHeroImageUrl && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.careersHeroImageUrl} alt="Careers" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, careersHeroImageUrl: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -429,11 +496,20 @@ export default function Admin() {
                                   folder="headers"
                                   label="Clients Page Hero Image"
                                 />
-                                {formData.clientsHeroImageUrl && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.clientsHeroImageUrl} alt="Clients" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.clientsHeroImageUrl && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.clientsHeroImageUrl} alt="Clients" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, clientsHeroImageUrl: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -441,11 +517,20 @@ export default function Admin() {
                                   folder="headers"
                                   label="Print & Branding Hero Image"
                                 />
-                                {formData.printHeroImageUrl && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.printHeroImageUrl && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.printHeroImageUrl} alt="Print Hero" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, printHeroImageUrl: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -453,11 +538,20 @@ export default function Admin() {
                                   folder="site"
                                   label="Print & Branding About Image"
                                 />
-                                {formData.printAboutImageUrl && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.printAboutImageUrl && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.printAboutImageUrl} alt="Print About" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, printAboutImageUrl: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -465,11 +559,20 @@ export default function Admin() {
                                   folder="site"
                                   label="Careers Page: Why Richkiss? Image"
                                 />
-                                {formData.careersWhyRichkissImageUrl && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.careersWhyRichkissImageUrl} alt="Why Richkiss" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.careersWhyRichkissImageUrl && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.careersWhyRichkissImageUrl} alt="Why Richkiss" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, careersWhyRichkissImageUrl: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                            </div>
                          </div>
@@ -483,11 +586,20 @@ export default function Admin() {
                                   folder="site"
                                   label="Card 1: New Arrivals"
                                 />
-                                {formData.featureCard1Url && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.featureCard1Url} alt="Feature 1" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.featureCard1Url && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.featureCard1Url} alt="Feature 1" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, featureCard1Url: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -495,11 +607,20 @@ export default function Admin() {
                                   folder="site"
                                   label="Card 2: Featured Works"
                                 />
-                                {formData.featureCard2Url && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.featureCard2Url} alt="Feature 2" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.featureCard2Url && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.featureCard2Url} alt="Feature 2" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, featureCard2Url: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                              <div className="space-y-4">
                                 <ImageUpload 
@@ -507,11 +628,20 @@ export default function Admin() {
                                   folder="site"
                                   label="Card 3: Global Editions"
                                 />
-                                {formData.featureCard3Url && (
-                                  <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                    <img src={formData.featureCard3Url} alt="Feature 3" className="w-full h-full object-cover" />
-                                  </div>
-                                )}
+                                 {formData.featureCard3Url && (
+                                   <div className="relative group/img">
+                                     <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                       <img src={formData.featureCard3Url} alt="Feature 3" className="w-full h-full object-cover" />
+                                     </div>
+                                     <button 
+                                       type="button"
+                                       onClick={() => setFormData(prev => ({ ...prev, featureCard3Url: '' }))}
+                                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                     >
+                                       <X size={12} />
+                                     </button>
+                                   </div>
+                                 )}
                              </div>
                            </div>
                          </div>
@@ -841,8 +971,17 @@ export default function Admin() {
                              label="Category Icon/Image"
                            />
                            {formData.imageUrl && (
-                             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-primary shadow-lg">
-                               <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                             <div className="relative group/img w-16 h-16">
+                               <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-primary shadow-lg">
+                                 <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                               </div>
+                               <button 
+                                 type="button"
+                                 onClick={() => setFormData(prev => ({ ...prev, imageUrl: '' }))}
+                                 className="absolute -top-1 -right-1 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                               >
+                                 <X size={10} />
+                               </button>
                              </div>
                            )}
                            <input 
@@ -944,8 +1083,17 @@ export default function Admin() {
                                 label="Book Cover Image"
                               />
                               {formData.coverUrl && (
-                                <div className="aspect-[3/4] w-24 rounded-xl overflow-hidden border-2 border-brand-primary/20 shadow-lg">
-                                  <img src={formData.coverUrl} alt="Cover" className="w-full h-full object-cover" />
+                                <div className="relative group/img w-24">
+                                  <div className="aspect-[3/4] w-24 rounded-xl overflow-hidden border-2 border-brand-primary/20 shadow-lg">
+                                    <img src={formData.coverUrl} alt="Cover" className="w-full h-full object-cover" />
+                                  </div>
+                                  <button 
+                                    type="button"
+                                    onClick={() => setFormData(prev => ({ ...prev, coverUrl: '' }))}
+                                    className="absolute -top-2 -right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                  >
+                                    <X size={12} />
+                                  </button>
                                 </div>
                               )}
                            </div>
@@ -1268,8 +1416,17 @@ export default function Admin() {
                              label="Partner Logo"
                            />
                            {formData.logoUrl && (
-                             <div className="w-24 h-24 mx-auto bg-white rounded-2xl overflow-hidden flex items-center justify-center p-4 border-2 border-brand-primary/20 shadow-lg">
-                               <img src={formData.logoUrl} alt="Preview" className="max-w-full max-h-full object-contain" />
+                             <div className="relative group/img w-24 h-24 mx-auto">
+                               <div className="w-24 h-24 bg-white rounded-2xl overflow-hidden flex items-center justify-center p-4 border-2 border-brand-primary/20 shadow-lg">
+                                 <img src={formData.logoUrl} alt="Preview" className="max-w-full max-h-full object-contain" />
+                               </div>
+                               <button 
+                                 type="button"
+                                 onClick={() => setFormData(prev => ({ ...prev, logoUrl: '' }))}
+                                 className="absolute -top-2 -right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                               >
+                                 <X size={12} />
+                               </button>
                              </div>
                            )}
                            <input 
@@ -1353,8 +1510,17 @@ export default function Admin() {
                              label="Section Image (Card)"
                            />
                            {formData.imageUrl && (
-                              <div className="aspect-video w-full rounded-2xl overflow-hidden border">
-                                <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                              <div className="relative group/img">
+                                <div className="aspect-video w-full rounded-2xl overflow-hidden border">
+                                  <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                                </div>
+                                <button 
+                                  type="button"
+                                  onClick={() => setFormData(prev => ({ ...prev, imageUrl: '' }))}
+                                  className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                >
+                                  <X size={12} />
+                                </button>
                               </div>
                            )}
                            <input 
@@ -1445,8 +1611,17 @@ export default function Admin() {
                              label="Job Cover Image"
                            />
                            {formData.imageUrl && (
-                              <div className="aspect-video w-full rounded-2xl overflow-hidden border">
-                                <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                              <div className="relative group/img">
+                                <div className="aspect-video w-full rounded-2xl overflow-hidden border">
+                                  <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                                </div>
+                                <button 
+                                  type="button"
+                                  onClick={() => setFormData(prev => ({ ...prev, imageUrl: '' }))}
+                                  className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                >
+                                  <X size={12} />
+                                </button>
                               </div>
                            )}
                            <input 
@@ -1552,8 +1727,17 @@ export default function Admin() {
                              label="Work Showcase Image"
                            />
                            {formData.imageUrl && (
-                              <div className="aspect-video w-full rounded-2xl overflow-hidden border">
-                                <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                              <div className="relative group/img">
+                                <div className="aspect-video w-full rounded-2xl overflow-hidden border">
+                                  <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                                </div>
+                                <button 
+                                  type="button"
+                                  onClick={() => setFormData(prev => ({ ...prev, imageUrl: '' }))}
+                                  className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                >
+                                  <X size={12} />
+                                </button>
                               </div>
                            )}
                            <input 
