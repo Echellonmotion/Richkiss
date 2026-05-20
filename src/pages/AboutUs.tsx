@@ -26,7 +26,7 @@ export default function AboutUs() {
               className="space-y-8"
             >
               <div className="space-y-2">
-                <span className="text-xs font-bold uppercase tracking-[0.4em] text-brand-primary">Our Heritage</span>
+                <span className="text-xs font-bold uppercase tracking-[0.4em] text-brand-primary">About Us</span>
                 <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-[1.1]">
                   Curating African <br className="hidden lg:block" /> Literature Since 2010
                 </h1>

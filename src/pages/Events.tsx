@@ -132,6 +132,16 @@ export default function Events() {
                     <h3 className="text-2xl font-serif text-brand-secondary leading-tight min-h-[4rem]">
                       {event.name}
                     </h3>
+                    <div className="flex items-center space-x-2 text-sm text-[#ff5722] font-semibold font-sans py-1">
+                      <Calendar size={14} className="text-[#ff5722]" />
+                      <span>{event.year || 'TBA'}</span>
+                      {event.location && (
+                        <>
+                          <span className="text-gray-300">•</span>
+                          <span className="text-gray-500 font-normal">{event.location}</span>
+                        </>
+                      )}
+                    </div>
                     <p className="text-sm text-gray-500 font-sans leading-relaxed line-clamp-2">
                       {event.description || 'A deep dive into literary excellence and creative expression.'}
                     </p>
@@ -212,32 +222,6 @@ export default function Events() {
               </h2>
               <div className="w-12 h-[1px] bg-brand-primary mx-auto" />
               <p className="text-white/70 font-sans text-[10px] uppercase tracking-[0.3em]">The Richkiss Standard</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Newsletter Section */}
-      <section className="py-40 bg-white">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="bg-[#fef9f8] p-16 lg:p-24 rounded-sm text-center space-y-12 border border-[#fff0ed]">
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary">Never Miss a Chapter</h2>
-              <p className="text-gray-500 font-sans max-w-xl mx-auto leading-relaxed">
-                Join our literary circle to receive early access to event tickets, 
-                exclusive author interviews, and monthly curation lists.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row max-w-xl mx-auto gap-0 bg-white border border-gray-100 shadow-sm">
-              <input 
-                type="email" 
-                placeholder="Your email address" 
-                className="flex-grow px-8 py-5 text-sm outline-none bg-transparent"
-              />
-              <button className="px-12 py-5 bg-[#c0392b] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] hover:bg-brand-secondary transition-colors">
-                Subscribe
-              </button>
             </div>
           </div>
         </div>

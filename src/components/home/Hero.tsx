@@ -72,14 +72,11 @@ export default function Hero() {
             <h1 className="text-6xl md:text-8xl font-serif text-brand-secondary leading-[1.1] tracking-tight">
                {settings.tagline?.split(' ').slice(0, 2).join(' ') || 'Biggest'} <span className="block text-brand-primary">{settings.tagline?.split(' ').slice(2).join(' ') || 'Bookstore In Ghana'}</span>
             </h1>
-            <p className="text-xl text-gray-500 font-sans max-w-lg leading-relaxed">
-              We deliver books all over the world 10,000+ books in stock
-            </p>
           </div>
           
           <div className="pt-4">
             <Link 
-              to="/catalogue" 
+              to="/shop" 
               className="inline-block px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-widest rounded-sm hover:translate-y-[-2px] transition-all shadow-xl shadow-orange-500/20"
             >
               Meet our bestseller →

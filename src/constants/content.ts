@@ -221,62 +221,6 @@ export const BOOK_CATEGORIES = [
     ]
   },
   {
-    id: "novels",
-    name: "Novels & Anthologies",
-    slug: "novels",
-    description: "Captivating stories and anthologies for young adults and avid readers.",
-    books: [
-      { 
-        id: "n1", 
-        title: "AYORKOR", 
-        author: "NANA MANUKURE KISSIEDU", 
-        cover: "https://images.unsplash.com/photo-1543005041-789647247bf2?auto=format&fit=crop&q=80&w=800", 
-        price: "GH₵ 60.00",
-        year: "2020",
-        isbn: "978-9988-5-3774-6",
-        dimensions: "4.2 x 7 INCHES",
-        bindingPages: "PAPERBACK / PERFECT BINDING / 92 PAGES",
-        description: "Ayorkor’s beauty was complemented by a strong character instilled by her parents. She aspired to reach her ambitious goals and was resolute about honoring her parents. When her father suffered a setback at work, it imperiled her dreams. Here, Ayorkor’s strength of character and determination would be tested."
-      },
-      { 
-        id: "n2", 
-        title: "ASUOYAA BY TRAIN", 
-        author: "NANA MANUKURE KISSIEDU", 
-        cover: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&q=80&w=800", 
-        price: "GH₵ 65.00",
-        year: "2021",
-        isbn: "978-9988-3-0807-0",
-        dimensions: "4.2 x 7 INCHES",
-        bindingPages: "PAPERBACK / PERFECT BINDING / 112 PAGES",
-        description: "Nyameba, a twelve-year-old boy, had barely two months to write his Common Entrance Examinations. He fell into trouble and ran away from home to escape punishment. The main Accra train station became his haven. His encounter on the journey, his stay in Asuoyaa, and the tragic moment he experienced on his return to Accra transformed his life for good."
-      },
-      { 
-        id: "n3", 
-        title: "ANLOGA DAMSEL", 
-        author: "NANA MANUKURE KISSIEDU", 
-        cover: "https://images.unsplash.com/photo-1535905557558-afc4877bc26f?auto=format&fit=crop&q=80&w=800", 
-        price: "GH₵ 60.00",
-        year: "2023",
-        isbn: "978-9988-3-5057-4",
-        dimensions: "4.2 x 7 INCHES",
-        bindingPages: "PAPERBACK / PERFECT BINDING / 110 PAGES",
-        description: "What do you do when you have become popular in school as an athlete and your friend, out of jealousy, betrays you? This is Dzidzor’s predicament. In this entertaining novel, the reader is taken on an adventure, which explores the giddy life of students in secondary school-their loves and joys, as well as their woes and disappointments."
-      },
-      { 
-        id: "n4", 
-        title: "AN OMNIBUS OF SHORT STORIES FROM GHANA", 
-        author: "NANA MANUKURE KISSIEDU", 
-        cover: "https://images.unsplash.com/photo-1524567245596-5cbe78709f06?auto=format&fit=crop&q=80&w=800", 
-        price: "GH₵ 70.00",
-        year: "2024",
-        isbn: "978-9988-3-6213-3",
-        dimensions: "4.2 x 7 INCHES",
-        bindingPages: "PAPERBACK / PERFECT BINDING / 136 PAGES",
-        description: "This edition reveals a diversity of subjects and styles, which offer a reading pleasure to the general reader, especially students. The stories were written to highlight Ghanaian values and culture. This maiden edition contains four short stories; subsequent editions will exhibit more stories from other young Ghanaian writers."
-      }
-    ]
-  },
-  {
     id: "featured-new",
     name: "New Releases (2025)",
     slug: "new-releases",

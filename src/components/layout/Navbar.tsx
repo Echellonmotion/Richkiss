@@ -11,8 +11,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Catalogue', path: '/catalogue' },
-    { name: 'Careers', path: '/careers' },
+    { name: 'Shop', path: '/shop' },
     { name: 'Events', path: '/events' },
     { name: 'Our Clients', path: '/clients' },
     { name: 'Contact', path: '/contact' },
@@ -21,26 +20,26 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-24 lg:h-32">
+        <div className="flex justify-between items-center h-32 lg:h-44">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             {settings.logoUrl ? (
               <img 
                 src={settings.logoUrl} 
                 alt={settings.companyName || "Logo"} 
-                className="h-16 lg:h-24 w-auto object-contain transition-transform duration-200" 
+                className="h-28 lg:h-40 w-auto object-contain transition-transform duration-200" 
               />
             ) : (
               <div className="flex items-center space-x-2">
-                 <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white font-bold">
-                    <BookOpen size={24} />
+                 <div className="w-16 h-16 bg-brand-primary rounded-lg flex items-center justify-center text-white font-bold">
+                    <BookOpen size={36} />
                  </div>
                  <div className="flex flex-col">
-                    <span className="font-serif text-xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
-                      {settings.companyName?.split(' ')[0] || 'RICHKISS'}
+                    <span className="font-serif text-3xl font-bold tracking-tight text-brand-secondary leading-none uppercase">
+                       {settings.companyName?.split(' ')[0] || 'RICHKISS'}
                     </span>
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-brand-muted font-sans font-semibold mt-1">
-                      {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
+                    <span className="text-xs uppercase tracking-[0.2em] text-brand-muted font-sans font-semibold mt-1">
+                       {settings.companyName?.split(' ').slice(1).join(' ') || 'Publishers'}
                     </span>
                  </div>
               </div>
@@ -48,8 +47,8 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center space-x-8">
-            <NavLink to="/" className={({ isActive }) => `text-sm font-medium transition-colors hover:text-brand-primary ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}>Home</NavLink>
+          <div className="hidden lg:flex items-center space-x-10">
+            <NavLink to="/" className={({ isActive }) => `text-lg font-bold transition-colors hover:text-brand-primary ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}>Home</NavLink>
             
             {/* About Submenu */}
             <div 
@@ -57,9 +56,9 @@ export default function Navbar() {
               onMouseEnter={() => setIsAboutOpen(true)}
               onMouseLeave={() => setIsAboutOpen(false)}
             >
-              <button className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-brand-primary ${isAboutOpen ? 'text-brand-primary' : 'text-gray-600'}`}>
-                <span>About</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''}`} />
+              <button className={`flex items-center space-x-1 text-lg font-bold transition-colors hover:text-brand-primary ${isAboutOpen ? 'text-brand-primary' : 'text-gray-600'}`}>
+                <span>About Us</span>
+                <ChevronDown size={18} className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''}`} />
               </button>
               
               <AnimatePresence>
@@ -68,21 +67,21 @@ export default function Navbar() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute left-0 mt-2 w-56 bg-white border border-gray-100 shadow-xl rounded-xl py-2"
+                    className="absolute left-0 mt-2 w-72 bg-white border border-gray-100 shadow-xl rounded-xl py-3"
                   >
                     <Link 
                       to="/about"
-                      className="block px-4 py-3 text-sm text-gray-700 hover:bg-brand-beige hover:text-brand-primary transition-colors border-b border-gray-50 last:border-0"
+                      className="block px-6 py-4 text-base text-gray-700 hover:bg-brand-beige hover:text-brand-primary transition-colors border-b border-gray-50 last:border-0"
                     >
-                      <div className="font-bold">Our Company</div>
-                      <div className="text-[10px] text-gray-400 mt-0.5">Learn about our mission & history</div>
+                      <div className="font-extrabold text-lg">Our Company</div>
+                      <div className="text-[12px] text-gray-400 mt-0.5">Learn about our mission & history</div>
                     </Link>
                     <Link 
                       to="/about/print"
-                      className="block px-4 py-3 text-sm text-gray-700 hover:bg-brand-beige hover:text-brand-primary transition-colors border-b border-gray-50 last:border-0"
+                      className="block px-6 py-4 text-base text-gray-700 hover:bg-brand-beige hover:text-brand-primary transition-colors border-b border-gray-50 last:border-0"
                     >
-                      <div className="font-bold">Print Department</div>
-                      <div className="text-[10px] text-gray-400 mt-0.5">Technical capabilities & production</div>
+                      <div className="font-extrabold text-lg">Print Department</div>
+                      <div className="text-[12px] text-gray-400 mt-0.5">Technical capabilities & production</div>
                     </Link>
                   </motion.div>
                 )}
@@ -93,7 +92,7 @@ export default function Navbar() {
               <NavLink 
                 key={link.path} 
                 to={link.path} 
-                className={({ isActive }) => `text-sm font-medium transition-colors hover:text-brand-primary ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}
+                className={({ isActive }) => `text-lg font-bold transition-colors hover:text-brand-primary ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}
               >
                 {link.name}
               </NavLink>
@@ -103,7 +102,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <div className="lg:hidden">
             <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-600">
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
+              {isOpen ? <X size={36} /> : <Menu size={36} />}
             </button>
           </div>
         </div>
@@ -118,13 +117,13 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
-            <div className="px-4 py-6 space-y-2">
-              <NavLink to="/" onClick={() => setIsOpen(false)} className="block px-3 py-4 text-base font-medium text-gray-700 border-b border-gray-50">Home</NavLink>
+            <div className="px-6 py-8 space-y-4">
+              <NavLink to="/" onClick={() => setIsOpen(false)} className="block px-4 py-5 text-xl font-bold text-gray-700 border-b border-gray-50">Home</NavLink>
               
-              <div className="py-2 border-b border-gray-50">
-                <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">About Us</p>
-                <Link to="/about" onClick={() => setIsOpen(false)} className="block px-6 py-2 text-sm text-gray-600">Our Company</Link>
-                <Link to="/about/print" onClick={() => setIsOpen(false)} className="block px-6 py-2 text-sm text-gray-600">Print Department</Link>
+              <div className="py-4 border-b border-gray-50">
+                <p className="px-4 text-sm font-semibold uppercase tracking-wider text-gray-400 mb-3">About Us</p>
+                <Link to="/about" onClick={() => setIsOpen(false)} className="block px-8 py-3 text-lg font-medium text-gray-600">Our Company</Link>
+                <Link to="/about/print" onClick={() => setIsOpen(false)} className="block px-8 py-3 text-lg font-medium text-gray-600">Print Department</Link>
               </div>
 
               {navLinks.slice(1).map((link) => (
@@ -132,7 +131,7 @@ export default function Navbar() {
                   key={link.path} 
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className="block px-3 py-4 text-base font-medium text-gray-700 border-b border-gray-50"
+                  className="block px-4 py-5 text-xl font-bold text-gray-700 border-b border-gray-50"
                 >
                   {link.name}
                 </NavLink>

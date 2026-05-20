@@ -53,7 +53,7 @@ export default function Catalogue() {
             className="max-w-2xl"
           >
             <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-tight mb-8">
-              Curated Editions
+              Shop
             </h1>
             <p className="text-lg text-gray-500 font-sans leading-relaxed">
               A collection of essential reading material, hand-selected by our editors. From 
@@ -103,28 +103,12 @@ export default function Catalogue() {
                 </div>
               </div>
 
-              {/* Member Picks Ad */}
-              <motion.div 
-                whileHover={{ y: -5 }}
-                className="bg-[#b9f0f0] p-10 space-y-6 rounded-sm shadow-sm"
-              >
-                 <h5 className="text-2xl font-serif text-brand-secondary leading-tight italic">Member Picks</h5>
-                 <p className="text-xs font-medium text-brand-secondary/70 leading-relaxed">
-                   Join our society for early access to signed first editions and exclusive events.
-                 </p>
-                 <Link 
-                   to="/contact" 
-                   className="inline-block text-[10px] font-bold uppercase tracking-widest text-brand-secondary underline underline-offset-8"
-                 >
-                   Learn More
-                 </Link>
-              </motion.div>
             </aside>
 
             {/* Main Grid */}
             <div className="flex-grow">
                {loading && paginatedBooks.length === 0 ? (
-                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-20">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-24">
                     {[1,2,3,4,5,6].map(i => (
                       <div key={i} className="animate-pulse space-y-4">
                         <div className="aspect-[3/4] bg-gray-100 rounded-sm" />
@@ -135,7 +119,7 @@ export default function Catalogue() {
                     ))}
                  </div>
                ) : (
-                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-20">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-24">
                     <AnimatePresence mode="popLayout">
                     {paginatedBooks.map((book: any, i) => (
                       <motion.div 

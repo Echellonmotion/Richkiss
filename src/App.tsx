@@ -11,7 +11,6 @@ import FloatingWhatsApp from './components/layout/FloatingWhatsApp';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import PrintDepartment from './pages/PrintDepartment';
-import Careers from './pages/Careers';
 import Events from './pages/Events';
 import OurClients from './pages/OurClients';
 import Contact from './pages/Contact';
@@ -59,11 +58,10 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/about/print" element={<PrintDepartment />} />
-              <Route path="/careers" element={<Careers />} />
               <Route path="/events" element={<Events />} />
               <Route path="/clients" element={<OurClients />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/catalogue" element={<Catalogue />} />
+              <Route path="/shop" element={<Catalogue />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<Home />} />
             </Routes>

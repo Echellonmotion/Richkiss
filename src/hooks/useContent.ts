@@ -322,8 +322,8 @@ export function useContent() {
     commitment: settings?.commitment || COMPANY_INFO.commitment
   };
 
-  const mergedCategories = categories.length > 0 ? categories : BOOK_CATEGORIES;
-  const mergedBooks = books.length > 0 ? books : BOOK_CATEGORIES.flatMap(c => c.books.map(b => ({ ...b, categorySlug: c.slug })));
+  const mergedCategories = (categories.length > 0 ? categories : BOOK_CATEGORIES).filter(c => c.slug !== 'novels' && c.id !== 'novels');
+  const mergedBooks = (books.length > 0 ? books : BOOK_CATEGORIES.flatMap(c => c.books.map(b => ({ ...b, categorySlug: c.slug })))).filter(b => b.categorySlug !== 'novels');
   const mergedEvents = events.length > 0 ? events : COMPANY_INFO.events;
 
   return { 
