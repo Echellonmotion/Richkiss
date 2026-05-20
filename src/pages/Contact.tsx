@@ -89,9 +89,7 @@ export default function Contact() {
                 <div className="space-y-4">
                   <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff5722]">The Flagship Store</h4>
                   <p className="text-2xl font-serif text-brand-secondary leading-relaxed">
-                    {COMPANY_INFO.headOffice.split(',').map((part, i) => (
-                      <span key={i} className="block">{part.trim()}</span>
-                    ))}
+                    <span className="whitespace-pre-line">{COMPANY_INFO.headOffice}</span>
                   </p>
                 </div>
 

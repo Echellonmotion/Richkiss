@@ -86,7 +86,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start space-x-3 text-sm text-gray-400">
                 <MapPin size={20} className="text-brand-primary flex-shrink-0 mt-0.5" />
-                <span>{COMPANY_INFO.headOffice}</span>
+                <span className="whitespace-pre-line">{COMPANY_INFO.headOffice}</span>
               </li>
               <li className="flex items-center space-x-3 text-sm text-gray-400">
                 <Phone size={20} className="text-brand-primary flex-shrink-0" />

@@ -1,7 +1,7 @@
 export const COMPANY_INFO = {
   name: "Richkiss Publishers",
   established: 2010,
-  headOffice: "Dome West, Accra, Ghana",
+  headOffice: "H/No  DMB 36, Dome West.\nAccra.\n\nGPS: GE-321-9952",
   email: "richkiss10@gmail.com",
   phone: ["+233 20 168 2254", "+233 24 437 4533"],
   whatsapp: "233244374533",
