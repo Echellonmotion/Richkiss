@@ -108,15 +108,11 @@ export default function Contact() {
                   <div className="space-y-3 font-sans text-sm text-gray-600">
                     <div className="flex justify-between items-center max-w-[280px]">
                       <span>Mon – Fri</span>
-                      <span className="font-bold text-brand-secondary">9:00 – 19:00</span>
+                      <span className="font-bold text-brand-secondary">9:00 AM – 5:00 PM</span>
                     </div>
                     <div className="flex justify-between items-center max-w-[280px]">
-                      <span>Saturday</span>
-                      <span className="font-bold text-brand-secondary">10:00 – 18:00</span>
-                    </div>
-                    <div className="flex justify-between items-center max-w-[280px]">
-                      <span>Sunday</span>
-                      <span className="font-bold text-brand-secondary">11:00 – 17:00</span>
+                      <span>Sat & Sun</span>
+                      <span className="font-bold text-[#ff5722]">Closed</span>
                     </div>
                   </div>
                 </div>

@@ -48,7 +48,7 @@ export default function OurClients() {
               <div className="space-y-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary">Curating Excellence</span>
                 <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-tight">
-                  Our Literary <br /> Partners
+                  Retail <br /> Partners
                 </h1>
               </div>
               <p className="text-lg text-gray-500 font-sans leading-relaxed max-w-lg">
@@ -88,7 +88,7 @@ export default function OurClients() {
       <section className="py-32 bg-[#fffcfb]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-20">
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary uppercase tracking-widest">CLIENTS</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary uppercase tracking-widest">RETAIL PARTNERS</h2>
             <div className="w-12 h-[2px] bg-brand-primary mx-auto" />
           </div>
 

@@ -79,7 +79,7 @@ export default function Hero() {
               to="/shop" 
               className="inline-block px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-widest rounded-sm hover:translate-y-[-2px] transition-all shadow-xl shadow-orange-500/20"
             >
-              Meet our bestseller →
+              Visit our shop
             </Link>
           </div>
 

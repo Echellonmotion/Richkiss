@@ -11,9 +11,11 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Home', path: '/' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Print Department', path: '/print' },
     { name: 'Shop', path: '/shop' },
     { name: 'Events', path: '/events' },
-    { name: 'Our Clients', path: '/clients' },
+    { name: 'Retail Partners', path: '/clients' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -22,7 +24,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-32 lg:h-44">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-3 group animate-fadeIn">
             {settings.logoUrl ? (
               <img 
                 src={settings.logoUrl} 
@@ -47,52 +49,12 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center space-x-10">
-            <NavLink to="/" className={({ isActive }) => `text-lg font-bold transition-colors hover:text-brand-primary ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}>Home</NavLink>
-            
-            {/* About Submenu */}
-            <div 
-              className="relative group"
-              onMouseEnter={() => setIsAboutOpen(true)}
-              onMouseLeave={() => setIsAboutOpen(false)}
-            >
-              <button className={`flex items-center space-x-1 text-lg font-bold transition-colors hover:text-brand-primary ${isAboutOpen ? 'text-brand-primary' : 'text-gray-600'}`}>
-                <span>About Us</span>
-                <ChevronDown size={18} className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''}`} />
-              </button>
-              
-              <AnimatePresence>
-                {isAboutOpen && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute left-0 mt-2 w-72 bg-white border border-gray-100 shadow-xl rounded-xl py-3"
-                  >
-                    <Link 
-                      to="/about"
-                      className="block px-6 py-4 text-base text-gray-700 hover:bg-brand-beige hover:text-brand-primary transition-colors border-b border-gray-50 last:border-0"
-                    >
-                      <div className="font-extrabold text-lg">Our Company</div>
-                      <div className="text-[12px] text-gray-400 mt-0.5">Learn about our mission & history</div>
-                    </Link>
-                    <Link 
-                      to="/about/print"
-                      className="block px-6 py-4 text-base text-gray-700 hover:bg-brand-beige hover:text-brand-primary transition-colors border-b border-gray-50 last:border-0"
-                    >
-                      <div className="font-extrabold text-lg">Print Department</div>
-                      <div className="text-[12px] text-gray-400 mt-0.5">Technical capabilities & production</div>
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {navLinks.slice(1).map((link) => (
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+            {navLinks.map((link) => (
               <NavLink 
                 key={link.path} 
                 to={link.path} 
-                className={({ isActive }) => `text-lg font-bold transition-colors hover:text-brand-primary ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}
+                className={({ isActive }) => `text-[15px] xl:text-[17px] font-bold transition-colors hover:text-brand-primary whitespace-nowrap ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}
               >
                 {link.name}
               </NavLink>
@@ -118,15 +80,7 @@ export default function Navbar() {
             className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
             <div className="px-6 py-8 space-y-4">
-              <NavLink to="/" onClick={() => setIsOpen(false)} className="block px-4 py-5 text-xl font-bold text-gray-700 border-b border-gray-50">Home</NavLink>
-              
-              <div className="py-4 border-b border-gray-50">
-                <p className="px-4 text-sm font-semibold uppercase tracking-wider text-gray-400 mb-3">About Us</p>
-                <Link to="/about" onClick={() => setIsOpen(false)} className="block px-8 py-3 text-lg font-medium text-gray-600">Our Company</Link>
-                <Link to="/about/print" onClick={() => setIsOpen(false)} className="block px-8 py-3 text-lg font-medium text-gray-600">Print Department</Link>
-              </div>
-
-              {navLinks.slice(1).map((link) => (
+              {navLinks.map((link) => (
                 <NavLink 
                   key={link.path} 
                   to={link.path}

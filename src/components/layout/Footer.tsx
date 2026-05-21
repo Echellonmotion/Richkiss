@@ -64,7 +64,7 @@ export default function Footer() {
             <h4 className="font-serif text-lg font-semibold">Our Offerings</h4>
             <ul className="space-y-3">
               <li><Link to="/shop" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Shop</Link></li>
-              <li><Link to="/about/print" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Printing Services</Link></li>
+              <li><Link to="/print" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Printing Services</Link></li>
               <li><Link to="/events" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Upcoming Events</Link></li>
             </ul>
           </div>
@@ -74,8 +74,8 @@ export default function Footer() {
             <h4 className="font-serif text-lg font-semibold">Company</h4>
             <ul className="space-y-3">
               <li><Link to="/about" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">About Us</Link></li>
-              <li><Link to="/about/print" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Print Department</Link></li>
-              <li><Link to="/clients" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Our Clients</Link></li>
+              <li><Link to="/print" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Print Department</Link></li>
+              <li><Link to="/clients" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Retail Partners</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-brand-primary text-sm transition-colors">Contact Us</Link></li>
             </ul>
           </div>

@@ -60,7 +60,6 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
   try {
     jsonString = JSON.stringify(errInfo);
   } catch (e) {
-    // If stringify fails due to circularity, create a minimal safe version
     jsonString = JSON.stringify({
       error: errorMessage,
       operationType,
@@ -69,8 +68,9 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
     });
   }
 
-  console.error('Firestore Error: ', jsonString);
-  throw new Error(jsonString);
+  console.error('Firestore Error details: ', jsonString);
+  // Log a clean readable message but do NOT throw to avoid crashing backdrops
+  // and triggering circular structure exceptions in global error serialisers
 }
 
 export function useContent() {
@@ -311,6 +311,10 @@ export function useContent() {
     clientsHeroImageUrl: settings?.clientsHeroImageUrl || "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=2000",
     printHeroImageUrl: settings?.printHeroImageUrl || "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=2000",
     printAboutImageUrl: settings?.printAboutImageUrl || "https://images.unsplash.com/photo-1562654501-a0ccc0af3fb1?auto=format&fit=crop&q=80&w=1200",
+    printOffsetBgImageUrl: settings?.printOffsetBgImageUrl || "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=80&w=1000",
+    printDigitalBgImageUrl: settings?.printDigitalBgImageUrl || "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1000",
+    printBrandingBgImageUrl: settings?.printBrandingBgImageUrl || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1000",
+    printSouvenirsBgImageUrl: settings?.printSouvenirsBgImageUrl || "https://images.unsplash.com/photo-1549463778-07038c824889?auto=format&fit=crop&q=80&w=1000",
     aboutHeritageImageUrl: settings?.aboutHeritageImageUrl || null,
     aboutStoryImageUrl: settings?.aboutStoryImageUrl || null,
     careersWhyRichkissImageUrl: settings?.careersWhyRichkissImageUrl || null,

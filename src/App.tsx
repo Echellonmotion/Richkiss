@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-import FloatingWhatsApp from './components/layout/FloatingWhatsApp';
+import FloatingCatalogue from './components/layout/FloatingCatalogue';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import PrintDepartment from './pages/PrintDepartment';
@@ -57,7 +57,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<AboutUs />} />
-              <Route path="/about/print" element={<PrintDepartment />} />
+              <Route path="/print" element={<PrintDepartment />} />
               <Route path="/events" element={<Events />} />
               <Route path="/clients" element={<OurClients />} />
               <Route path="/contact" element={<Contact />} />
@@ -67,7 +67,7 @@ export default function App() {
             </Routes>
           </main>
           <Footer />
-          <FloatingWhatsApp />
+          <FloatingCatalogue />
         </div>
       </Router>
     </AuthProvider>
