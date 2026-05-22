@@ -31,7 +31,13 @@ export default function Contact() {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
+      const responseText = await response.text();
+      let result: any = {};
+      try {
+        result = JSON.parse(responseText);
+      } catch (jsonErr) {
+        throw new Error(`Server returned a non-JSON response (Status ${response.status}): ${responseText.slice(0, 300) || "Empty response body"}`);
+      }
 
       if (response.ok) {
         setSuccessInfo({

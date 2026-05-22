@@ -57,7 +57,12 @@ async function startServer() {
           user: smtpUser,
           pass: smtpPass,
         },
-        timeout: 10000, // 10s connection timeout
+        connectionTimeout: 8000,   // Fail fast in 8s if host is unreachable
+        greetingTimeout: 8000,     // Fail in 8s if SMTP server fails to greet
+        socketTimeout: 10000,      // Fail in 10s if socket is idle
+        tls: {
+          rejectUnauthorized: false // Don't reject unofficial or cPanel SSL certificates
+        }
       } as any);
 
       const mailOptions = {
