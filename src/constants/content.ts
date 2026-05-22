@@ -2,7 +2,7 @@ export const COMPANY_INFO = {
   name: "Richkiss Publishers",
   established: 2010,
   headOffice: "H/No  DMB 36, Dome West.\nAccra.\n\nGPS: GE-321-9952",
-  email: "richkiss10@gmail.com",
+  email: "info@richkissgh.com",
   phone: ["+233 20 168 2254", "+233 24 437 4533"],
   whatsapp: "233244374533",
   aboutUs: `Richkiss Publishers is a Ghanaian-owned publishing company established in 2010 with a strong commitment to promoting literacy, quality education, and knowledge development through innovative publishing solutions.

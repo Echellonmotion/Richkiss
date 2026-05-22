@@ -1,8 +1,55 @@
-import { motion } from 'motion/react';
-import { ArrowRight, MessageCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowRight, MessageCircle, CheckCircle2 } from 'lucide-react';
 import { COMPANY_INFO } from '../constants/content';
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [successInfo, setSuccessInfo] = useState<{ fallback?: boolean; message: string } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSuccessInfo({
+          fallback: result.fallback,
+          message: result.message || "Thank you! Your message has been sent successfully."
+        });
+        setIsSubmitted(true);
+      } else {
+        throw new Error(result.error || result.details || "Something went wrong. Please verify SMTP details.");
+      }
+    } catch (err: any) {
+      console.error("Submission error:", err);
+      setSubmitError(err.message || "Failed to deliver contact form. Please try again or open standard draft instead.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-white pt-32">
       {/* 1. Header Section */}
@@ -36,50 +83,121 @@ export default function Contact() {
               className="lg:col-span-7 bg-white p-12 lg:p-20 shadow-[0_40px_80px_rgba(0,0,0,0.05)] rounded-sm border border-gray-50"
             >
               <h2 className="text-3xl font-serif text-brand-secondary mb-12 italic">Send a Message</h2>
-              <form className="space-y-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                  <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Name</label>
-                    <input 
-                      type="text" 
-                      placeholder="Your full name"
-                      className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
-                    />
-                  </div>
-                  <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Email Address</label>
-                    <input 
-                      type="email" 
-                      placeholder="hello@example.com"
-                      className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
-                    />
-                  </div>
-                </div>
+              
+              <AnimatePresence mode="wait">
+                {isSubmitted ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="space-y-6 py-12 text-center"
+                  >
+                    <div className="inline-flex items-center justify-center p-4 bg-emerald-50 text-emerald-600 rounded-full mb-4">
+                      <CheckCircle2 size={48} className="animate-bounce" />
+                    </div>
+                    <h3 className="text-2xl font-serif font-bold text-brand-secondary">Thank You!</h3>
+                    <p className="text-gray-500 font-sans leading-relaxed text-sm max-w-md mx-auto">
+                      {successInfo?.message || "Your contact message has been dispatched successfully."}
+                    </p>
+                    {successInfo?.fallback && (
+                      <div className="bg-amber-50/70 border border-amber-200/80 text-amber-800 rounded-sm p-5 text-xs font-sans max-w-md mx-auto text-left leading-relaxed mt-6">
+                        <strong className="text-amber-950 block mb-1">Developer Notice:</strong> 
+                        This submission request was successfully logged in the backend terminal console. To complete live email dispatches to <strong>info@richkissgh.com</strong>, please set the <code>SMTP_PASS</code> secret in the environment variables using your Stormerhost email password. We fall back gracefully to console logs so you aren't blocked!
+                      </div>
+                    )}
+                    <div className="pt-2">
+                      <button 
+                        onClick={() => {
+                          setFormData({ name: '', email: '', subject: '', message: '' });
+                          setSuccessInfo(null);
+                          setIsSubmitted(false);
+                        }}
+                        className="mt-4 px-8 py-3 bg-brand-secondary text-white text-[10px] uppercase font-bold tracking-widest rounded-sm hover:bg-[#ff5722] transition-colors"
+                      >
+                        Send Another Message
+                      </button>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-12">
+                    {submitError && (
+                      <div className="p-4 bg-red-50 text-red-700 rounded-sm border border-red-100 text-xs font-sans space-y-2">
+                        <p className="font-bold">Message failed to deliver via portal:</p>
+                        <p>{submitError}</p>
+                        <p className="pt-2 text-gray-500">
+                          Alternatively, you can open a standard draft in your email application:
+                        </p>
+                        <a 
+                          href={`mailto:${COMPANY_INFO.email}?subject=${encodeURIComponent(formData.subject || 'Direct Inquiry')}&body=${encodeURIComponent(formData.message)}`}
+                          className="inline-flex items-center gap-2 hover:underline text-[#ff5722] font-semibold"
+                        >
+                          <ArrowRight size={14} /> Open draft in local email application
+                        </a>
+                      </div>
+                    )}
 
-                <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Subject</label>
-                  <input 
-                    type="text" 
-                    placeholder="What can we help you with?"
-                    className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
-                  />
-                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                      <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
+                        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Name</label>
+                        <input 
+                          type="text" 
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder="Your full name"
+                          className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
+                        />
+                      </div>
+                      <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
+                        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Email Address</label>
+                        <input 
+                          type="email" 
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          placeholder="hello@example.com"
+                          className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
+                        />
+                      </div>
+                    </div>
 
-                <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Message</label>
-                  <textarea 
-                    rows={4}
-                    placeholder="Type your message here..."
-                    className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300 resize-none"
-                  />
-                </div>
+                    <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Subject</label>
+                      <input 
+                        type="text" 
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        placeholder="What can we help you with?"
+                        className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300"
+                      />
+                    </div>
 
-                <div className="pt-8">
-                  <button className="px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20">
-                    Send Message
-                  </button>
-                </div>
-              </form>
+                    <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Message</label>
+                      <textarea 
+                        rows={4}
+                        required
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="Type your message here..."
+                        className="w-full bg-transparent outline-none text-sm font-sans placeholder:text-gray-300 resize-none"
+                      />
+                    </div>
+
+                    <div className="pt-8">
+                      <button 
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm transition-all shadow-xl shadow-[#ff5722]/20 ${
+                          isSubmitting ? "opacity-60 cursor-not-allowed" : "hover:-translate-y-1"
+                        }`}
+                      >
+                        {isSubmitting ? "Sending..." : "Send Message"}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </AnimatePresence>
             </motion.div>
 
             {/* Right: Info & Image Column */}

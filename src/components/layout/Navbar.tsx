@@ -12,10 +12,10 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
-    { name: 'Print Department', path: '/print' },
     { name: 'Shop', path: '/shop' },
     { name: 'Events', path: '/events' },
     { name: 'Retail Partners', path: '/clients' },
+    { name: 'Print Department', path: '/print' },
     { name: 'Contact', path: '/contact' },
   ];
 

@@ -941,6 +941,41 @@ export default function Admin() {
                               </div>
                             )}
                           </div>
+                          <div className="space-y-4">
+                            <ImageUpload
+                              onUploadComplete={(url) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  flyInAdvertImageUrl: url,
+                                }))
+                              }
+                              folder="adverts"
+                              label="Home Page Fly-in Advert Graphic Image (Optional, falls back to custom CSS layout)"
+                            />
+                            {formData.flyInAdvertImageUrl && (
+                              <div className="relative group/img">
+                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                  <img
+                                    src={formData.flyInAdvertImageUrl}
+                                    alt="Fly-in Advert Flyer"
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setFormData((prev) => ({
+                                      ...prev,
+                                      flyInAdvertImageUrl: "",
+                                    }))
+                                  }
+                                  className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                >
+                                  <X size={12} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
 
@@ -1199,6 +1234,47 @@ export default function Admin() {
                         }
                         className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary"
                       />
+                    </div>
+                    <div className="space-y-4 md:col-span-2 p-6 bg-brand-beige/30 rounded-3xl border border-brand-primary/10">
+                      <h3 className="text-sm font-bold uppercase tracking-widest text-brand-primary">
+                        Home Fly-In Advert Configuration
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                        <div className="flex items-center space-x-3 h-full">
+                          <input
+                            type="checkbox"
+                            id="enableFlyInAdvert"
+                            checked={formData.enableFlyInAdvert ?? true}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                enableFlyInAdvert: e.target.checked,
+                              })
+                            }
+                            className="w-5 h-5 accent-brand-primary text-white border-0 rounded focus:ring-2 focus:ring-brand-primary"
+                          />
+                          <label htmlFor="enableFlyInAdvert" className="text-xs font-bold uppercase tracking-widest text-brand-muted cursor-pointer">
+                            Enable Fly-in Advert Popup
+                          </label>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">
+                            Pre-order Phone Number
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.flyInAdvertPhone || ""}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                flyInAdvertPhone: e.target.value,
+                              })
+                            }
+                            placeholder="+233 (0) 20 168 2254"
+                            className="w-full p-4 bg-white border-0 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary text-sm"
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="flex space-x-4 md:col-span-2 pt-4">
                       <button
@@ -1575,6 +1651,29 @@ export default function Admin() {
                         <p className="text-sm font-sans text-brand-secondary">
                           {settings.phoneNumbers?.join(", ")}
                         </p>
+                      </div>
+                      <div className="space-y-2 md:col-span-2 p-6 bg-brand-beige rounded-2xl border border-gray-100 mt-2">
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-brand-primary">
+                          Home Fly-In Advert Status
+                        </h4>
+                        <div className="flex flex-col sm:flex-row gap-6 mt-3 items-start sm:items-center">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              Popup Display: <span className="font-bold uppercase text-xs px-2 py-0.5 rounded-full bg-white text-brand-primary border border-brand-primary/10">{(settings.enableFlyInAdvert ?? true) ? "Active" : "Disabled"}</span>
+                            </p>
+                            <p className="text-sm">
+                              Ad Pre-order Phone: <span className="font-mono font-bold text-xs">{settings.flyInAdvertPhone || "+233 (0) 20 168 2254"}</span>
+                            </p>
+                            <p className="text-xs text-gray-500 italic mt-1 font-sans">
+                              {settings.flyInAdvertImageUrl ? "Using uploaded graphic image" : "Using high-fidelity pre-rendered Tapa's Book series mockup"}
+                            </p>
+                          </div>
+                          {settings.flyInAdvertImageUrl && (
+                            <div className="w-24 aspect-[1.3] rounded-lg overflow-hidden border border-gray-200">
+                              <img src={settings.flyInAdvertImageUrl} alt="Advert Thumbnail" className="w-full h-full object-cover" />
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

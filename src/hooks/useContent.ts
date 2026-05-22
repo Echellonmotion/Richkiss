@@ -74,7 +74,7 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
 }
 
 export function useContent() {
-  const [settings, setSettings] = useState<any>(null);
+  const [settings, setSettings] = useState<any>({});
   const [categories, setCategories] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -315,6 +315,9 @@ export function useContent() {
     printDigitalBgImageUrl: settings?.printDigitalBgImageUrl || "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1000",
     printBrandingBgImageUrl: settings?.printBrandingBgImageUrl || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1000",
     printSouvenirsBgImageUrl: settings?.printSouvenirsBgImageUrl || "https://images.unsplash.com/photo-1549463778-07038c824889?auto=format&fit=crop&q=80&w=1000",
+    flyInAdvertImageUrl: settings?.flyInAdvertImageUrl || "",
+    enableFlyInAdvert: settings?.enableFlyInAdvert !== undefined ? settings.enableFlyInAdvert : true,
+    flyInAdvertPhone: settings?.flyInAdvertPhone || "+233 (0) 20 168 2254",
     aboutHeritageImageUrl: settings?.aboutHeritageImageUrl || null,
     aboutStoryImageUrl: settings?.aboutStoryImageUrl || null,
     careersWhyRichkissImageUrl: settings?.careersWhyRichkissImageUrl || null,
