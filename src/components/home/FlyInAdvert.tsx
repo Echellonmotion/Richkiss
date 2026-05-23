@@ -28,6 +28,9 @@ export default function FlyInAdvert() {
     sessionStorage.setItem('richkiss_advert_dismissed', 'true');
   };
 
+  // Safely get phone number
+  const flyInPhone = settings.flyInAdvertPhone || "+233 (0) 20 168 2254";
+
   // Render the pre-rendered detailed mockup of the flyer if no custom image URL is uploaded
   const renderMockup = () => (
     <div className="relative bg-[#fcfcfd] border border-gray-100 rounded-lg overflow-hidden flex flex-col shadow-2xl w-[320px] sm:w-[380px] text-gray-800">
@@ -127,12 +130,12 @@ export default function FlyInAdvert() {
 
       {/* 4. Core CTA Pre-order Banner */}
       <a 
-        href={`tel:${settings.flyInAdvertPhone.replace(/[^0-9+]/g, '')}`}
+        href={`tel:${flyInPhone.replace(/[^0-9+]/g, '')}`}
         className="bg-[#ff5722] hover:bg-[#ff3d00] text-white text-center py-4 px-4 font-sans font-black tracking-wider block transition-colors shadow-inner"
       >
         <span className="text-xs uppercase flex items-center justify-center gap-2">
           <Phone size={14} className="animate-pulse" />
-          PRE-ORDER: {settings.flyInAdvertPhone}
+          PRE-ORDER: {flyInPhone}
         </span>
       </a>
 
@@ -168,11 +171,11 @@ export default function FlyInAdvert() {
                 referrerPolicy="no-referrer"
               />
               <a 
-                href={`tel:${settings.flyInAdvertPhone.replace(/[^0-9+]/g, '')}`}
+                href={`tel:${flyInPhone.replace(/[^0-9+]/g, '')}`}
                 className="mt-2 bg-[#ff5722] hover:bg-[#ff3d00] text-white text-center py-3 px-3 font-sans font-black tracking-wider block transition-colors rounded-sm text-[10px] uppercase flex items-center justify-center gap-1.5"
               >
                 <Phone size={12} className="animate-pulse" />
-                PRE-ORDER: {settings.flyInAdvertPhone}
+                PRE-ORDER: {flyInPhone}
               </a>
             </div>
           ) : (

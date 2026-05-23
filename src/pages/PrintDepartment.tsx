@@ -105,9 +105,9 @@ export default function PrintDepartment() {
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-serif text-white tracking-tight"
+            className="text-5xl md:text-7xl font-serif font-black text-white uppercase tracking-tight"
           >
-            Product Catalogue
+            Print Department
           </motion.h1>
           
           <nav className="flex items-center justify-center space-x-2 text-white/70 font-sans text-[10px] uppercase tracking-[0.2em]">
