@@ -303,15 +303,38 @@ export default function Admin() {
     setIsSaving(true);
     setStatus(null);
     try {
+      // Clean undefined fields recursively to prevent Firestore serialization errors
+      const cleanUndefined = (obj: any): any => {
+        if (obj === null || typeof obj !== "object") {
+          return obj;
+        }
+        const clean: any = Array.isArray(obj) ? [] : {};
+        for (const key of Object.keys(obj)) {
+          const value = obj[key];
+          if (value !== undefined) {
+            if (value === null) {
+              clean[key] = null;
+            } else if (typeof value === "object") {
+              clean[key] = cleanUndefined(value);
+            } else {
+              clean[key] = value;
+            }
+          }
+        }
+        return clean;
+      };
+
+      const cleanData = cleanUndefined(data);
+
       if (id) {
         await setDoc(
           doc(db, coll, id),
-          { ...data, updatedAt: serverTimestamp() },
+          { ...cleanData, updatedAt: serverTimestamp() },
           { merge: true },
         );
       } else {
         await addDoc(collection(db, coll), {
-          ...data,
+          ...cleanData,
           createdAt: serverTimestamp(),
         });
       }
@@ -1925,7 +1948,7 @@ export default function Admin() {
                       setIsEditing("new-book");
                       setFormData({
                         author: "NANA MANUKURE KISSIEDU",
-                        categorySlug: categories[0]?.slug,
+                        categorySlug: categories[0]?.slug || "",
                       });
                     }}
                     className="flex items-center space-x-2 px-6 py-3 bg-brand-primary text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
