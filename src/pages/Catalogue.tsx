@@ -21,14 +21,66 @@ export default function Catalogue() {
 
   const filteredBooks = useMemo(() => {
     return books.filter((book: any) => {
-      const matchesCategory = activeCategory === 'all' || book.categorySlug === activeCategory;
-      const title = book.title?.toString() || '';
-      const author = book.author?.toString() || '';
+      // Robust category matching
+      let matchesCategory = false;
+      const activeCat = (activeCategory || '').toString().trim().toLowerCase();
+
+      if (activeCat === 'all') {
+        matchesCategory = true;
+      } else {
+        const bookCat = (book.categorySlug || book.category || '').toString().trim().toLowerCase();
+        
+        // 1. Direct match (e.g. "french-books" === "french-books")
+        if (bookCat === activeCat) {
+          matchesCategory = true;
+        }
+        
+        // 2. Space-to-hyphen / hyphen-to-space match (e.g., "french-books" matching "french books")
+        if (!matchesCategory) {
+          const normalize = (str: string) => str.replace(/[-_]/g, ' ');
+          if (normalize(bookCat) === normalize(activeCat)) {
+            matchesCategory = true;
+          }
+        }
+        
+        // 3. Substring match or abbreviation / shorthand checks (e.g., category is "french" and book is "french-books", or vice-versa)
+        if (!matchesCategory && bookCat && activeCat) {
+          if (bookCat.includes(activeCat) || activeCat.includes(bookCat)) {
+            matchesCategory = true;
+          }
+        }
+
+        // 4. Fallback matching against categories database definitions (matching by ID, slug or Name)
+        if (!matchesCategory && categories) {
+          const correspondingCategory = categories.find((c: any) => {
+            if (!c) return false;
+            const slug = (c.slug || '').toString().toLowerCase().trim();
+            const id = (c.id || '').toString().toLowerCase().trim();
+            const name = (c.name || '').toString().toLowerCase().trim();
+            return slug === activeCat || id === activeCat || name === activeCat;
+          });
+          
+          if (correspondingCategory) {
+            const catName = (correspondingCategory.name || '').toString().toLowerCase().trim();
+            const catSlug = (correspondingCategory.slug || '').toString().toLowerCase().trim();
+            const catId = (correspondingCategory.id || '').toString().toLowerCase().trim();
+            
+            if (bookCat === catName || bookCat === catSlug || bookCat === catId) {
+              matchesCategory = true;
+            } else if (catName && (bookCat.includes(catName) || catName.includes(bookCat))) {
+              matchesCategory = true;
+            }
+          }
+        }
+      }
+
+      const title = (book?.title || '').toString();
+      const author = (book?.author || '').toString();
       const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             author.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [books, activeCategory, searchQuery]);
+  }, [books, activeCategory, searchQuery, categories]);
 
   // Reset to first page when filters change
   useEffect(() => {
@@ -162,7 +214,7 @@ export default function Catalogue() {
                         <div className="space-y-4">
                           <div className="flex">
                             <span className="px-3 py-1 bg-brand-primary/10 text-[8px] font-bold uppercase tracking-[0.2em] text-brand-primary rounded-sm">
-                              {book.categorySlug}
+                              {categories.find((c: any) => c.slug === book.categorySlug || c.id === book.categorySlug)?.name || book.categorySlug}
                             </span>
                           </div>
                           <div className="space-y-1">
