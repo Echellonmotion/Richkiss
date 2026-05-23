@@ -104,6 +104,12 @@ service cloud.firestore {
              (data.get('order', 0) is int);
     }
 
+    function isValidPrintPartner(data) {
+      return (data.get('name', '') is string) && data.get('name', '').size() <= 200 &&
+             (data.get('logoUrl', '') is string) && data.get('logoUrl', '').size() <= 1000 &&
+             (data.get('order', 0) is int);
+    }
+
     function isValidJob(data) {
       return (data.get('title', '') is string) && data.get('title', '').size() <= 200 &&
              (data.get('category', '') is string) &&
@@ -145,6 +151,11 @@ service cloud.firestore {
     }
 
     match /partners/{partnerId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /printPartners/{partnerId} {
       allow read: if true;
       allow write: if isAdmin();
     }

@@ -121,6 +121,17 @@
         "order": { "type": "integer" }
       },
       "required": ["name", "logoUrl"]
+    },
+    "PrintPartner": {
+      "title": "Print Partner Logo",
+      "description": "Logos displayed on the Print Department page",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "order": { "type": "integer" }
+      },
+      "required": ["name", "logoUrl"]
     }
   },
   "firestore": {
@@ -151,6 +162,10 @@
     "partners": {
       "schema": "Partner",
       "description": "Collection of partner logos"
+    },
+    "printPartners": {
+      "schema": "PrintPartner",
+      "description": "Collection of print department logos"
     },
     "jobs": {
       "schema": "Job",

@@ -7,7 +7,7 @@ import {
 import { useContent } from '../hooks/useContent';
 
 export default function OurClients() {
-  const { settings, partners: cmsPartners } = useContent();
+  const { partners: cmsPartners } = useContent();
   const staticPartners = [
     "Princlesgh", "AGAMal", "YiKroSec", 
     "GreenLac", "ASSN", "UMA"
@@ -47,14 +47,12 @@ export default function OurClients() {
             >
               <div className="space-y-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary">Curating Excellence</span>
-                <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-tight">
+                <h1 className="text-5xl lg:text-7xl font-serif text-brand-secondary leading-tight uppercase font-black">
                   Retail <br /> Partners
                 </h1>
               </div>
               <p className="text-lg text-gray-500 font-sans leading-relaxed max-w-lg">
-                We believe literature thrives through collaboration. Richkiss partners with the world's most 
-                prestigious publishers, historic libraries, and dynamic cultural institutions to bring 
-                exceptional stories to light.
+                We believe literature thrives through collaboration. Richkiss partners with prestigious bookstore distributors, publishing houses, regional retailers, and prominent cultural organizations to make exceptional literature accessible everywhere.
               </p>
               <div className="flex flex-wrap gap-4">
                 <button className="px-10 py-5 bg-[#1d5c5e] text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all">
@@ -84,31 +82,42 @@ export default function OurClients() {
         </div>
       </section>
 
-      {/* 2. Global Institutions Grid */}
-      <section className="py-32 bg-[#fffcfb]">
+      {/* 2. Global Partners Grid */}
+      <section className="py-32 bg-[#fffcfb] border-y border-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-20">
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary uppercase tracking-widest">RETAIL PARTNERS</h2>
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary font-mono">Our Global Network</span>
+            <h2 className="text-4xl md:text-5xl font-serif text-brand-secondary uppercase tracking-widest font-black">Retail Partners</h2>
             <div className="w-12 h-[2px] bg-brand-primary mx-auto" />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {partners.map((partner, i) => (
+          <div className="flex flex-wrap items-stretch justify-center gap-8">
+            {partners.map((partner: any, i: number) => (
               <motion.div 
                 key={partner.id || partner.name || i}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="bg-white p-10 aspect-square flex items-center justify-center border border-gray-50 shadow-sm hover:shadow-md transition-shadow group"
+                className="flex flex-col items-center space-y-3 group w-[calc(50%-1rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(16.66%-2rem)] max-w-[160px]"
               >
-                {partner.logoUrl ? (
-                  <img src={partner.logoUrl} alt={partner.name} className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all text-xs font-serif" />
-                ) : (
-                  <p className="text-base font-serif text-brand-secondary/60 group-hover:text-brand-primary transition-colors leading-tight">
-                    {partner.name}
-                  </p>
-                )}
+                <div className="w-full bg-white p-6 aspect-[1.1] flex items-center justify-center border border-gray-100 shadow-sm hover:shadow-md transition-all rounded-lg overflow-hidden">
+                  {partner.logoUrl ? (
+                    <img 
+                      src={partner.logoUrl} 
+                      alt={partner.name} 
+                      className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" 
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-brand-beige/50 flex items-center justify-center text-xs font-serif font-black text-brand-secondary">
+                      {partner.name?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs font-serif font-bold text-brand-secondary/90 uppercase tracking-wider text-center line-clamp-2 min-h-[32px] flex items-center justify-center bg-transparent group-hover:text-brand-primary transition-colors">
+                  {partner.name}
+                </p>
               </motion.div>
             ))}
           </div>

@@ -45,6 +45,7 @@ export default function Admin() {
     books,
     events,
     partners,
+    printPartners,
     whyRichkiss,
     jobs,
     printWorks,
@@ -56,6 +57,7 @@ export default function Admin() {
     | "books"
     | "events"
     | "partners"
+    | "printPartners"
     | "whyRichkiss"
     | "jobs"
     | "printWorks"
@@ -365,6 +367,7 @@ export default function Admin() {
             { id: "books", label: "Book Catalogue", icon: Book },
             { id: "events", label: "Events & Gallery", icon: Calendar },
             { id: "partners", label: "Partners Logos", icon: Users },
+            { id: "printPartners", label: "Print Partners", icon: Users },
             { id: "whyRichkiss", label: "Why Richkiss", icon: CheckCircle2 },
             { id: "jobs", label: "Job Openings", icon: Briefcase },
             { id: "printWorks", label: "Print Works", icon: ImageIcon },
@@ -2646,6 +2649,167 @@ export default function Admin() {
                                 "partners",
                                 formData,
                                 isEditing === "new-partner"
+                                  ? undefined
+                                  : (isEditing as string),
+                              )
+                            }
+                            className="flex-grow py-4 bg-brand-secondary text-white rounded-full font-bold shadow-lg"
+                          >
+                            Save Partner
+                          </button>
+                          <button
+                            onClick={() => setIsEditing(null)}
+                            className="px-8 py-4 border border-gray-100 rounded-full font-bold"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {activeTab === "printPartners" && (
+              <div className="space-y-8">
+                <div className="flex justify-between items-center mb-10">
+                  <h2 className="text-3xl font-serif text-brand-secondary">
+                    Print Partner Logos
+                  </h2>
+                  <button
+                    onClick={() => {
+                      setIsEditing("new-print-partner");
+                      setFormData({ order: (printPartners || []).length });
+                    }}
+                    className="flex items-center space-x-2 px-6 py-3 bg-brand-primary text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+                  >
+                    <Plus size={14} />
+                    <span>Add Print Partner</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                  {(printPartners || []).map((partner: any) => (
+                    <div
+                      key={partner.id}
+                      className="p-4 bg-brand-beige/30 rounded-3xl border border-gray-100 flex flex-col items-center space-y-4 group"
+                    >
+                      <div className="w-full aspect-square bg-white rounded-2xl overflow-hidden flex items-center justify-center p-4 border border-gray-100 shadow-sm transition-all group-hover:shadow-md">
+                        {partner.logoUrl ? (
+                          <img
+                            src={partner.logoUrl}
+                            alt={partner.name}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        ) : (
+                          <div className="text-xs font-bold text-gray-300">
+                            No Logo
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-center w-full">
+                        <h3 className="font-serif font-bold text-sm text-brand-secondary line-clamp-1">
+                          {partner.name}
+                        </h3>
+                      </div>
+                      <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => {
+                            setIsEditing(partner.id);
+                            setFormData({ ...partner });
+                          }}
+                          className="p-2 bg-white rounded-lg text-brand-secondary hover:text-brand-primary shadow-sm"
+                        >
+                          <Edit2 size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete("printPartners", partner.id)}
+                          className="p-2 bg-white rounded-lg text-red-500 hover:bg-red-500 hover:text-white shadow-sm"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <AnimatePresence>
+                  {(isEditing === "new-print-partner" ||
+                    (printPartners || []).some((p) => p.id === isEditing)) && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[60] bg-brand-secondary/80 backdrop-blur-sm flex items-center justify-center p-4"
+                    >
+                      <motion.div
+                        initial={{ scale: 0.9, y: 20 }}
+                        animate={{ scale: 1, y: 0 }}
+                        className="bg-white p-10 rounded-[40px] shadow-2xl max-w-lg w-full space-y-8"
+                      >
+                        <h3 className="text-2xl font-serif text-brand-secondary">
+                          Print Partner Details
+                        </h3>
+                        <div className="space-y-4">
+                          <ImageUpload
+                            onUploadComplete={(url) =>
+                              setFormData((prev) => ({ ...prev, logoUrl: url }))
+                            }
+                            folder="printPartners"
+                            label="Print Partner Logo"
+                          />
+                          {formData.logoUrl && (
+                            <div className="relative group/img w-24 h-24 mx-auto">
+                              <div className="w-24 h-24 bg-white rounded-2xl overflow-hidden flex items-center justify-center p-4 border-2 border-brand-primary/20 shadow-lg">
+                                <img
+                                  src={formData.logoUrl}
+                                  alt="Preview"
+                                  className="max-w-full max-h-full object-contain"
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    logoUrl: "",
+                                  }))
+                                }
+                                className="absolute -top-2 -right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                          )}
+                          <input
+                            placeholder="Partner Name"
+                            className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary"
+                            value={formData.name || ""}
+                            onChange={(e) =>
+                              setFormData({ ...formData, name: e.target.value })
+                            }
+                          />
+                          <input
+                            type="number"
+                            placeholder="Display Order"
+                            className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary"
+                            value={formData.order || 0}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                order: parseInt(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                        <div className="flex space-x-4">
+                          <button
+                            onClick={() =>
+                              handleSaveItem(
+                                "printPartners",
+                                formData,
+                                isEditing === "new-print-partner"
                                   ? undefined
                                   : (isEditing as string),
                               )

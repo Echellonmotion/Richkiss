@@ -12,8 +12,14 @@ import { Link } from 'react-router-dom';
 import { useContent } from '../hooks/useContent';
 
 export default function PrintDepartment() {
-  const { settings, printWorks } = useContent();
+  const { settings, printWorks, printPartners: cmsPrintPartners } = useContent();
   const [selectedWork, setSelectedWork] = useState<any | null>(null);
+
+  const staticPartners = [
+    "Princlesgh", "AGAMal", "YiKroSec", 
+    "GreenLac", "ASSN", "UMA"
+  ];
+  const partners = cmsPrintPartners && cmsPrintPartners.length > 0 ? cmsPrintPartners : staticPartners.map(name => ({ name }));
 
   const departments = [
     {
@@ -298,6 +304,50 @@ export default function PrintDepartment() {
                 </div>
               ))
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Partners & Clients Section */}
+      <section className="py-24 bg-brand-beige/10 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 text-center">
+          <div className="space-y-4">
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary font-mono">Trusted By Leaders</span>
+            <h2 className="text-3xl md:text-4xl font-serif text-brand-secondary uppercase font-bold tracking-wider">
+              Our Print Partners & Clients
+            </h2>
+            <div className="w-12 h-[2px] bg-brand-primary mx-auto" />
+          </div>
+
+          <div className="flex flex-wrap items-stretch justify-center gap-8">
+            {partners.map((partner: any, i: number) => (
+              <motion.div 
+                key={partner.id || partner.name || i}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="flex flex-col items-center space-y-3 group w-[calc(50%-1rem)] md:w-[calc(33.33%-2rem)] lg:w-[calc(16.66%-2rem)] max-w-[160px]"
+              >
+                <div className="w-full bg-white p-6 aspect-[1.1] flex items-center justify-center border border-gray-100 shadow-sm hover:shadow-md transition-all rounded-lg overflow-hidden">
+                  {partner.logoUrl ? (
+                    <img 
+                      src={partner.logoUrl} 
+                      alt={partner.name} 
+                      className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" 
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-brand-beige/50 flex items-center justify-center text-xs font-serif font-black text-brand-secondary">
+                      {partner.name?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs font-serif font-bold text-brand-secondary/90 uppercase tracking-wider text-center line-clamp-2 min-h-[32px] flex items-center justify-center bg-transparent group-hover:text-brand-primary transition-colors">
+                  {partner.name}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

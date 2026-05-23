@@ -79,6 +79,7 @@ export function useContent() {
   const [books, setBooks] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [partners, setPartners] = useState<any[]>([]);
+  const [printPartners, setPrintPartners] = useState<any[]>([]);
   const [whyRichkiss, setWhyRichkiss] = useState<any[]>([]);
   const [printWorks, setPrintWorks] = useState<any[]>([]);
   const [jobs, setJobs] = useState<any[]>([]);
@@ -93,6 +94,7 @@ export function useContent() {
     let whyRichkissLoaded = false;
     let printWorksLoaded = false;
     let partnersLoaded = false;
+    let printPartnersLoaded = false;
     let jobsLoaded = false;
 
     const sanitizeData = (data: any, seen = new WeakSet()): any => {
@@ -146,7 +148,7 @@ export function useContent() {
     };
 
     const checkLoading = () => {
-      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded && whyRichkissLoaded && printWorksLoaded && partnersLoaded && jobsLoaded) {
+      if (settingsLoaded && categoriesLoaded && booksLoaded && eventsLoaded && whyRichkissLoaded && printWorksLoaded && partnersLoaded && jobsLoaded && printPartnersLoaded) {
         setLoading(false);
       }
     };
@@ -260,6 +262,19 @@ export function useContent() {
         handleFirestoreError(err, OperationType.LIST, 'partners');
       });
 
+    // Print Partners
+    const unsubPrintPartners = onSnapshot(collection(db, 'printPartners'), 
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...sanitizeData(doc.data()) }));
+        setPrintPartners(data);
+        printPartnersLoaded = true;
+        checkLoading();
+      }, (err) => {
+        printPartnersLoaded = true;
+        checkLoading();
+        handleFirestoreError(err, OperationType.LIST, 'printPartners');
+      });
+
     // Jobs
     const unsubJobs = onSnapshot(collection(db, 'jobs'), 
       (snapshot) => {
@@ -283,6 +298,7 @@ export function useContent() {
       unsubWhy();
       unsubPrint();
       unsubPartners();
+      unsubPrintPartners();
       unsubJobs();
     };
   }, []);
@@ -339,6 +355,7 @@ export function useContent() {
     books: mergedBooks, 
     events: mergedEvents,
     partners,
+    printPartners,
     whyRichkiss,
     jobs,
     printWorks,
