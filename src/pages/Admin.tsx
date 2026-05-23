@@ -941,41 +941,6 @@ export default function Admin() {
                               </div>
                             )}
                           </div>
-                          <div className="space-y-4">
-                            <ImageUpload
-                              onUploadComplete={(url) =>
-                                setFormData((prev) => ({
-                                  ...prev,
-                                  flyInAdvertImageUrl: url,
-                                }))
-                              }
-                              folder="adverts"
-                              label="Home Page Fly-in Advert Graphic Image (Optional, falls back to custom CSS layout)"
-                            />
-                            {formData.flyInAdvertImageUrl && (
-                              <div className="relative group/img">
-                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
-                                  <img
-                                    src={formData.flyInAdvertImageUrl}
-                                    alt="Fly-in Advert Flyer"
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      flyInAdvertImageUrl: "",
-                                    }))
-                                  }
-                                  className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
-                                >
-                                  <X size={12} />
-                                </button>
-                              </div>
-                            )}
-                          </div>
                         </div>
                       </div>
 
@@ -1235,44 +1200,128 @@ export default function Admin() {
                         className="w-full p-4 bg-brand-beige/50 border-0 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary"
                       />
                     </div>
-                    <div className="space-y-4 md:col-span-2 p-6 bg-brand-beige/30 rounded-3xl border border-brand-primary/10">
-                      <h3 className="text-sm font-bold uppercase tracking-widest text-brand-primary">
-                        Home Fly-In Advert Configuration
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-                        <div className="flex items-center space-x-3 h-full">
-                          <input
-                            type="checkbox"
-                            id="enableFlyInAdvert"
-                            checked={formData.enableFlyInAdvert ?? true}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                enableFlyInAdvert: e.target.checked,
-                              })
-                            }
-                            className="w-5 h-5 accent-brand-primary text-white border-0 rounded focus:ring-2 focus:ring-brand-primary"
-                          />
-                          <label htmlFor="enableFlyInAdvert" className="text-xs font-bold uppercase tracking-widest text-brand-muted cursor-pointer">
-                            Enable Fly-in Advert Popup
-                          </label>
+                    <div className="space-y-6 md:col-span-2 p-8 bg-brand-beige/35 rounded-3xl border border-brand-primary/10">
+                      <div className="border-b border-brand-primary/10 pb-4">
+                        <h3 className="text-lg font-serif text-brand-secondary">
+                          Pre-order Ad Popup Configuration
+                        </h3>
+                        <p className="text-xs text-brand-muted mt-1">
+                          Manage the promotional popup advertisement displayed on the homepage.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Column 1: Control Toggles & CTA */}
+                        <div className="space-y-6">
+                          <div className="flex items-center space-x-3 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                            <input
+                              type="checkbox"
+                              id="enableFlyInAdvert"
+                              checked={formData.enableFlyInAdvert ?? true}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  enableFlyInAdvert: e.target.checked,
+                                })
+                              }
+                              className="w-5 h-5 accent-brand-primary text-white border-0 rounded focus:ring-2 focus:ring-brand-primary cursor-pointer"
+                            />
+                            <div className="flex flex-col">
+                              <label htmlFor="enableFlyInAdvert" className="text-xs font-bold uppercase tracking-widest text-brand-secondary cursor-pointer">
+                                Enable Ad Popup on Homepage
+                              </label>
+                              <span className="text-[10px] text-gray-400">Controls if the pop-up triggers after 2 seconds</span>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <label className="text-xs font-bold uppercase tracking-widest text-brand-muted block">
+                              Pre-order Phone Number / CTA Text
+                            </label>
+                            <input
+                              type="text"
+                              value={formData.flyInAdvertPhone || ""}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  flyInAdvertPhone: e.target.value,
+                                })
+                              }
+                              placeholder="+233 (0) 20 168 2254"
+                              className="w-full p-4 bg-white border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary text-sm shadow-sm"
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <label className="text-xs font-bold uppercase tracking-widest text-brand-muted block">
+                              Or, Paste Direct Image URL
+                            </label>
+                            <input
+                              type="text"
+                              value={formData.flyInAdvertImageUrl || ""}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  flyInAdvertImageUrl: e.target.value,
+                                })
+                              }
+                              placeholder="https://images.unsplash.com/photo-... or custom URL"
+                              className="w-full p-4 bg-white border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary text-sm shadow-sm"
+                            />
+                            <p className="text-[10px] text-gray-400">Pasting an image URL allows you to replace the image without uploading a physical file, or if CDN keys are not configured.</p>
+                          </div>
                         </div>
-                        <div className="space-y-2">
-                          <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">
-                            Pre-order Phone Number
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.flyInAdvertPhone || ""}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                flyInAdvertPhone: e.target.value,
-                              })
+
+                        {/* Column 2: Upload Graphic or View Active Image */}
+                        <div className="space-y-4">
+                          <ImageUpload
+                            onUploadComplete={(url) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                flyInAdvertImageUrl: url,
+                              }))
                             }
-                            placeholder="+233 (0) 20 168 2254"
-                            className="w-full p-4 bg-white border-0 rounded-2xl outline-none focus:ring-2 focus:ring-brand-primary text-sm"
+                            folder="adverts"
+                            label="Upload Graphic Image File"
                           />
+
+                          {formData.flyInAdvertImageUrl ? (
+                            <div className="relative group/img border border-gray-100 rounded-2xl overflow-hidden p-2 bg-white shadow-sm flex flex-col items-center">
+                              <div className="aspect-[1.5] w-full max-h-[140px] rounded-xl overflow-hidden border bg-gray-50 flex items-center justify-center">
+                                <img
+                                  src={formData.flyInAdvertImageUrl}
+                                  alt="Ad Popup Preview"
+                                  className="max-w-full h-full object-contain"
+                                  referrerPolicy="no-referrer"
+                                />
+                              </div>
+                              <div className="w-full flex justify-between items-center mt-2 px-1">
+                                <span className="text-[10px] text-brand-primary uppercase tracking-wider font-extrabold">Active Ad Graphic</span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setFormData((prev) => ({
+                                      ...prev,
+                                      flyInAdvertImageUrl: "",
+                                    }))
+                                  }
+                                  className="text-red-500 hover:text-red-700 text-xs font-bold font-sans flex items-center space-x-1"
+                                >
+                                  <Trash2 size={12} />
+                                  <span>Clear Image</span>
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="border border-dashed border-gray-200 rounded-2xl p-6 bg-white flex flex-col items-center justify-center text-center">
+                              <span className="text-xs text-gray-400 font-sans">
+                                No custom image uploaded/pasted.
+                              </span>
+                              <span className="text-[10px] text-brand-primary font-bold uppercase tracking-wider mt-1">
+                                Falls back to pre-rendered Tapa's Book mockup
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
