@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, MapPin, Phone, Mail, Facebook, Twitter, Instagram, Settings, MessageCircle } from 'lucide-react';
+import { BookOpen, MapPin, Phone, Mail, Facebook, Twitter, Instagram, MessageCircle } from 'lucide-react';
 import { COMPANY_INFO, BOOK_CATEGORIES } from '../../constants/content';
 import { useContent } from '../../hooks/useContent';
 
@@ -105,9 +105,6 @@ export default function Footer() {
             © {new Date().getFullYear()} Richkiss Publishers. All rights reserved.
           </p>
           <div className="flex items-center space-x-6">
-            <Link to="/admin" className="text-gray-400 hover:text-brand-primary transition-colors">
-              <Settings size={14} />
-            </Link>
             <div className="flex space-x-6 text-xs text-gray-500 font-sans">
               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
               <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
