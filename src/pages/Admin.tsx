@@ -1160,15 +1160,15 @@ export default function Admin() {
                       <div className="pt-4 mt-4 border-t border-gray-100 space-y-4">
                         <div className="flex justify-between items-center">
                           <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">
-                            Homepage Hero Slider (Up to 5)
+                            Homepage Hero Slider (Up to 10)
                           </label>
                           <span className="text-[10px] font-bold text-brand-primary">
-                            {formData.heroImages?.length || 0}/5
+                            {formData.heroImages?.length || 0}/10
                           </span>
                         </div>
 
                         {(!formData.heroImages ||
-                          formData.heroImages.length < 5) && (
+                          formData.heroImages.length < 10) && (
                           <ImageUpload
                             onUploadComplete={(url) =>
                               setFormData((prev) => ({
@@ -1829,7 +1829,7 @@ export default function Admin() {
                       Homepage Hero Slider Showcase
                     </h2>
                     <p className="text-sm text-brand-muted mt-2 max-w-2xl font-sans">
-                      Enable magnificent storytelling on your landing page. Easily manage, reorder, and upload up to 5 book mockup banner covers to display inside the high-impact rotating home page hero section.
+                      Enable magnificent storytelling on your landing page. Easily manage, reorder, and upload up to 10 book mockup banner covers to display inside the high-impact rotating home page hero section.
                     </p>
                   </div>
                 </div>
@@ -1838,7 +1838,7 @@ export default function Admin() {
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="font-serif font-bold text-lg text-brand-secondary">
-                        Slider Images ({settings.heroImages?.length || 0} / 5)
+                        Slider Images ({settings.heroImages?.length || 0} / 10)
                       </h3>
                       <p className="text-xs text-brand-muted font-sans font-medium">
                         Standard 3:4 portrait book representations work beautifully.
@@ -1846,12 +1846,12 @@ export default function Admin() {
                     </div>
                   </div>
 
-                  {(!settings.heroImages || settings.heroImages.length < 5) && (
+                  {(!settings.heroImages || settings.heroImages.length < 10) && (
                     <div className="max-w-xl">
                       <ImageUpload
                         onUploadComplete={async (url) => {
                           const currentImages = settings.heroImages || [];
-                          if (currentImages.length < 5) {
+                          if (currentImages.length < 10) {
                             const updatedList = [...currentImages, url];
                             setIsSaving(true);
                             try {

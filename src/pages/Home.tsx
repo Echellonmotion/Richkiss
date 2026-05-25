@@ -2,7 +2,6 @@ import Hero from '../components/home/Hero';
 import { useContent } from '../hooks/useContent';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import FlyInAdvert from '../components/home/FlyInAdvert';
 
 export default function Home() {
   const { settings } = useContent();
@@ -77,7 +76,6 @@ export default function Home() {
         </div>
       </section>
 
-      <FlyInAdvert />
     </div>
   );
 }
