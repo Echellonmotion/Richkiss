@@ -27,13 +27,6 @@ export default function OurClients() {
     }
   ];
 
-  const stats = [
-    { label: "Publishing Partners", value: "450+" },
-    { label: "Cultural Events", value: "12k" },
-    { label: "Countries Reached", value: "85" },
-    { label: "Curated Titles", value: "1.2m" }
-  ];
-
   return (
     <div className="min-h-screen bg-white flex flex-col pt-32">
       {/* 1. Hero Section */}
@@ -165,23 +158,25 @@ export default function OurClients() {
         </div>
       </section>
 
-      {/* 4. Stats Banner */}
-      <section className="py-24 bg-[#c0392b] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
-            {stats.map((stat, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="space-y-2"
-              >
-                <p className="text-5xl font-serif font-bold">{stat.value}</p>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
+      {/* 4. Partner Quote Banner */}
+      <section className="py-24 bg-[#c0392b] text-white overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="space-y-6"
+          >
+            <Quote className="mx-auto text-white/35" size={48} strokeWidth={1} fill="currentColor" />
+            <p className="text-xl sm:text-2xl md:text-3xl font-serif font-light leading-relaxed tracking-wide italic">
+              "Through pages shared and stories bound, we cultivate an interconnected world celebrating the profound, enduring impact of published voices."
+            </p>
+            <div className="h-1 w-12 bg-white/40 mx-auto rounded" />
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/80 font-sans">
+              The Richkiss Philosophy on Literary Partnership
+            </p>
+          </motion.div>
         </div>
       </section>
 
