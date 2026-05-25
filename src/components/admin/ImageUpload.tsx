@@ -68,6 +68,11 @@ export default function ImageUpload({ onUploadComplete, label = 'Upload Image' }
           onUploadComplete(response.secure_url);
           setSuccess(true);
           setUploading(false);
+          // Reset success state after 2 seconds to allow subsequent uploads
+          setTimeout(() => {
+            setSuccess(false);
+            setProgress(0);
+          }, 2000);
         } else {
           try {
             const err = JSON.parse(xhr.responseText);

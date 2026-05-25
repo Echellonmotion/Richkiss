@@ -53,6 +53,7 @@ export default function Admin() {
   } = useContent();
   const [activeTab, setActiveTab] = useState<
     | "settings"
+    | "heroImages"
     | "categories"
     | "books"
     | "events"
@@ -268,7 +269,7 @@ export default function Admin() {
         ...formData,
         companyName: formData.companyName || settings.companyName,
         logoUrl: formData.logoUrl || settings.logoUrl,
-        heroImages: formData.heroImages || settings.heroImages || [],
+        heroImages: Array.isArray(formData.heroImages) ? formData.heroImages : (settings.heroImages || []),
         updatedAt: serverTimestamp(),
       };
 
@@ -386,6 +387,7 @@ export default function Admin() {
         <aside className="lg:col-span-3 space-y-4">
           {[
             { id: "settings", label: "Site Settings", icon: Settings },
+            { id: "heroImages", label: "Hero Slider", icon: ImageIcon },
             { id: "categories", label: "Categories", icon: Layout },
             { id: "books", label: "Book Catalogue", icon: Book },
             { id: "events", label: "Events & Gallery", icon: Calendar },
@@ -546,6 +548,41 @@ export default function Admin() {
                           Page-Specific Hero & Section Images
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="space-y-4">
+                            <ImageUpload
+                              onUploadComplete={(url) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  heroImageUrl: url,
+                                }))
+                              }
+                              folder="site"
+                              label="Home Page: Fallback Background Hero Image"
+                            />
+                            {formData.heroImageUrl && (
+                              <div className="relative group/img">
+                                <div className="aspect-video w-full rounded-xl overflow-hidden border">
+                                  <img
+                                    src={formData.heroImageUrl}
+                                    alt="Home Fallback Hero Background"
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setFormData((prev) => ({
+                                      ...prev,
+                                      heroImageUrl: "",
+                                    }))
+                                  }
+                                  className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                >
+                                  <X size={12} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
                           <div className="space-y-4">
                             <ImageUpload
                               onUploadComplete={(url) =>
@@ -1418,9 +1455,18 @@ export default function Admin() {
                         </div>
                       </div>
                       <div className="space-y-4 md:col-span-2">
-                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">
-                          Active Hero Slider
-                        </h4>
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">
+                            Active Hero Slider
+                          </h4>
+                          <button
+                            type="button"
+                            onClick={() => setActiveTab("heroImages")}
+                            className="text-[10px] font-bold text-brand-primary hover:underline uppercase tracking-wider flex items-center gap-1 bg-brand-primary/5 px-3 py-1.5 rounded-full border border-brand-primary/10 hover:bg-brand-primary/10 transition-colors"
+                          >
+                            <span>Manage Hero Images Slider &rarr;</span>
+                          </button>
+                        </div>
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                           {settings.heroImages &&
                           settings.heroImages.length > 0 ? (
@@ -1516,6 +1562,24 @@ export default function Admin() {
                           Page-Specific & About Section Assets
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div className="space-y-2">
+                            <p className="text-[9px] font-bold text-brand-muted uppercase">
+                              Home: Fallback Background Hero Image
+                            </p>
+                            <div className="aspect-video bg-brand-beige rounded-2xl overflow-hidden border border-gray-100">
+                              {settings.heroImageUrl ? (
+                                <img 
+                                  src={settings.heroImageUrl}
+                                  alt="Home Fallback Hero Background"
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-brand-muted opacity-30">
+                                  <ImageIcon size={32} />
+                                </div>
+                              )}
+                            </div>
+                          </div>
                           <div className="space-y-2">
                             <p className="text-[9px] font-bold text-brand-muted uppercase">
                               About: Heritage Section
@@ -1753,6 +1817,183 @@ export default function Admin() {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Tab: Hero Images Showcase */}
+            {activeTab === "heroImages" && (
+              <div className="space-y-8 animate-fade-in">
+                <div className="border-b border-gray-100 pb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div>
+                    <h2 className="text-3xl font-serif text-brand-secondary">
+                      Homepage Hero Slider Showcase
+                    </h2>
+                    <p className="text-sm text-brand-muted mt-2 max-w-2xl font-sans">
+                      Enable magnificent storytelling on your landing page. Easily manage, reorder, and upload up to 5 book mockup banner covers to display inside the high-impact rotating home page hero section.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-brand-beige/20 p-8 rounded-3xl border border-brand-primary/10 space-y-6">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 className="font-serif font-bold text-lg text-brand-secondary">
+                        Slider Images ({settings.heroImages?.length || 0} / 5)
+                      </h3>
+                      <p className="text-xs text-brand-muted font-sans font-medium">
+                        Standard 3:4 portrait book representations work beautifully.
+                      </p>
+                    </div>
+                  </div>
+
+                  {(!settings.heroImages || settings.heroImages.length < 5) && (
+                    <div className="max-w-xl">
+                      <ImageUpload
+                        onUploadComplete={async (url) => {
+                          const currentImages = settings.heroImages || [];
+                          if (currentImages.length < 5) {
+                            const updatedList = [...currentImages, url];
+                            setIsSaving(true);
+                            try {
+                              await setDoc(doc(db, "settings", "global"), {
+                                heroImages: updatedList,
+                                updatedAt: serverTimestamp(),
+                              }, { merge: true });
+                              setStatus({ type: "success", msg: "Hero image uploaded and added to slider!" });
+                            } catch (err: any) {
+                              setStatus({ type: "error", msg: `Upload failed: ${err.message}` });
+                            } finally {
+                              setIsSaving(false);
+                            }
+                          }
+                        }}
+                        folder="hero"
+                        label="Upload & Add New Slide Image"
+                      />
+                    </div>
+                  )}
+
+                  {settings.heroImages && settings.heroImages.length > 0 ? (
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+                      {settings.heroImages.map((img: string, i: number) => (
+                        <div
+                          key={i}
+                          className="relative aspect-[3/4] bg-white rounded-2xl overflow-hidden border-2 border-brand-primary/10 shadow-lg group flex flex-col justify-between"
+                        >
+                          <img
+                            src={img}
+                            alt={`Hero Slide ${i + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                          
+                          {/* Hover action overlay */}
+                          <div className="absolute inset-x-0 bottom-0 bg-black/60 p-3 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end space-y-2">
+                            <span className="text-[10px] font-bold text-white uppercase tracking-wider text-center block">
+                              Slide {i + 1}
+                            </span>
+                            
+                            <div className="flex justify-around items-center gap-1.5 w-full">
+                              <button
+                                type="button"
+                                onClick={async () => {
+                                  if (!confirm("Are you sure you want to remove this hero slide?")) return;
+                                  const updatedList = settings.heroImages.filter((_: any, idx: number) => idx !== i);
+                                  setIsSaving(true);
+                                  try {
+                                    await setDoc(doc(db, "settings", "global"), {
+                                      heroImages: updatedList,
+                                      updatedAt: serverTimestamp(),
+                                    }, { merge: true });
+                                    setStatus({ type: "success", msg: "Hero slide removed successfully!" });
+                                  } catch (err: any) {
+                                    setStatus({ type: "error", msg: "Failed to remove slide." });
+                                  } finally {
+                                    setIsSaving(false);
+                                  }
+                                }}
+                                className="flex-grow py-1 bg-red-500 hover:bg-red-600 text-white rounded text-[10px] font-bold transition-colors shadow flex items-center justify-center gap-1"
+                                title="Delete Slider Image"
+                              >
+                                <Trash2 size={10} />
+                                Remove
+                              </button>
+                            </div>
+
+                            {/* Position Ordering triggers */}
+                            <div className="flex justify-center space-x-1 w-full pt-1">
+                              {i > 0 && (
+                                <button
+                                  type="button"
+                                  onClick={async (e) => {
+                                    e.stopPropagation();
+                                    const list = [...settings.heroImages];
+                                    // Swap elements
+                                    const temp = list[i];
+                                    list[i] = list[i - 1];
+                                    list[i - 1] = temp;
+                                    setIsSaving(true);
+                                    try {
+                                      await setDoc(doc(db, "settings", "global"), {
+                                        heroImages: list,
+                                        updatedAt: serverTimestamp(),
+                                      }, { merge: true });
+                                      setStatus({ type: "success", msg: "Slide reordered successfully!" });
+                                    } catch (err) {
+                                      setStatus({ type: "error", msg: "Reorder failed." });
+                                    } finally {
+                                      setIsSaving(false);
+                                    }
+                                  }}
+                                  className="px-1.5 py-0.5 bg-white/95 hover:bg-white text-brand-secondary font-bold text-[8px] uppercase tracking-wider rounded border border-gray-100 shadow transition-colors"
+                                >
+                                  ← Left
+                                </button>
+                              )}
+                              {i < settings.heroImages.length - 1 && (
+                                <button
+                                  type="button"
+                                  onClick={async (e) => {
+                                    e.stopPropagation();
+                                    const list = [...settings.heroImages];
+                                    // Swap elements
+                                    const temp = list[i];
+                                    list[i] = list[i + 1];
+                                    list[i + 1] = temp;
+                                    setIsSaving(true);
+                                    try {
+                                      await setDoc(doc(db, "settings", "global"), {
+                                        heroImages: list,
+                                        updatedAt: serverTimestamp(),
+                                      }, { merge: true });
+                                      setStatus({ type: "success", msg: "Slide reordered successfully!" });
+                                    } catch (err) {
+                                      setStatus({ type: "error", msg: "Reorder failed." });
+                                    } finally {
+                                      setIsSaving(false);
+                                    }
+                                  }}
+                                  className="px-1.5 py-0.5 bg-white/95 hover:bg-white text-brand-secondary font-bold text-[8px] uppercase tracking-wider rounded border border-gray-100 shadow transition-colors"
+                                >
+                                  Right →
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-12 text-center rounded-[32px] bg-white border border-gray-100 border-dashed text-brand-muted space-y-3 font-sans">
+                      <ImageIcon className="mx-auto text-brand-primary/50" size={48} />
+                      <p className="text-sm font-bold uppercase tracking-widest text-brand-secondary">
+                        No custom hero sliders configured
+                      </p>
+                      <p className="text-xs max-w-md mx-auto">
+                        Your landing page currently renders the rich visual design default. Upload your high-res covers to construct your unique rotating catalogue showpiece.
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
