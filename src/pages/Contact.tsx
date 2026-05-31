@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, MessageCircle, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, MessageCircle } from 'lucide-react';
 import { COMPANY_INFO } from '../constants/content';
 
 export default function Contact() {
@@ -11,49 +11,16 @@ export default function Contact() {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [successInfo, setSuccessInfo] = useState<{ fallback?: boolean; message: string } | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
-    setIsSubmitting(true);
-    setSubmitError(null);
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const responseText = await response.text();
-      let result: any = {};
-      try {
-        result = JSON.parse(responseText);
-      } catch (jsonErr) {
-        throw new Error(`Server returned a non-JSON response (Status ${response.status}): ${responseText.slice(0, 300) || "Empty response body"}`);
-      }
-
-      if (response.ok) {
-        setSuccessInfo({
-          fallback: result.fallback,
-          message: result.message || "Thank you! Your message has been sent successfully."
-        });
-        setIsSubmitted(true);
-      } else {
-        throw new Error(result.error || result.details || "Something went wrong. Please verify SMTP details.");
-      }
-    } catch (err: any) {
-      console.error("Submission error:", err);
-      setSubmitError(err.message || "Failed to deliver contact form. Please try again or open standard draft instead.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    const messageText = `Hello Richkiss,\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject || 'N/A'}\n\nMessage:\n${formData.message}`;
+    const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent(messageText)}`;
+    
+    window.open(whatsappUrl, '_blank');
+    setIsSubmitted(true);
   };
 
   return (
@@ -98,50 +65,38 @@ export default function Contact() {
                     exit={{ opacity: 0 }}
                     className="space-y-6 py-12 text-center"
                   >
-                    <div className="inline-flex items-center justify-center p-4 bg-emerald-50 text-emerald-600 rounded-full mb-4">
-                      <CheckCircle2 size={48} className="animate-bounce" />
+                    <div className="inline-flex items-center justify-center p-4 bg-brand-primary/10 text-brand-primary rounded-full mb-4">
+                      <MessageCircle size={48} className="animate-pulse" />
                     </div>
-                    <h3 className="text-2xl font-serif font-bold text-brand-secondary">Thank You!</h3>
+                    <h3 className="text-2xl font-serif font-bold text-brand-secondary">Message Ready for WhatsApp!</h3>
                     <p className="text-gray-500 font-sans leading-relaxed text-sm max-w-md mx-auto">
-                      {successInfo?.message || "Your contact message has been dispatched successfully."}
+                      Your message details have been formatted. Click below to continue directly to WhatsApp and chat with our representative.
                     </p>
-                    {successInfo?.fallback && (
-                      <div className="bg-amber-50/70 border border-amber-200/80 text-amber-800 rounded-sm p-5 text-xs font-sans max-w-md mx-auto text-left leading-relaxed mt-6">
-                        <strong className="text-amber-950 block mb-1">Developer Notice:</strong> 
-                        This submission request was successfully logged in the backend terminal console. To complete live email dispatches to <strong>info@richkissgh.com</strong>, please set the <code>SMTP_PASS</code> secret in the environment variables using your Stormerhost email password. We fall back gracefully to console logs so you aren't blocked!
-                      </div>
-                    )}
-                    <div className="pt-2">
+                    
+                    <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                      <a 
+                        href={`https://wa.me/${COMPANY_INFO.whatsapp}?text=${encodeURIComponent(
+                          `Hello Richkiss,\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject || 'N/A'}\n\nMessage:\n${formData.message}`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-8 py-4 bg-brand-primary text-white text-[10px] uppercase font-bold tracking-widest rounded-sm hover:bg-brand-primary/95 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/20"
+                      >
+                        <MessageCircle size={14} /> Send on WhatsApp
+                      </a>
                       <button 
                         onClick={() => {
                           setFormData({ name: '', email: '', subject: '', message: '' });
-                          setSuccessInfo(null);
                           setIsSubmitted(false);
                         }}
-                        className="mt-4 px-8 py-3 bg-brand-primary text-white text-[10px] uppercase font-bold tracking-widest rounded-sm hover:bg-brand-primary/95 transition-colors"
+                        className="px-8 py-4 border border-gray-200 text-brand-secondary text-[10px] uppercase font-bold tracking-widest rounded-sm hover:bg-gray-50 transition-colors"
                       >
-                        Send Another Message
+                        Write New Message
                       </button>
                     </div>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-12">
-                    {submitError && (
-                      <div className="p-4 bg-red-50 text-red-700 rounded-sm border border-red-100 text-xs font-sans space-y-2">
-                        <p className="font-bold">Message failed to deliver via portal:</p>
-                        <p>{submitError}</p>
-                        <p className="pt-2 text-gray-500">
-                          Alternatively, you can open a standard draft in your email application:
-                        </p>
-                        <a 
-                          href={`mailto:${COMPANY_INFO.email}?subject=${encodeURIComponent(formData.subject || 'Direct Inquiry')}&body=${encodeURIComponent(formData.message)}`}
-                          className="inline-flex items-center gap-2 hover:underline text-brand-primary font-semibold"
-                        >
-                          <ArrowRight size={14} /> Open draft in local email application
-                        </a>
-                      </div>
-                    )}
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                       <div className="space-y-4 border-b border-gray-200 focus-within:border-brand-primary transition-colors pb-2">
                         <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Name</label>
@@ -193,12 +148,9 @@ export default function Contact() {
                     <div className="pt-8">
                       <button 
                         type="submit"
-                        disabled={isSubmitting}
-                        className={`px-12 py-5 bg-brand-primary text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm transition-all shadow-xl shadow-brand-primary/20 ${
-                          isSubmitting ? "opacity-60 cursor-not-allowed" : "hover:-translate-y-1 hover:bg-brand-primary/90"
-                        }`}
+                        className="px-12 py-5 bg-brand-primary text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm transition-all shadow-xl shadow-brand-primary/20 hover:-translate-y-1 hover:bg-brand-primary/90 flex items-center gap-2"
                       >
-                        {isSubmitting ? "Sending..." : "Send Message"}
+                        <MessageCircle size={14} /> Send via WhatsApp
                       </button>
                     </div>
                   </form>

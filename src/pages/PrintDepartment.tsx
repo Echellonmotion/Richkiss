@@ -6,7 +6,27 @@ import {
   ChevronRight,
   Send,
   X,
-  CheckCircle2
+  CheckCircle2,
+  BookOpen,
+  Layers,
+  Calendar,
+  CreditCard,
+  Image as ImageIcon,
+  Tag,
+  Award,
+  FileText,
+  Mail,
+  Shirt,
+  ShoppingBag,
+  PenTool,
+  Flag,
+  Gift,
+  Coffee,
+  Key,
+  Trophy,
+  Umbrella,
+  Briefcase,
+  Monitor
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useContent } from '../hooks/useContent';
@@ -21,27 +41,28 @@ export default function PrintDepartment() {
   ];
   const partners = cmsPrintPartners && cmsPrintPartners.length > 0 ? cmsPrintPartners : staticPartners.map(name => ({ name }));
 
+  // Consolidated & completely deduplicated high-impact catalog
   const allProducts = [
-    "Books and Magazines",
-    "Brochures and Flyers",
-    "Calendars and Diaries",
-    "Business Cards",
-    "Posters and Banners",
-    "Stickers and Labels",
-    "Certificates and ID Cards",
-    "Branded Notepads",
-    "Photobooks and Catalogues",
-    "Letterheads and Envelopes",
-    "Branded T-Shirts and Polo Shirts",
-    "Tote Bags and Shopping Bags",
-    "Pens and Office Stationery",
-    "Roll-Up Banners and Signages",
-    "Corporate Gift Items",
-    "Mugs and Water Bottles",
-    "Key Holders and Wristbands",
-    "Plaques and Awards",
-    "Umbrellas and Event Giveaways",
-    "Vehicle, Office and ATM Booth Branding"
+    { title: "Books & Magazines", icon: BookOpen },
+    { title: "Brochures & Flyers", icon: Layers },
+    { title: "Calendars & Diaries", icon: Calendar },
+    { title: "Business Cards", icon: CreditCard },
+    { title: "Posters & Banners", icon: ImageIcon },
+    { title: "Stickers & Labels", icon: Tag },
+    { title: "Certificates & ID Cards", icon: Award },
+    { title: "Branded Notepads & Notebooks", icon: FileText },
+    { title: "Photobooks & Catalogues", icon: Briefcase },
+    { title: "Letterheads & Envelopes", icon: Mail },
+    { title: "Branded Apparel (T-Shirts, Polos, Caps)", icon: Shirt },
+    { title: "Tote Bags & Shopping Bags", icon: ShoppingBag },
+    { title: "Pens & Office Stationery", icon: PenTool },
+    { title: "Roll-Up Banners & Signages", icon: Flag },
+    { title: "Corporate Gift Items", icon: Gift },
+    { title: "Mugs, Bottles & Drinkware", icon: Coffee },
+    { title: "Key Holders & Wristbands", icon: Key },
+    { title: "Plaques & Awards", icon: Trophy },
+    { title: "Umbrellas & Event Giveaways", icon: Umbrella },
+    { title: "Vehicle, Office, & ATM Branding", icon: Monitor }
   ];
 
   const departments = [
@@ -49,65 +70,25 @@ export default function PrintDepartment() {
       id: "offset",
       title: "OFFSET PRINTING",
       description: "Offset printing remains one of the most reliable and cost-effective printing methods for producing premium materials with consistent quality and durability. Using modern printing technology and quality materials, we produce professional finishing for both small and large-scale print projects ensuring every product meets the highest standards of excellence and customer satisfaction.",
-      bgImage: settings.printOffsetBgImageUrl || "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=80&w=1000",
-      products: [
-        "Books and Magazines",
-        "Brochures and Flyers",
-        "Calendars"
-      ]
+      bgImage: settings.printOffsetBgImageUrl || "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=80&w=1000"
     },
     {
       id: "digital",
       title: "DIGITAL PRINTING",
       description: "Our digital printing services offer fast, flexible, and high-quality printing solutions for personal and corporate needs. Ideal for short-run and on-demand printing, digital printing delivers vibrant colours, sharp details, and quick turnaround times without compromising quality. At Richkiss we combine creativity, modern technology, and precision to produce professional prints that leave lasting impressions.",
-      bgImage: settings.printDigitalBgImageUrl || "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1000",
-      products: [
-        "Business Cards",
-        "Flyers and Brochures",
-        "Posters and Banners",
-        "Stickers and Labels",
-        "Certificates and ID Cards",
-        "Branded Notepads and Diaries",
-        "Photobooks and Catalogues",
-        "Books and Magazines",
-        "Letterheads and Envelopes"
-      ]
+      bgImage: settings.printDigitalBgImageUrl || "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1000"
     },
     {
       id: "branding",
       title: "BRANDING",
       description: "We offer creative and professional branding solutions that help businesses, organisations, and individuals build strong and memorable identities. Our branding services are designed to enhance visibility, promote professionalism, and create lasting impressions through quality designs and customised products. With attention to detail and a commitment to excellence, we bring brands to life in unique and impactful ways.",
-      bgImage: settings.printBrandingBgImageUrl || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1000",
-      products: [
-        "Branded T-Shirts and Polo Shirts",
-        "Tote Bags",
-        "Pens and Office Stationery",
-        "Roll-Up Banners and Signages",
-        "Stickers and Labels",
-        "Corporate Gift Items",
-        "ID Cards and Lanyards",
-        "Vehicle Branding",
-        "Office branding",
-        "ATM Booth Branding"
-      ]
+      bgImage: settings.printBrandingBgImageUrl || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1000"
     },
     {
       id: "souvenirs",
       title: "SOUVENIRS",
       description: "We provide quality and customised souvenir products designed to create lasting memories and strengthen brand visibility. Our souvenirs are perfect for corporate events, conferences, and special occasions. With creative designs, durable materials, and professional finishing, we help our clients turn everyday items into meaningful and memorable gifts.",
-      bgImage: settings.printSouvenirsBgImageUrl || "https://images.unsplash.com/photo-1549463778-07038c824889?auto=format&fit=crop&q=80&w=1000",
-      products: [
-        "Mugs and Water Bottles",
-        "Pens and Notebooks",
-        "Key Holders and Wristbands",
-        "T-Shirts, Polo Shirts, and Caps",
-        "Tote Bags and Shopping Bags",
-        "Diaries and Calendars",
-        "ID Card Holders and Lanyards",
-        "Plaques and Awards",
-        "Umbrellas and Gift Sets",
-        "Event Souvenirs & Corporate Giveaways"
-      ]
+      bgImage: settings.printSouvenirsBgImageUrl || "https://images.unsplash.com/photo-1549463778-07038c824889?auto=format&fit=crop&q=80&w=1000"
     }
   ];
 
@@ -286,18 +267,21 @@ export default function PrintDepartment() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-8">
-            {allProducts.map((prod, pIdx) => (
-              <motion.div 
-                key={pIdx} 
-                className="flex items-center space-x-4 p-5 border border-gray-100 rounded-sm hover:border-brand-primary/30 hover:shadow-md transition-all duration-300 bg-white"
-                whileHover={{ y: -3 }}
-              >
-                <div className="w-8 h-8 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0">
-                  <CheckCircle2 size={16} />
-                </div>
-                <span className="font-sans font-semibold text-sm text-brand-secondary/90 tracking-wide">{prod}</span>
-              </motion.div>
-            ))}
+            {allProducts.map((prod, pIdx) => {
+              const IconComponent = prod.icon;
+              return (
+                <motion.div 
+                  key={pIdx} 
+                  className="flex items-center space-x-4 p-5 border border-gray-100 rounded-sm hover:border-brand-primary/30 hover:shadow-md transition-all duration-300 bg-white group"
+                  whileHover={{ y: -3 }}
+                >
+                  <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
+                    <IconComponent size={18} />
+                  </div>
+                  <span className="font-sans font-semibold text-sm text-brand-secondary/90 tracking-wide">{prod.title}</span>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
