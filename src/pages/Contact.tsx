@@ -211,14 +211,14 @@ export default function Contact() {
               {/* Contact Details */}
               <div className="space-y-12">
                 <div className="space-y-4">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff5722]">The Flagship Store</h4>
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary">The Flagship Store</h4>
                   <p className="text-2xl font-serif text-brand-secondary leading-relaxed">
                     <span className="whitespace-pre-line">{COMPANY_INFO.headOffice}</span>
                   </p>
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff5722]">Contact Details</h4>
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary">Contact Details</h4>
                   <div className="space-y-2 text-brand-secondary font-sans font-bold text-lg">
                     <p>{COMPANY_INFO.phone[0]}</p>
                     <p className="underline underline-offset-8 decoration-gray-200 hover:decoration-brand-primary transition-colors cursor-pointer text-base font-normal">
@@ -228,7 +228,7 @@ export default function Contact() {
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff5722]">Opening Hours</h4>
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary">Opening Hours</h4>
                   <div className="space-y-3 font-sans text-sm text-gray-600">
                     <div className="flex justify-between items-center max-w-[280px]">
                       <span>Mon – Fri</span>
@@ -236,7 +236,7 @@ export default function Contact() {
                     </div>
                     <div className="flex justify-between items-center max-w-[280px]">
                       <span>Sat & Sun</span>
-                      <span className="font-bold text-[#ff5722]">Closed</span>
+                      <span className="font-bold text-brand-primary">Closed</span>
                     </div>
                   </div>
                 </div>
