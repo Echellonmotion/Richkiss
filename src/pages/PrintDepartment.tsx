@@ -464,7 +464,7 @@ export default function PrintDepartment() {
                 placeholder="YOUR EMAIL HERE" 
                 className="flex-1 lg:w-80 bg-white px-6 font-sans text-[10px] font-bold tracking-widest outline-none shadow-inner"
               />
-              <button className="bg-brand-primary text-white hover:bg-[#e64a19] px-10 transition-colors uppercase text-[10px] font-bold tracking-[0.2em] h-full">
+              <button className="bg-brand-primary text-white hover:bg-brand-primary/80 px-10 transition-colors uppercase text-[10px] font-bold tracking-[0.2em] h-full">
                 Subscribe
               </button>
             </div>

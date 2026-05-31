@@ -118,7 +118,7 @@ export default function Contact() {
                           setSuccessInfo(null);
                           setIsSubmitted(false);
                         }}
-                        className="mt-4 px-8 py-3 bg-brand-secondary text-white text-[10px] uppercase font-bold tracking-widest rounded-sm hover:bg-[#ff5722] transition-colors"
+                        className="mt-4 px-8 py-3 bg-brand-primary text-white text-[10px] uppercase font-bold tracking-widest rounded-sm hover:bg-brand-primary/95 transition-colors"
                       >
                         Send Another Message
                       </button>
@@ -135,7 +135,7 @@ export default function Contact() {
                         </p>
                         <a 
                           href={`mailto:${COMPANY_INFO.email}?subject=${encodeURIComponent(formData.subject || 'Direct Inquiry')}&body=${encodeURIComponent(formData.message)}`}
-                          className="inline-flex items-center gap-2 hover:underline text-[#ff5722] font-semibold"
+                          className="inline-flex items-center gap-2 hover:underline text-brand-primary font-semibold"
                         >
                           <ArrowRight size={14} /> Open draft in local email application
                         </a>
@@ -194,8 +194,8 @@ export default function Contact() {
                       <button 
                         type="submit"
                         disabled={isSubmitting}
-                        className={`px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm transition-all shadow-xl shadow-[#ff5722]/20 ${
-                          isSubmitting ? "opacity-60 cursor-not-allowed" : "hover:-translate-y-1"
+                        className={`px-12 py-5 bg-brand-primary text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm transition-all shadow-xl shadow-brand-primary/20 ${
+                          isSubmitting ? "opacity-60 cursor-not-allowed" : "hover:-translate-y-1 hover:bg-brand-primary/90"
                         }`}
                       >
                         {isSubmitting ? "Sending..." : "Send Message"}

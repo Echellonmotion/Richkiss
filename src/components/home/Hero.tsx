@@ -73,7 +73,7 @@ export default function Hero() {
               <div className="pt-2">
                 <Link 
                   to="/shop" 
-                  className="inline-block px-10 py-4.5 bg-[#e5593f] hover:bg-[#cf4d33] text-white font-sans font-bold text-xs uppercase tracking-widest rounded transition-all shadow-lg active:scale-[0.98] duration-200"
+                  className="inline-block px-10 py-4.5 bg-brand-primary hover:bg-brand-primary/90 text-white font-sans font-bold text-xs uppercase tracking-widest rounded transition-all shadow-lg active:scale-[0.98] duration-200"
                 >
                   VISIT OUR SHOP
                 </Link>

@@ -48,10 +48,10 @@ export default function OurClients() {
                 We believe literature thrives through collaboration. Richkiss partners with prestigious bookstore distributors, publishing houses, regional retailers, and prominent cultural organizations to make exceptional literature accessible everywhere.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button className="px-10 py-5 bg-[#1d5c5e] text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all">
+                <button className="px-10 py-5 bg-brand-primary text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 hover:bg-brand-primary/95 transition-all">
                   Collaborate With Us
                 </button>
-                <button className="px-10 py-5 border border-gray-200 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:border-brand-primary transition-all">
+                <button className="px-10 py-5 border border-gray-200 text-brand-secondary font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:border-brand-primary hover:text-brand-primary transition-all">
                   Our Mission
                 </button>
               </div>
@@ -196,7 +196,7 @@ export default function OurClients() {
                 curated network. Reach out to our partnerships team today.
               </p>
             </div>
-            <button className="px-12 py-5 bg-[#c0392b] text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-brand-secondary transition-colors">
+            <button className="px-12 py-5 bg-brand-primary text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-brand-primary/90 transition-colors">
               Inquire Now
             </button>
           </motion.div>

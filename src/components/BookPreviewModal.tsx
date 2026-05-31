@@ -94,7 +94,7 @@ export default function BookPreviewModal({ selectedBook, onClose }: BookPreviewM
                   href={`https://wa.me/233244374533?text=${encodeURIComponent(`Hello, I am inquiring about the availability of the book "${selectedBook.title}" by ${selectedBook.author} found on your shop.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-5 bg-brand-secondary text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all flex items-center justify-center gap-3 select-none"
+                  className="w-full py-5 bg-brand-primary text-white font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-3 select-none"
                 >
                   <Info size={14} />
                   <span>Inquire for Availability</span>

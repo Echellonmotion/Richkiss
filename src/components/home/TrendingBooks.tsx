@@ -44,7 +44,7 @@ export default function TrendingBooks() {
                 {/* Badges like in ref */}
                 <div className="absolute top-2 left-2 flex flex-col gap-1">
                    {i % 2 === 0 && (
-                     <span className="px-2 py-0.5 bg-[#ff5722] text-white text-[8px] font-bold uppercase tracking-widest rounded-sm">Hot</span>
+                     <span className="px-2 py-0.5 bg-brand-primary text-white text-[8px] font-bold uppercase tracking-widest rounded-sm">Hot</span>
                    )}
                 </div>
 

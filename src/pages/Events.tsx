@@ -60,7 +60,7 @@ export default function Events() {
 
               <button 
                 onClick={() => setSelectedEvent(featuredEvent)}
-                className="px-12 py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20"
+                className="px-12 py-5 bg-brand-primary text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 hover:bg-brand-primary/90 transition-all shadow-xl shadow-brand-primary/20"
               >
                 View Highlights
               </button>
@@ -132,8 +132,8 @@ export default function Events() {
                     <h3 className="text-2xl font-serif text-brand-secondary leading-tight min-h-[4rem]">
                       {event.name}
                     </h3>
-                    <div className="flex items-center space-x-2 text-sm text-[#ff5722] font-semibold font-sans py-1">
-                      <Calendar size={14} className="text-[#ff5722]" />
+                    <div className="flex items-center space-x-2 text-sm text-brand-primary font-semibold font-sans py-1">
+                      <Calendar size={14} className="text-brand-primary" />
                       <span>{event.year || 'TBA'}</span>
                       {event.location && (
                         <>
@@ -307,7 +307,7 @@ export default function Events() {
                 <div className="pt-8">
                   <button 
                     onClick={() => setSelectedEvent(null)}
-                    className="w-full py-5 bg-[#ff5722] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-[#ff5722]/20"
+                    className="w-full py-5 bg-brand-primary text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 hover:bg-brand-primary/90 transition-all shadow-xl shadow-brand-primary/20"
                   >
                     Close Recap
                   </button>

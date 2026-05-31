@@ -131,7 +131,7 @@ export default function FlyInAdvert() {
       {/* 4. Core CTA Pre-order Banner */}
       <a 
         href={`tel:${flyInPhone.replace(/[^0-9+]/g, '')}`}
-        className="bg-[#ff5722] hover:bg-[#ff3d00] text-white text-center py-4 px-4 font-sans font-black tracking-wider block transition-colors shadow-inner"
+        className="bg-brand-primary hover:bg-brand-primary/90 text-white text-center py-4 px-4 font-sans font-black tracking-wider block transition-colors shadow-inner"
       >
         <span className="text-xs uppercase flex items-center justify-center gap-2">
           <Phone size={14} className="animate-pulse" />
@@ -155,7 +155,7 @@ export default function FlyInAdvert() {
           {/* Close Action button custom built for visual overlap */}
           <button
             onClick={handleClose}
-            className="absolute -top-3 -right-3 sm:-right-2 z-[95] p-2 bg-brand-secondary text-white rounded-full hover:bg-[#ff5722] transition-colors shadow-md border-2 border-white flex items-center justify-center cursor-pointer"
+            className="absolute -top-3 -right-3 sm:-right-2 z-[95] p-2 bg-brand-secondary text-white rounded-full hover:bg-brand-primary transition-colors shadow-md border-2 border-white flex items-center justify-center cursor-pointer"
             aria-label="Dismiss Advert"
           >
             <X size={14} />
@@ -172,7 +172,7 @@ export default function FlyInAdvert() {
               />
               <a 
                 href={`tel:${flyInPhone.replace(/[^0-9+]/g, '')}`}
-                className="mt-2 bg-[#ff5722] hover:bg-[#ff3d00] text-white text-center py-3 px-3 font-sans font-black tracking-wider block transition-colors rounded-sm text-[10px] uppercase flex items-center justify-center gap-1.5"
+                className="mt-2 bg-brand-primary hover:bg-brand-primary/90 text-white text-center py-3 px-3 font-sans font-black tracking-wider block transition-colors rounded-sm text-[10px] uppercase flex items-center justify-center gap-1.5"
               >
                 <Phone size={12} className="animate-pulse" />
                 PRE-ORDER: {flyInPhone}
