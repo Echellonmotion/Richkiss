@@ -228,43 +228,46 @@ export default function PrintDepartment() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-20">
+          <div className="space-y-16">
             {departments.map((dept, index) => (
-              <motion.div 
-                key={dept.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
-              >
-                <div className={`lg:col-span-6 space-y-6 ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  <div className="flex items-center space-x-6">
-                    <div className="relative flex items-center justify-center w-14 h-14 bg-[#fffcfb] border border-[#ff5722]/30 text-brand-secondary font-serif font-black text-2xl tracking-tighter shadow-sm rounded-sm shrink-0">
-                      <span className="text-[#ff5722]">{String(index + 1).padStart(2, '0')}</span>
+              <div key={dept.id}>
+                {/* Visual Section Separator with Golden Detail */}
+                {index > 0 && (
+                  <div className="py-16 flex items-center justify-center">
+                    <div className="w-full max-w-lg flex items-center justify-center gap-6">
+                      <div className="h-[1px] bg-brand-secondary/10 flex-1" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-brand-primary" />
+                      <div className="h-[1px] bg-brand-secondary/10 flex-1" />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-serif font-bold text-brand-secondary uppercase tracking-wider leading-none">{dept.title}</h3>
                   </div>
-                  
-                  <p className="text-gray-500 font-sans text-sm leading-relaxed">
+                )}
+
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="max-w-4xl mx-auto space-y-8 p-8 md:p-12 hover:bg-white/40 transition-all rounded-sm hover:shadow-sm"
+                >
+                  <div className="flex flex-col md:flex-row items-center gap-6 justify-center text-center md:text-left">
+                    <div className="relative flex items-center justify-center w-16 h-16 bg-white border border-brand-primary/30 text-brand-secondary font-serif font-black text-2xl tracking-tighter shadow-sm rounded-sm shrink-0">
+                      <span className="text-brand-primary">{String(index + 1).padStart(2, '0')}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-modern font-semibold uppercase tracking-[0.25em] text-brand-primary block mb-1">
+                        Richkiss Department
+                      </span>
+                      <h3 className="text-2xl md:text-3.5xl font-serif font-bold text-brand-secondary uppercase tracking-wider leading-none">
+                        {dept.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-600 font-sans text-base md:text-lg leading-relaxed max-w-3xl mx-auto text-center">
                     {dept.description}
                   </p>
-                </div>
-
-                <div className={`lg:col-span-6 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <div className="relative group overflow-hidden rounded-sm shadow-xl aspect-video w-full bg-brand-secondary">
-                    <img 
-                      src={dept.bgImage} 
-                      alt={dept.title} 
-                      className="w-full h-full object-cover opacity-80 mix-blend-multiply group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-brand-secondary/40 group-hover:bg-brand-secondary/20 transition-colors" />
-                    <div className="absolute bottom-6 left-6 text-white space-y-1">
-                      <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-brand-primary">Richkiss Quality</span>
-                      <p className="text-lg font-serif italic">Premium Finish Standards</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             ))}
           </div>
         </div>
