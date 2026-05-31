@@ -54,7 +54,7 @@ export default function Navbar() {
               <NavLink 
                 key={link.path} 
                 to={link.path} 
-                className={({ isActive }) => `text-[15px] xl:text-[17px] font-bold transition-colors hover:text-brand-primary whitespace-nowrap ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}
+                className={({ isActive }) => `text-xs xl:text-sm font-modern font-semibold uppercase tracking-[0.15em] transition-colors hover:text-brand-primary whitespace-nowrap ${isActive ? 'text-brand-primary underline underline-offset-8 decoration-2' : 'text-gray-600'}`}
               >
                 {link.name}
               </NavLink>
@@ -85,7 +85,7 @@ export default function Navbar() {
                   key={link.path} 
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className="block px-4 py-5 text-xl font-bold text-gray-700 border-b border-gray-50"
+                  className="block px-4 py-5 text-sm font-modern font-semibold uppercase tracking-wider text-gray-750 border-b border-gray-50"
                 >
                   {link.name}
                 </NavLink>

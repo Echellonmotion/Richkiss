@@ -21,6 +21,29 @@ export default function PrintDepartment() {
   ];
   const partners = cmsPrintPartners && cmsPrintPartners.length > 0 ? cmsPrintPartners : staticPartners.map(name => ({ name }));
 
+  const allProducts = [
+    "Books and Magazines",
+    "Brochures and Flyers",
+    "Calendars and Diaries",
+    "Business Cards",
+    "Posters and Banners",
+    "Stickers and Labels",
+    "Certificates and ID Cards",
+    "Branded Notepads",
+    "Photobooks and Catalogues",
+    "Letterheads and Envelopes",
+    "Branded T-Shirts and Polo Shirts",
+    "Tote Bags and Shopping Bags",
+    "Pens and Office Stationery",
+    "Roll-Up Banners and Signages",
+    "Corporate Gift Items",
+    "Mugs and Water Bottles",
+    "Key Holders and Wristbands",
+    "Plaques and Awards",
+    "Umbrellas and Event Giveaways",
+    "Vehicle, Office and ATM Booth Branding"
+  ];
+
   const departments = [
     {
       id: "offset",
@@ -225,18 +248,6 @@ export default function PrintDepartment() {
                   <p className="text-gray-500 font-sans text-sm leading-relaxed">
                     {dept.description}
                   </p>
-
-                  <div className="space-y-4 pt-4 border-t border-gray-100">
-                    <h4 className="text-xs font-bold text-brand-secondary uppercase tracking-widest">Our Products:</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {dept.products.map((prod, pIdx) => (
-                        <div key={pIdx} className="flex items-start space-x-2 text-sm text-gray-600">
-                          <CheckCircle2 size={16} className="text-brand-primary mt-0.5 shrink-0" />
-                          <span className="font-sans font-medium">{prod}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
                 <div className={`lg:col-span-6 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
@@ -253,6 +264,35 @@ export default function PrintDepartment() {
                     </div>
                   </div>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3.5 Consolidated Products Section */}
+      <section className="py-24 bg-white border-b border-gray-150">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+          <div className="text-center space-y-4 max-w-2xl mx-auto">
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary">Full Catalog</span>
+            <h2 className="text-3xl md:text-5xl font-serif text-brand-secondary font-bold uppercase tracking-wide">Our Products</h2>
+            <div className="w-16 h-1 bg-brand-primary mx-auto" />
+            <p className="text-sm text-gray-500 font-sans leading-relaxed">
+              We provide a complete suite of high-impact offset and digital printing, exquisite branding materials, and customized promotional products of the highest standard.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-8">
+            {allProducts.map((prod, pIdx) => (
+              <motion.div 
+                key={pIdx} 
+                className="flex items-center space-x-4 p-5 border border-gray-100 rounded-sm hover:border-brand-primary/30 hover:shadow-md transition-all duration-300 bg-white"
+                whileHover={{ y: -3 }}
+              >
+                <div className="w-8 h-8 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0">
+                  <CheckCircle2 size={16} />
+                </div>
+                <span className="font-sans font-semibold text-sm text-brand-secondary/90 tracking-wide">{prod}</span>
               </motion.div>
             ))}
           </div>
@@ -314,7 +354,7 @@ export default function PrintDepartment() {
           <div className="space-y-4">
             <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary font-mono">Trusted By Leaders</span>
             <h2 className="text-3xl md:text-4xl font-serif text-brand-secondary uppercase font-bold tracking-wider">
-              Our Print Partners & Clients
+              Some of our Clients
             </h2>
             <div className="w-12 h-[2px] bg-brand-primary mx-auto" />
           </div>

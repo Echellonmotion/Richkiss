@@ -128,7 +128,7 @@ export default function Catalogue() {
                 <div className="flex flex-col space-y-4">
                   <button 
                     onClick={() => setActiveCategory('all')}
-                    className={`text-left text-sm font-bold transition-colors hover:text-brand-primary ${activeCategory === 'all' ? 'text-brand-primary' : 'text-brand-secondary'}`}
+                    className={`text-left text-xs font-modern font-semibold uppercase tracking-[0.1em] transition-colors hover:text-brand-primary ${activeCategory === 'all' ? 'text-brand-primary' : 'text-brand-secondary'}`}
                   >
                     All Titles
                   </button>
@@ -136,7 +136,7 @@ export default function Catalogue() {
                     <button 
                       key={cat.id || cat.slug}
                       onClick={() => setActiveCategory(cat.slug)}
-                      className={`text-left text-sm font-medium transition-colors hover:text-brand-primary ${activeCategory === cat.slug ? 'text-brand-primary font-bold' : 'text-gray-600'}`}
+                      className={`text-left text-xs font-modern font-semibold uppercase tracking-[0.1em] transition-colors hover:text-brand-primary ${activeCategory === cat.slug ? 'text-brand-primary' : 'text-gray-650'}`}
                     >
                       {cat.name}
                     </button>

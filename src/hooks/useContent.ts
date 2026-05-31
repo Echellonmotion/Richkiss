@@ -74,7 +74,14 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
 }
 
 export function useContent() {
-  const [settings, setSettings] = useState<any>({});
+  const [settings, setSettings] = useState<any>(() => {
+    try {
+      const cached = localStorage.getItem('richkiss_settings_cache');
+      return cached ? JSON.parse(cached) : {};
+    } catch (e) {
+      return {};
+    }
+  });
   const [categories, setCategories] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -157,7 +164,11 @@ export function useContent() {
     const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), 
       (snapshot) => {
         if (snapshot.exists()) {
-          setSettings(sanitizeData(snapshot.data()));
+          const cleanData = sanitizeData(snapshot.data());
+          setSettings(cleanData);
+          try {
+            localStorage.setItem('richkiss_settings_cache', JSON.stringify(cleanData));
+          } catch (e) {}
         } else {
           setSettings({}); // Ensure state updates even if doc is missing
         }

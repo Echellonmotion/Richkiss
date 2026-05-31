@@ -46,10 +46,6 @@ export default function Home() {
                   alt="Vision" 
                   className="w-full max-w-md rounded-sm border-[12px] border-white/10 shadow-2xl grayscale hover:grayscale-0 transition-all duration-700" 
                 />
-                <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-brand-primary rounded-sm p-8 flex flex-col justify-center text-white shadow-xl">
-                  <span className="text-4xl font-serif font-bold">14th</span>
-                  <span className="text-[10px] uppercase tracking-widest font-bold">Anniversary Edition</span>
-                </div>
               </motion.div>
             </div>
           </div>

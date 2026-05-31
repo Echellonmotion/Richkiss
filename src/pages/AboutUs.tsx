@@ -190,10 +190,6 @@ export default function AboutUs() {
                   bridging African stories with global readers.
                 </p>
               </div>
-              <button className="inline-flex items-center space-x-4 px-12 py-5 bg-brand-primary text-white font-sans font-bold text-xs uppercase tracking-[0.2em] rounded-sm hover:-translate-y-1 transition-all shadow-xl shadow-brand-primary/20">
-                <span>Find the distributors</span>
-                <ArrowRight size={16} />
-              </button>
             </motion.div>
             
             <motion.div 

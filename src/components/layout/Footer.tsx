@@ -12,16 +12,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand and About */}
           <div className="space-y-6">
-            <Link to="/" className="flex items-center space-x-2">
-              {settings.footerLogoUrl || settings.logoUrl ? (
+            <Link to="/" className="flex items-center">
+              {settings.logoUrl ? (
                 <img 
-                  src={settings.footerLogoUrl || settings.logoUrl} 
+                  src={settings.logoUrl} 
                   alt={settings.companyName || "Logo"} 
-                  className="h-20 w-auto object-contain" 
+                  className="h-28 lg:h-40 w-auto object-contain" 
                 />
               ) : (
                 <>
-                  <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white">
+                  <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white mr-2">
                     <BookOpen size={24} />
                   </div>
                   <div className="flex flex-col">
