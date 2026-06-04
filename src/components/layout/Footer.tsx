@@ -18,6 +18,7 @@ export default function Footer() {
                   src={settings.logoUrl} 
                   alt={settings.companyName || "Logo"} 
                   className="h-28 lg:h-40 w-auto object-contain" 
+                  style={{ filter: 'brightness(0) invert(1)' }}
                 />
               ) : (
                 <>

@@ -41,28 +41,56 @@ export default function PrintDepartment() {
   ];
   const partners = cmsPrintPartners && cmsPrintPartners.length > 0 ? cmsPrintPartners : staticPartners.map(name => ({ name }));
 
-  // Consolidated & completely deduplicated high-impact catalog
-  const allProducts = [
-    { title: "Books & Magazines", icon: BookOpen },
-    { title: "Brochures & Flyers", icon: Layers },
-    { title: "Calendars & Diaries", icon: Calendar },
-    { title: "Business Cards", icon: CreditCard },
-    { title: "Posters & Banners", icon: ImageIcon },
-    { title: "Stickers & Labels", icon: Tag },
-    { title: "Certificates & ID Cards", icon: Award },
-    { title: "Branded Notepads & Notebooks", icon: FileText },
-    { title: "Photobooks & Catalogues", icon: Briefcase },
-    { title: "Letterheads & Envelopes", icon: Mail },
-    { title: "Branded Apparel (T-Shirts, Polos, Caps)", icon: Shirt },
-    { title: "Tote Bags & Shopping Bags", icon: ShoppingBag },
-    { title: "Pens & Office Stationery", icon: PenTool },
-    { title: "Roll-Up Banners & Signages", icon: Flag },
-    { title: "Corporate Gift Items", icon: Gift },
-    { title: "Mugs, Bottles & Drinkware", icon: Coffee },
-    { title: "Key Holders & Wristbands", icon: Key },
-    { title: "Plaques & Awards", icon: Trophy },
-    { title: "Umbrellas & Event Giveaways", icon: Umbrella },
-    { title: "Vehicle, Office, & ATM Branding", icon: Monitor }
+  // Consolidated & grouped high-impact catalog categories
+  const productCategories = [
+    {
+      title: "Publishing & Print Media",
+      description: "Exceptional publication design and high-volume press production.",
+      icon: BookOpen,
+      items: [
+        { name: "Books & Magazines", icon: BookOpen },
+        { name: "Photobooks & Catalogues", icon: Briefcase },
+        { name: "Brochures & Flyers", icon: Layers },
+        { name: "Calendars & Diaries", icon: Calendar },
+        { name: "Letterheads & Envelopes", icon: Mail }
+      ]
+    },
+    {
+      title: "Corporate Identity & Stationery",
+      description: "Premium tools and materials to define your everyday professional workspace.",
+      icon: CreditCard,
+      items: [
+        { name: "Business Cards", icon: CreditCard },
+        { name: "Branded Notepads & Notebooks", icon: FileText },
+        { name: "Certificates & ID Cards", icon: Award },
+        { name: "Pens & Office Stationery", icon: PenTool }
+      ]
+    },
+    {
+      title: "Marketing & Large Format",
+      description: "Large format, signs, and outdoor visuals engineered for maximum attention.",
+      icon: Flag,
+      items: [
+        { name: "Posters & Banners", icon: ImageIcon },
+        { name: "Stickers & Labels", icon: Tag },
+        { name: "Roll-Up Banners & Signages", icon: Flag },
+        { name: "Vehicle, Office, & ATM Branding", icon: Monitor }
+      ]
+    },
+    {
+      title: "Custom Promotional Gifts",
+      description: "Custom-wearing garments, trophies, and premium event business giveaways.",
+      icon: Gift,
+      items: [
+        { name: "Branded Apparel (T-Shirts, Polos, Caps)", icon: Shirt },
+        { name: "Tote Bags & Shopping Bags", icon: ShoppingBag },
+        { name: "Mugs, Bottles & Drinkware", icon: Coffee },
+        { name: "Corporate Gift Items", icon: Gift },
+        { name: "Key Holders & Wristbands", icon: Key },
+        { name: "Plaques & Awards", icon: Trophy },
+        { name: "Umbrellas & Event Giveaways", icon: Umbrella }
+      ]
+    }
   ];
 
   const departments = [
@@ -209,46 +237,43 @@ export default function PrintDepartment() {
             </p>
           </div>
 
-          <div className="space-y-16">
+          <div className="grid grid-cols-1 gap-24">
             {departments.map((dept, index) => (
-              <div key={dept.id}>
-                {/* Visual Section Separator with Golden Detail */}
-                {index > 0 && (
-                  <div className="py-16 flex items-center justify-center">
-                    <div className="w-full max-w-lg flex items-center justify-center gap-6">
-                      <div className="h-[1px] bg-brand-secondary/10 flex-1" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-brand-primary" />
-                      <div className="h-[1px] bg-brand-secondary/10 flex-1" />
-                    </div>
-                  </div>
-                )}
-
-                <motion.div 
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="max-w-4xl mx-auto space-y-8 p-8 md:p-12 hover:bg-white/40 transition-all rounded-sm hover:shadow-sm"
-                >
-                  <div className="flex flex-col md:flex-row items-center gap-6 justify-center text-center md:text-left">
-                    <div className="relative flex items-center justify-center w-16 h-16 bg-white border border-brand-primary/30 text-brand-secondary font-serif font-black text-2xl tracking-tighter shadow-sm rounded-sm shrink-0">
+              <motion.div 
+                key={dept.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
+              >
+                <div className={`lg:col-span-6 space-y-6 ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+                  <div className="flex items-center space-x-6">
+                    <div className="relative flex items-center justify-center w-14 h-14 bg-white border border-brand-primary/30 text-brand-secondary font-serif font-black text-2xl tracking-tighter shadow-sm rounded-sm shrink-0">
                       <span className="text-brand-primary">{String(index + 1).padStart(2, '0')}</span>
                     </div>
-                    <div>
-                      <span className="text-[10px] font-modern font-semibold uppercase tracking-[0.25em] text-brand-primary block mb-1">
-                        Richkiss Department
-                      </span>
-                      <h3 className="text-2xl md:text-3.5xl font-serif font-bold text-brand-secondary uppercase tracking-wider leading-none">
-                        {dept.title}
-                      </h3>
-                    </div>
+                    <h3 className="text-2xl md:text-3xl font-serif font-bold text-brand-secondary uppercase tracking-wider leading-none">{dept.title}</h3>
                   </div>
-
-                  <p className="text-gray-600 font-sans text-base md:text-lg leading-relaxed max-w-3xl mx-auto text-center">
+                  
+                  <p className="text-gray-500 font-sans text-sm leading-relaxed">
                     {dept.description}
                   </p>
-                </motion.div>
-              </div>
+                </div>
+
+                <div className={`lg:col-span-6 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
+                  <div className="relative group overflow-hidden rounded-sm shadow-xl aspect-video w-full bg-brand-secondary">
+                    <img 
+                      src={dept.bgImage} 
+                      alt={dept.title} 
+                      className="w-full h-full object-cover opacity-80 mix-blend-multiply group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-brand-secondary/40 group-hover:bg-brand-secondary/20 transition-colors" />
+                    <div className="absolute bottom-6 left-6 text-white space-y-1">
+                      <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-brand-primary">Richkiss Quality</span>
+                      <p className="text-lg font-serif italic">Premium Finish Standards</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -256,29 +281,47 @@ export default function PrintDepartment() {
 
       {/* 3.5 Consolidated Products Section */}
       <section className="py-24 bg-white border-b border-gray-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          <div className="text-center space-y-4 max-w-2xl mx-auto">
-            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary">Full Catalog</span>
-            <h2 className="text-3xl md:text-5xl font-serif text-brand-secondary font-bold uppercase tracking-wide">Our Products</h2>
-            <div className="w-16 h-1 bg-brand-primary mx-auto" />
-            <p className="text-sm text-gray-500 font-sans leading-relaxed">
-              We provide a complete suite of high-impact offset and digital printing, exquisite branding materials, and customized promotional products of the highest standard.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-8">
-            {allProducts.map((prod, pIdx) => {
-              const IconComponent = prod.icon;
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {productCategories.map((cat, cIdx) => {
+              const CategoryIcon = cat.icon;
               return (
                 <motion.div 
-                  key={pIdx} 
-                  className="flex items-center space-x-4 p-5 border border-gray-100 rounded-sm hover:border-brand-primary/30 hover:shadow-md transition-all duration-300 bg-white group"
-                  whileHover={{ y: -3 }}
+                  key={cIdx}
+                  className="bg-[#fdfdfd] border border-gray-100 p-8 rounded-sm hover:border-brand-primary/20 hover:shadow-xl hover:bg-white transition-all duration-300 flex flex-col h-full space-y-6"
+                  whileHover={{ y: -5 }}
                 >
-                  <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
-                    <IconComponent size={18} />
+                  <div className="space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                      <CategoryIcon size={20} />
+                    </div>
+                    <div>
+                      <h3 className="font-serif font-black text-lg text-brand-secondary uppercase tracking-tight leading-tight">
+                        {cat.title}
+                      </h3>
+                      <p className="text-[11px] text-gray-400 font-sans mt-1 leading-normal">
+                        {cat.description}
+                      </p>
+                    </div>
                   </div>
-                  <span className="font-sans font-semibold text-sm text-brand-secondary/90 tracking-wide">{prod.title}</span>
+
+                  <div className="h-[1px] bg-gray-100 w-full" />
+
+                  <ul className="space-y-3.5 flex-1">
+                    {cat.items.map((item, iIdx) => {
+                      const ItemIcon = item.icon;
+                      return (
+                        <li key={iIdx} className="flex items-center space-x-3 group/item">
+                          <div className="w-6 h-6 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover/item:bg-brand-primary/10 group-hover/item:text-brand-primary transition-all duration-200">
+                            <ItemIcon size={12} />
+                          </div>
+                          <span className="font-sans font-medium text-xs text-brand-secondary/80 tracking-wide group-hover/item:text-brand-primary transition-colors duration-200">
+                            {item.name}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </motion.div>
               );
             })}
